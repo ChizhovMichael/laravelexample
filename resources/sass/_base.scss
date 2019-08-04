@@ -1,0 +1,78 @@
+
+@charset "utf-8";
+
+/******************************
+[Table of Contents]
+1. Normalize.css
+2. Base elements
+
+******************************/
+
+/***********
+// Normalize.css
+// Normalize.css makes browsers render all elements more 
+// consistently and in line with modern standards. 
+// It precisely targets only the styles that need normalizing.
+***********/
+
+@import '~normalize.css/normalize.css';
+
+
+
+/***********
+// Base elements
+***********/
+
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+    width: 100%;
+	background: $color-body;
+	margin: 0;
+	padding: 0;
+	overflow-y: scroll; /* has to be scroll, not auto */
+  	-webkit-overflow-scrolling: touch;
+}
+
+*:focus {
+	outline: none;
+}
+
+p a {
+	font-size: 1em;
+}
+
+ul {
+	list-style: none;
+	padding: 0;
+}
+
+a p {
+	font-size: 1em;
+}
+a h5 {
+	font-size: 1.7em;
+}
+
+.is-hidden {
+	@extend %not-visible;
+	display: none;
+}
+.is-visible {
+	@extend %visible;
+}
+
+a.standart-a {
+	text-decoration: none
+}
+
+

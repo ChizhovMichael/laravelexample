@@ -1,0 +1,291 @@
+
+@charset "utf-8";
+
+
+/******************************
+// [Table of Contents]
+// In object-oriented programming languages, a mixin (or mix-in)[1][2][3][4] is a class 
+// that contains methods for use by 
+// other classes without having to be the parent class of those other classes. 
+// How those other classes gain access to the mixin's methods depends on the language. 
+// Mixins are sometimes described as being "included" rather than "inherited".
+// 1. mixin + %
+// 2. function
+******************************/
+
+
+/***********
+// mixin + %
+***********/
+
+@mixin transform($property) {
+	-webkit-transform: $property;
+	-moz-transform: $property;
+	-ms-transform: $property;
+	-o-transform: $property;
+	transform: $property;
+}
+
+@mixin transform-origin($property) {
+	-webkit-transform-origin: $property;
+	-moz-transform-origin: $property;
+	-ms-transform-origin: $property;
+	-o-transform-origin: $property;
+	transform-origin: $property;
+}
+
+@mixin transition($property) {
+	-webkit-transition: $property;
+	-moz-transition: $property;
+	-ms-transition: $property;
+	-o-transition: $property;
+	transition: $property;
+}
+
+@mixin flex-flow($property) {
+	-webkit-flex-flow: $property;
+	-ms-flex-flow: $property;
+	flex-flow: $property;
+}
+
+@mixin align-items($property) {
+	-webkit-align-items: $property;
+	align-items: $property;
+}
+@mixin justify-content($property) {
+	-webkit-justify-content: $property;
+	justify-content: $property;
+}
+
+@mixin order($property) {
+	-webkit-order: $property;
+	-ms-order: $property;
+	order: $property;
+}
+
+@mixin flex($property) {
+	-webkit-flex: $property;
+	-ms-flex: $property;
+	flex: $property;
+}
+@mixin flex-direction($property) {
+	-webkit-flex-direction: $property;
+	-ms-flex-direction: $property;
+	flex-direction: $property;
+}
+@mixin animation($property) {
+	-webkit-animation: $property;
+	-moz-animation: $property;
+	-o-animation: $property;
+	animation: $property;
+}
+@mixin animation-name($property) {
+	-webkit-animation-name: $property;
+	-moz-animation-name: $property;
+	-o-animation-name: $property;
+	animation-name: $property;
+}
+@mixin animation-duration($property) {
+	-webkit-animation-duration: $property;
+	-moz-animation-duration: $property;
+	-o-animation-duration: $property;
+	animation-duration: $property;
+}
+@mixin animation-fill-mode($property) {
+	-webkit-animation-fill-mode: $property;
+	-moz-animation-fill-mode: $property;
+	-o-animation-fill-mode: $property;
+	animation-fill-mode: $property;
+}
+@mixin animation-delay($property) {
+	-webkit-animation-delay: $property;
+	-moz-animation-delay: $property;
+	-o-animation-delay: $property;
+	animation-delay: $property;
+}
+@mixin animation-iteration-count($property) {
+	-webkit-animation-iteration-count: $property;
+	-moz-animation-iteration-count: $property;
+	-o-animation-iteration-count: $property;
+	animation-iteration-count: $property;
+}
+@mixin animation-timing-function($property) {
+	-webkit-animation-timing-function: $property;
+	-moz-animation-timing-function: $property;
+	-o-animation-timing-function: $property;
+	animation-timing-function: $property;
+}
+
+@mixin reset-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+%flex {
+	width: 100%;
+	display: flex;
+	display: -webkit-flex;
+	display:  -ms-flexbox;
+	@include flex-flow(row wrap);
+}
+
+%flex-center {
+	 @extend %flex;
+	 @include align-items(center);
+ }
+
+ %flex-center-center {
+	@extend %flex;
+	@include align-items(center);
+	@include justify-content(center);
+}
+
+%flex-center-between {
+	@extend %flex;
+	@include align-items(center);
+	@include justify-content(space-between);
+}
+%flex-center-start {
+	@extend %flex;
+	@include align-items(center);
+	@include justify-content(flex-start);
+}
+%flex-center-end {
+	@extend %flex;
+	@include align-items(center);
+	@include justify-content(flex-end);
+}
+
+%flex-between {
+	@extend %flex;
+	@include justify-content(space-between);
+}
+
+%hover {
+	color: $color-content;
+	@include transition(0.3s);
+	text-decoration: none;
+	&:hover {
+		color: $color-title;
+	}
+}
+
+%hover-main {
+   color: $color-title;
+   @include transition(all 200ms ease);
+   text-decoration: none;
+   &:hover {
+	   color: $color-main;
+   }
+}
+
+%visible {
+   visibility: visible;
+   opacity: 1;
+}
+
+%not-visible {
+   visibility: hidden;
+   opacity: 0;
+}
+/***********
+// function
+***********/
+
+$total: 12;
+$total-indent: 15;
+
+@function column-width($col) {  
+ 	@return percentage($col/$total);  
+}
+
+//media screen for small display 
+@media screen and (max-width: 568px) {
+	@for $i from 1 through $total {  
+		.col-#{$i} { width: column-width($i) };  
+	   }
+	@for $i from 1 through $total {  
+		.md-#{$i} { width: column-width($i) };  
+	}
+	@for $i from 1 through $total {  
+		.sd-#{$i} { width: column-width($i) !important};  
+   	}
+}
+
+
+//media screen for medium display 
+@media screen and (min-width: 569px) and (max-width: 900px) {
+	@for $i from 1 through $total {  
+		.col-#{$i} { width: column-width($i) };  
+	   }
+	@for $i from 1 through $total {  
+		.md-#{$i} { width: column-width($i) !important};  
+	}
+	@for $i from 1 through $total {  
+		.sd-#{$i} { width: column-width($i) };  
+   	}
+}
+
+//media screen for col display 
+
+@media screen and (min-width: 901px) {
+	@for $i from 1 through $total {  
+		.col-#{$i} { width: column-width($i) !important};  
+	   }
+	@for $i from 1 through $total {  
+		.md-#{$i} { width: column-width($i) };  
+	}
+	@for $i from 1 through $total {  
+		.sd-#{$i} { width: column-width($i) };  
+   	}
+}
+
+
+
+
+@function column-indent($total-indent) {  
+	@return percentage($total-indent);  
+}
+
+@function column-indent-em($total-indent) {
+	@return ($total-indent)*1em; 
+}
+@function column-indent-px($total-indent) {
+	@return ($total-indent)*1px; 
+}
+
+@for $i from 0 through $total-indent {  
+	.p-#{$i} { padding: column-indent($i)/100 };
+	.pt-#{$i} { padding-top: column-indent($i)/100 };
+	.pb-#{$i} { padding-bottom: column-indent($i)/100 };
+	.pl-#{$i} { padding-left: column-indent($i)/100 };
+	.pr-#{$i} { padding-right: column-indent($i)/100 };  
+}
+
+@for $i from 0 through $total-indent {  
+	.m-#{$i} { margin: column-indent($i)/100 };
+	.mt-#{$i} { margin-top: column-indent($i)/100 };
+	.mb-#{$i} { margin-bottom: column-indent($i)/100 };
+	.ml-#{$i} { margin-left: column-indent($i)/100 };
+	.mr-#{$i} { margin-right: column-indent($i)/100 };   
+}
+
+@for $i from 0 through $total-indent {  
+	.p-em-#{$i} { padding: column-indent-em($i) };
+	.pt-em-#{$i} { padding-top: column-indent-em($i) };
+	.pb-em-#{$i} { padding-bottom: column-indent-em($i) };
+	.pl-em-#{$i} { padding-left: column-indent-em($i) };
+	.pr-em-#{$i} { padding-right: column-indent-em($i) };  
+}
+
+@for $i from 0 through $total-indent {  
+	.m-em-#{$i} { margin: column-indent-em($i) };
+	.mt-em-#{$i} { margin-top: column-indent-em($i) };
+	.mb-em-#{$i} { margin-bottom: column-indent-em($i) };
+	.ml-em-#{$i} { margin-left: column-indent-em($i) };
+	.mr-em-#{$i} { margin-right: column-indent-em($i) };   
+}
+@for $i from 0 through $total-indent {  
+	.b#{$i} { border-radius: column-indent-px($i) }; 
+}

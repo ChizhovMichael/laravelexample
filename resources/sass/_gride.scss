@@ -1,0 +1,222 @@
+@charset "utf-8";
+
+/******************************
+[Table of Contents]
+1. _variables + _mixins
+2. flex
+3. border and shadow
+4. text
+5. background
+6. line
+
+******************************/
+
+/***********
+// _variables + _mixins
+***********/
+@import '_variables/_variables';
+@import '_variables/_mixins';
+
+
+/***********
+// flex
+***********/
+.block {
+    display: block;
+}
+.flex {
+    @extend %flex;
+}
+.flex-center {
+    @extend %flex-center;
+}
+.flex-center-center {
+    @extend %flex-center-center;
+}
+.flex-between {
+    @extend %flex-between;
+}
+.flex-center-between {
+    @extend %flex-center-between;
+}
+.flex-center-start {
+    @extend %flex-center-start;
+}
+.flex-start {
+    @extend %flex;
+    @include justify-content(flex-start);
+}
+.flex-center-end {
+    @extend %flex-center-end;
+}
+
+.flexCont {
+    @include flex(1 0 auto);
+}
+
+.flexFoot {
+    @include flex(0 0 auto);
+}
+
+.fix {
+    position: fixed;
+}
+.abs {
+    position: absolute;
+}
+.rel {
+    position: relative;
+}
+
+.hide {
+    overflow: hidden;
+}
+.top-left {
+    top: 0;
+    left: 0;
+}
+.top-max-left {
+    top: 100%;
+    left: 0;
+}
+.top-left-max {
+    top: 0%;
+    left: 100%;
+}
+.top-left-middle {
+    top: 0%;
+    left: 50%;
+}
+.top-right {
+    top: 0;
+    right: 0;
+}
+.bottom-left {
+    bottom: 0;
+    left: 0;
+}
+.bottom-right {
+    bottom: 0;
+    right: 0;
+}
+
+/***********
+// border and shadow
+***********/
+.bt {
+    border-top: 1px solid $color-border;
+}
+.bt-light {
+    border-top: 1px solid $color-border-light;
+}
+.bb {
+    border-bottom: 1px solid $color-border;
+}
+.bb-light {
+    border-bottom: 1px solid $color-border-light;
+}
+.bc {
+    border: solid 1px $color-content;
+}
+.bc-light {
+    border: solid 1px $color-border-light;
+}
+.bbl5 {
+    border-bottom-left-radius: 5px;
+}
+.bbr5 {
+    border-bottom-right-radius: 5px;
+}
+.b-main {
+    border: 1px solid $color-main;
+}
+.shadow {
+    box-shadow: 0px 10px 25px rgba(0,0,0,0.1);
+}
+.shadow-xs {
+    box-shadow: 0px 1px 5px rgba(0,0,0,0.1);
+}
+/***********
+// text
+***********/
+.text-center {
+    text-align: center;
+}
+.text-right {
+    text-align: right;
+}
+.hover {
+    @extend %hover;
+}
+.hover-main {
+    @extend %hover-main;
+}
+.cc {
+    color: $color-content;
+}
+.cm {
+    color: $color-main;
+}
+.cm-bold {
+    color: $color-main;
+    font-weight: 700;
+}
+.ct {
+    color: $color-title;
+    text-decoration: none;
+}
+.cb {
+    color: $color-body;
+}
+/***********
+// background
+***********/
+ .back-body {
+     background: $color-body;
+ }
+ .back-back {
+     background: $color-background;
+ }
+ .back-main {
+     background: $color-main;
+ }
+ .back-back-add {
+     background: $color-background-add;
+ }
+
+/*********
+// line and arrow
+**************/
+.line-right {
+    &::after {
+        display: block;
+        position: absolute;
+        top: 50%;
+        @include transform(translateY(-50%));
+        right: -1em;
+        width: 1px;
+        height: 17px;
+        background: rgba(0,0,0,0.1);
+        content: '';
+    }
+}
+.arrow-bottom {
+    &::before {
+        display: block;
+        position: absolute;
+        top: 50%;
+        @include transform(translateY(-50%));
+        left: 0;
+        width: 1px;
+        height: 28px;
+        background: $color-content;
+        content: '';
+    }
+}
+
+/*********
+// cursor
+**************/
+.c-p {
+    cursor: pointer;
+}

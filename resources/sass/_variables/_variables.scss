@@ -1,0 +1,25 @@
+
+@charset "utf-8";
+
+
+/******************************
+// [Table of Contents]
+// Variable color and font for text, block, etc.
+
+******************************/
+
+@import url('https://fonts.googleapis.com/css?family=Lato:700&display=swap');
+
+$color-body: #fafafa;
+$color-main: #2684fe;
+$color-add: #fe4e4e;
+$color-title: #151f24;
+$color-content: #a5a5a5;
+$color-background: #fbfbfb;
+$color-border: #dadada;
+$color-border-light: #f2f2f2;
+$color-background-add: #eff6fa;
+
+
+$fonttitle: 'Lato', sans-serif;
+ $fontcontent: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
