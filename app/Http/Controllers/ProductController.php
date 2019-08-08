@@ -71,6 +71,7 @@ class ProductController extends Controller
         $products = Product::whereIn('parttype_id', $category);
         $products = $products->selectAllInfo();
         $products = $products->selectAllTable();
+        $products = $products->getImgMain();
         $products = $products->paginate(10);
 
         return $products;
@@ -84,6 +85,7 @@ class ProductController extends Controller
     {
         $products = Product::selectAllInfo();
         $products = $products->selectAllTable();
+        $products = $products->getImgMain();
         $products = $products->whereStock($stock);
 
         $products = $products->paginate(10);
@@ -103,6 +105,7 @@ class ProductController extends Controller
 
         $products = Product::selectAllInfo();
         $products = $products->selectAllTable();
+        $products = $products->getImgMain();
         $products = $products->orderBy($sorting['column'], $sorting['sort']);
 
         // Сортировка по компаниям
@@ -177,6 +180,7 @@ class ProductController extends Controller
 
         $products = $products->selectAllInfo();
         $products = $products->selectAllTable();
+        $products = $products->getImgMain();
         $products = $products->orderBy($sorting['column'], $sorting['sort']);
 
 
@@ -237,15 +241,32 @@ class ProductController extends Controller
     {
 
         $products = Product::where('part_link', '=', $slug);
-        $products = $products->selectAllInfo();
+        $products = $products->selectAllInfoWithoutMainImg();
         $products = $products->selectAllTable();
+        $products = $products->with('part_img');
         $products = $products->first();
+        
 
+        if ($products->part_count >= 1) {
+            $additionalClass = '';
+            $isStock = 'В наличии';
+            $action = 'Купить';
+            $buttonName = '<img class="col-2 sd-2" src="'.asset('img/icon/shopping-bag.svg').'" alt="Запчасти для телевизоров, название товара + артикул">';
+        } else {
+            $additionalClass = 'not';
+            $isStock = 'Нет в наличии';
+            $action = 'Заказать';
+            $buttonName = '<p class="cb mt-2 mb-2">Заказать</p>';
+        }
 
         return view('page/product', [
             'part_types'    => $products,
             'navigations'   => $this->navigation(),
             'cart'          =>  $this->getCartCount(),
+            'additionalClass' => $additionalClass,
+            'isStock' => $isStock,
+            'action' => $action,
+            'buttonName' => $buttonName,
         ]);
     }
 
@@ -254,7 +275,7 @@ class ProductController extends Controller
      * | Add Product To Cart
      * | Добавление продукции в карзину
      ***************/
-    public function addProductToCart($id, $type, $company, $matrix, $img = NULL, $name, $qty, $price)
+    public function addProductToCart($id, $type, $company, $tv, $img = NULL, $name, $qty, $price)
     {
 
         Cart::add([
@@ -265,7 +286,7 @@ class ProductController extends Controller
             'options' => [
                 'type' => $type,
                 'company' => $company,
-                'matrix' => $matrix,
+                'tv' => $tv,
                 'img' => $img
             ],
         ]);

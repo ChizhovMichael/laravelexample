@@ -4159,6 +4159,10 @@ h1 span {
   font-size: 1.4em;
 }
 
+.menu {
+  width: calc(100% - 27em);
+}
+
 /***********
 // Product
 ***********/

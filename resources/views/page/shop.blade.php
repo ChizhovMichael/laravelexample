@@ -174,7 +174,7 @@
                 <div class="card__item shop">
                     <div class="product__item rel c-p pt-em-4 flex-center-center text-center b5 {{ $part->stock }}">
                         <div class="product_image flex-center-center">
-                            <img class="block col-12 rel b5" src="/img/products/{{ $part->company_id }}/{{ $part->matrix_id }}/m{{ $part->part_img_name }}" alt="Запчасти для телевизоров, {{ $part->parttype_type }} {{ $part->part_model }} c телевизора {{ $part->company }} {{ $part->tv_model }}">
+                            <img class="block col-12 rel b5" src="/img/products/{{ $part->company_id }}/{{ $part->tv_id }}/m{{ $part->part_img_name }}" alt="Запчасти для телевизоров, {{ $part->parttype_type }} {{ $part->part_model }} c телевизора {{ $part->company }} {{ $part->tv_model }}">
                         </div>
                         <div class="product_content col-12">
                             <div class="product_price mt-em-1">
@@ -188,7 +188,7 @@
                                 <a href="{{ urldecode(route('product.show', ['slug' => $part->part_link ])) }}" class="hover-main block pr-em-1 pl-em-1">{{ ltrim($part->part_model) }}</a>
                             </div>
                             <div class="product_extras col-12 back-body hide">
-                                <a class="cart-link flex-center-center rel top-left col-12 back-main mt-em-1 bbl5 bbr5" href="{{ urldecode(route('addproduct', [ 'id' => $part->id, 'type' => $part->parttype_type, 'company' => $part->company_id, 'matrix' => $part->matrix_id, 'img' => $part->part_img_name , 'name' => $part->part_model, 'qty' => 1,  'price' => $part->part_cost ])) }}">
+                                <a class="cart-link flex-center-center rel top-left col-12 back-main mt-em-1 bbl5 bbr5" href="{{ urldecode(route('addproduct', [ 'id' => $part->id, 'type' => $part->parttype_type, 'company' => $part->company_id, 'tv' => $part->tv_id, 'img' => $part->part_img_name , 'name' => $part->part_model, 'qty' => 1,  'price' => $part->part_cost ])) }}">
                                     <img src="{{ asset('img/icon/shopping-bag.svg') }}" alt="Купить">
                                 </a>
                             </div>

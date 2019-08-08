@@ -60,8 +60,8 @@ class SearchController extends Controller
             if ($part_types) {
                 foreach ($part_types as $part) {
                     $output .= '<div class="articles back-body bb-light sd-12 col-12 bb pt-em-1 pb-em-1 pr-em-2 pl-em-2">' .
-                        '<div class="title flex-center-between">' .
-                        '<a class="hover-main sd-8 col-8 m-0 ct" href="/каталог/артикул/' . $part->part_link . '">' . $part->parttype_type . ' ' . $part->part_model . '</a>' .
+                        '<div class="title flex-center-between">'.
+                        '<a class="hover-main sd-8 col-8 m-0 ct" href="/артикул/' . $part->part_link . '">' . $part->parttype_type . ' ' . $part->part_model . '</a>' .
                         '<p class="sd-4 col-4 text-right cm-bold">' . $part->part_cost . '</p>' .
                         '</div>' .
                         '<div class="sd-12 col-12">' .

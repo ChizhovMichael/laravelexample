@@ -20,11 +20,13 @@ use Illuminate\Database\Eloquent\Model;
  * | 5. Tv (таблица Tv)
  * | 6. Stock (таблица stocks)
  * | 7. SelectAllInfo (получаем значения соответствующих столбцов)
+ * | 7.1 SelectAllInfoWithoutMainImg (Получаем вю сопутствующую информацию по продукции без главного изображения для /артикл )
  * | 8. SelectProductWithCategories (получение дополнительных таблиц для каталога товаров)
  * | 9. WhereStock (Получаем сортировку по стоковому товару)
  * | 10. WhereBrands (Получаем сортировку по выделенным checkbox брендов)
  * | 11. WherePriceMore (Получаем сортировку по минимальной цене)
  * | 12. WherePriceLess (Получаем сортировку по максимальной цене)
+ * | 13. GetImgMain (Получаем главное изображение для каталога продукции)
  **************/
 
 
@@ -126,8 +128,9 @@ class Product extends Model
             'products.part_cost',
             'products.part_model',
             'products.company_id',
-            'products.matrix_id',
             'products.part_link',
+            'products.part_count',
+            'products.tv_id',
             'companies.company',
             'part_imgs.part_img_name',
             'part_types.parttype_type',
@@ -139,6 +142,31 @@ class Product extends Model
     }
 
     /**
+     * | SelectAllInfoWithoutMainImg
+     * | Получаем вю сопутствующую информацию по продукции без главного изображения
+     */
+    public function scopeSelectAllInfoWithoutMainImg($query)
+    {
+        return $query->select([
+            'products.id',
+            'products.part_cost',
+            'products.part_model',
+            'products.company_id',
+            'products.part_link',
+            'products.part_count',
+            'products.tv_id',
+            'companies.company',
+            'part_types.parttype_type',
+            'tvs.tv_model',
+            'stocks.stock',
+            'stocks.percent',
+            'stocks.price'
+        ]);
+    }
+
+
+
+    /**
      * | SelectProductWithCategories
      * | Получаем все соответсвующие таблицы для продукта в которых содержится дополнительная информация
      */
@@ -148,10 +176,6 @@ class Product extends Model
         return $query->join('companies', 'companies.id', '=', 'products.company_id')
             ->join('tvs', 'tvs.id', '=', 'products.tv_id')
             ->join('part_types', 'part_types.id', '=', 'products.parttype_id')
-            ->leftJoin('part_imgs', function ($join) {
-                $join->on('part_imgs.product_id', '=', 'products.id')
-                    ->where('part_img_main', '=', '1');
-            })
             ->leftJoin('stocks', 'stocks.product_id', '=', 'products.id');
     }
 
@@ -162,8 +186,7 @@ class Product extends Model
      */
     public function scopeWhereStock($query, $param)
     {
-        if ($query->whereNotNull('stocks.stock'))
-        {
+        if ($query->whereNotNull('stocks.stock')) {
             if ($query->where('stocks.stock', $param)->exists()) {
                 return $query->where('stocks.stock', '=', $param);
             } else {
@@ -198,5 +221,19 @@ class Product extends Model
     public function scopeWherePriceLess($query, $param)
     {
         return $query->where('products.part_cost', '<=', $param);
+    }
+
+
+
+    /**
+     * | GetImgMain
+     * | Получаем главное изображение для каталога продукции
+     */
+    public function scopeGetImgMain($query)
+    {
+        return $query->join('part_imgs', function ($join) {
+            $join->on('part_imgs.product_id', '=', 'products.id')
+                ->where('part_img_main', '=', '1');
+        });
     }
 }

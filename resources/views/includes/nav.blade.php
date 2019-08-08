@@ -162,7 +162,7 @@
 
 		<!-- Дополнительное меню -->
 
-		<div class="menu flex-center-between pt-0 pb-0 pl-10 pr-5 col-8">
+		<div class="menu flex-center-between pt-0 pb-0 pl-10 pr-5">
 			<div class="menu__item"><a href="{{ urldecode(route('about')) }}" class="hover">О нас</a></div>
 			<div class="menu__item"><a href="{{ urldecode(route('catalog')) }}" class="hover">Каталог</a></div>
 			<div class="menu__item"><a href="{{ urldecode(route('delivery')) }}" class="hover">Доставка</a></div>

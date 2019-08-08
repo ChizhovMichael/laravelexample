@@ -27,22 +27,18 @@
         <!-- Images -->
 
         <ul class="image_list col-2 m-0 sd-12 flex-between">
-            <li data-image="{{ asset('img/m1513630340d.jpg') }}" class="image_list_li flex-center-center bc-light shadow-xs mb-em-1 c-p p-em-1 hide col-12 sd-4">
-                <img class="col-12 sd-12" src="{{ asset('img/m1513630340d.jpg') }}" alt="Запчать {{ $part_types->parttype_type }} {{ $part_types->part_model }} для {{ $part_types->company }} {{ $part_types->tv_model }}">
+            @foreach($part_types->part_img as $part)
+            <li data-image="/img/products/{{ $part_types->company_id }}/{{ $part_types->tv_id }}/{{ $part->part_img_name }}" class="b4 image_list_li flex-center-center bc-light shadow-xs mb-em-1 c-p p-em-1 hide col-12 sd-4">
+                <img class="col-12 sd-12" src="/img/products/{{ $part_types->company_id }}/{{ $part_types->tv_id }}/{{ $part->part_img_name }}" alt="Запчаcть {{ $part_types->parttype_type }} {{ $part_types->part_model }} для {{ $part_types->company }} {{ $part_types->tv_model }}">
             </li>
-            <li data-image="{{ asset('img/m1513630340d.jpg') }}" class="image_list_li flex-center-center bc-light shadow-xs mb-em-1 c-p p-em-1 hide col-12 sd-4">
-                <img class="col-12 sd-12" src="{{ asset('img/m1513630340d.jpg') }}" alt="Запчать {{ $part_types->parttype_type }} {{ $part_types->part_model }} для {{ $part_types->company }} {{ $part_types->tv_model }}">
-            </li>
-            <li data-image="{{ asset('img/m1513630340d.jpg') }}" class="image_list_li flex-center-center bc-light shadow-xs mb-em-1 c-p p-em-1 hide col-12 sd-4">
-                <img class="col-12 sd-12" src="{{ asset('img/m1513630340d.jpg') }}" alt="Запчать {{ $part_types->parttype_type }} {{ $part_types->part_model }} для {{ $part_types->company }} {{ $part_types->tv_model }}">
-            </li>
+            @endforeach
         </ul>
 
 
         <!-- Selected Image -->
 
-        <div class="image_selected flex-center-center bc-light shadow hide p-em-1 col-5 sd-12 @if($agent->isMobile()) mb-em-5 @endif">
-            <img class="col-12 sd-12" src="{{ asset('img/m1513630340d.jpg') }}" alt="" class="image_list_cont">
+        <div class="b8 image_selected flex-center-center bc-light shadow hide p-em-1 col-5 sd-12 @if($agent->isMobile()) mb-em-5 @endif">
+            <img class="col-12 sd-12" src="/img/products/{{ $part_types->company_id }}/{{ $part_types->tv_id }}/{{ $part_types->part_img->first()->part_img_name }}" alt="Запчасть" class="image_list_cont">
         </div>
 
 
@@ -53,10 +49,9 @@
             <h1 class="ct">{{ $part_types->part_model }}</h1>
             
             <p class="cc">{{ $part_types->parttype_type }} {{ $part_types->part_model }} снята с телевизора {{ $part_types->company }} {{ $part_types->tv_model }}. Maecenas fermentum. laoreet turpis, nec sollicitudin dolor cursus at. Maecenas aliquet, dolor a faucibus efficitur, nisi tellus cursus urna, eget dictum lacus turpis.</p>
-            
-            <span class="found">В наличие</span>
+            <span class="found {{ $additionalClass }}">{{ $isStock }}</span>
             <div>
-                <form action="#">
+                <form action="{!! $action !!}">
                     <div>
 
                         <!-- Product Quantity -->
@@ -75,15 +70,13 @@
 
                     </div>
 
-                    <h5>2000&nbsp;&#x20bd;</h5>
+                    <h5>{{ $part_types->part_cost }}&nbsp;&#x20bd;</h5>
                     <div>
-                        <form action="#">
-                            <input type="hidden">
+                        <input type="hidden">
 
-                            <button class="back-main col-6 sd-6 b5 pt-1 pb-1 b-main shadow c-p">
-                                <img class="col-2 sd-2" src="{{ asset('img/icon/shopping-bag.svg') }}" alt="Запчасти для телевизоров, название товара + артикул">
-                            </button>
-                        </form>
+                        <button class="back-main col-6 sd-6 b5 pt-1 pb-1 b-main shadow c-p">
+                            {!! $buttonName !!}
+                        </button>
                         
                     </div>
 

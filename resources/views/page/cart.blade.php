@@ -46,7 +46,7 @@
             @foreach ($cartContent as $item)
             <div class="flex-center-between mt-em-1">
                 <div class="flex-center-center text-right col-2 pr-em-1 pl-em-1">
-                    <img class="col-12" src="/img/products/{{ $item->options->company }}/{{ $item->options->matrix }}/m{{ $item->options->img }}" alt="Запчасти для телевизоров, название товара + артикул">
+                    <img class="col-12" src="/img/products/{{ $item->options->company }}/{{ $item->options->tv }}/m{{ $item->options->img }}" alt="Запчасти для телевизоров, название товара + артикул">
                 </div>
                 <div  class="text-right col-3">
                     <a href="#" class="cc mt-1 mb-1 hover-main">{{ $item->options->type }} {{ $item->name }}</a>                    

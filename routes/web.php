@@ -29,7 +29,7 @@ Route::get('/каталог', 'ProductController@getAllProduct')->name('catalog'
 
 Route::get('/каталог/{part_types_id}', 'ProductController@getFullCategory')->name('category.show');
 
-Route::post('/add/{id}/{type}/{company}/{matrix}/{img}/{name}/{qty}/{price}', 'ProductController@addProductToCart')->name('addproduct');
+Route::post('/add/{id}/{type}/{company}/{tv}/{img}/{name}/{qty}/{price}', 'ProductController@addProductToCart')->name('addproduct');
 
 Route::get('/контакты', 'ContactController@getPage')->name('contacts');
 
