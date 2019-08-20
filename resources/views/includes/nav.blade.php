@@ -54,7 +54,7 @@
 	<!-- Search + Logo + Card -->
 
 
-	<div class="col-12 sd-12 flex-center-between pt-em-2 pb-em-2 pl-5 pr-5 back-back">
+	<div class="nav-bar col-12 sd-12 flex-center-between pt-em-2 pb-em-2 pl-5 pr-5 back-back">
 		<div class="col-4 sd-7">
 			<a class="logo flex-center sd-12" href="{{ route('main') }}">
 				<img class="sd-2" src="{{ asset('img/icon/logo.svg') }}" alt="Телезапчасти">
@@ -104,7 +104,7 @@
 		@endif
 
 
-		<div class="col-3 sd-4">
+		<div class="col-3 sd-5">
 			<div class="@if ($agent->isDesktop()) flex-center-end @else flex-center-start @endif sd-12">
 				<div class="rel">
 					<img class="col-12" src="{{ asset('img/icon/cart.png')}}" alt="Запчасти для телевизоров, продать телевизор +на запчасти, телевизор скупка, телезапчасти">
@@ -112,7 +112,7 @@
 						<span id="countProducts">{!! $cart['cart_count'] !!}</span>
 					</div>
 				</div>
-				<div class="ml-em-2 col-5">
+				<div class="ml-em-2 col-5 sd-7">
 					<div class="cart_text">
 						<a href="{{ route('cart') }}">Корзина</a>
 					</div>
