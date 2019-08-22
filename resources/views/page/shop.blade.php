@@ -64,7 +64,7 @@
                         Бренд телевизора
                     </label>
                     <ul class="m-0 pr-em-2 pl-em-2">
-                        @foreach($brand->slice(0, 7) as $item)
+                        @foreach($brand->splice(0, 7)->all() as $item)
                         <li class="mt-1 mb-1">
                             <div class="form-check">
                                 <input class="form-check-input" data-form="brands-check" type="checkbox" @if(preg_match("/{$item->company}/i", $brands)) checked @endif value="{{ $item->company }}" id="{{ $item->company }}">
@@ -76,7 +76,7 @@
                         </li>
                         @endforeach
                         <div class="toggle__sorting">
-                            @foreach($brand->slice(7) as $item)
+                            @foreach($brand->all() as $item)
                             <li class="mt-1 mb-1">
                                 <div class="form-check">
                                     <input class="form-check-input" data-form="brands-check" type="checkbox" @if(preg_match("/{$item->company}/i", $brands)) checked @endif value="{{ $item->company }}" id="{{ $item->company }}">
@@ -88,14 +88,26 @@
                             </li>
                             @endforeach
                         </div>
-                        <form id="brands-check" action="{{ route( $route, [ 'part_types_id' => $part_types_id, 'sort' => $sort, 'stock' => $stock, 'brands' => $brands, 'from' => $from, 'to' => $to]) }}" method="GET" style="display: none;">
+
+
+                        <form id="brands-check" action="{{ route( $route, [ 
+
+                            'part_types_id' => $part_types_id,
+                            'sort' => $sort,
+                            'stock' => $stock,
+                            'brands' => $brands,
+                            'search' => $search
+
+                            ]) }}" method="GET" style="display: none;">
                             @if ($sort) <input type="hidden" name="sort" value="{{ $sort }}"> @endif
                             <input type="hidden" class="brands-check" name="brands" value="{{ $brands }}">
                             @if ($stock) <input type="hidden" name="stock" value="{{ $stock }}"> @endif
-                            @if ($from) <input type="hidden" name="from" value="{{ $from }}"> @endif
-                            @if ($from) <input type="hidden" name="to" value="{{ $to }}"> @endif
+
                         </form>
-                    </ul>                    
+
+
+
+                    </ul>
                     <a href="#" class="toggle--content button__trigger"></a>
                 </div>
                 <div class="sorting__item mt-em-2 mb-em-2 b8 shadow-xs hide">
@@ -111,7 +123,7 @@
                                 <span> - </span>
                                 <span id="to">{{ $to }} &#x20bd;</span>
                             </div>
-                            <form action="{{ route( $route, [ 'part_types_id' => $part_types_id, 'sort' => $sort, 'brands' => $brands, 'stock' => $stock, 'from' => $from, 'to' => $to]) }}" method="GET">
+                            <form action="{{ route( $route, [ 'part_types_id' => $part_types_id, 'sort' => $sort, 'brands' => $brands, 'stock' => $stock, 'from' => $from, 'to' => $to, 'search' => $search ]) }}" method="GET">
                                 @if ($sort) <input type="hidden" name="sort" value="{{ $sort }}"> @endif
                                 @if ($brands) <input type="hidden" name="brands" value="{{ $brands }}"> @endif
                                 @if ($stock) <input type="hidden" name="stock" value="{{ $stock }}"> @endif
@@ -131,9 +143,9 @@
                         <img class="ml-em-1" src="{{ asset('img/icon/chevron-arrow-down.svg') }}" alt="arrow">
                     </label>
                     <ul class="m-0 pr-em-2 pl-em-2">
-                        <li class="mt-1 mb-1"><a href="{{ route( $route, [ 'part_types_id' => $part_types_id, 'sort' => $sort, 'brands' => $brands, 'stock' => 'all', 'from' => $from, 'to' => $to]) }}" class="@if ($stock == null || $stock == 'all') active @endif block hover">Вся продукция</a></li>
-                        <li class="mt-1 mb-1"><a href="{{ route( $route, [ 'part_types_id' => $part_types_id, 'sort' => $sort, 'brands' => $brands, 'stock' => 'new', 'from' => $from, 'to' => $to]) }}" class="@if ($stock == 'new') active @endif block hover">Новые поступления</a></li>
-                        <li class="mt-1 mb-1"><a href="{{ route( $route, [ 'part_types_id' => $part_types_id, 'sort' => $sort, 'brands' => $brands, 'stock' => 'discount', 'from' => $from, 'to' => $to]) }}" class="@if ($stock == 'discount') active @endif block hover">Акция</a></li>
+                        <li class="mt-1 mb-1"><a href="{{ route( $route, [ 'part_types_id' => $part_types_id, 'sort' => $sort, 'brands' => $brands, 'stock' => 'all', 'from' => $from, 'to' => $to, 'search' => $search ]) }}" class="@if ($stock == null || $stock == 'all') active @endif block hover">Вся продукция</a></li>
+                        <li class="mt-1 mb-1"><a href="{{ route( $route, [ 'part_types_id' => $part_types_id, 'sort' => $sort, 'brands' => $brands, 'stock' => 'new', 'from' => $from, 'to' => $to, 'search' => $search]) }}" class="@if ($stock == 'new') active @endif block hover">Новые поступления</a></li>
+                        <li class="mt-1 mb-1"><a href="{{ route( $route, [ 'part_types_id' => $part_types_id, 'sort' => $sort, 'brands' => $brands, 'stock' => 'discount', 'from' => $from, 'to' => $to, 'search' => $search]) }}" class="@if ($stock == 'discount') active @endif block hover">Акция</a></li>
                     </ul>
                 </div>
                 <div class="sorting__item mt-em-2 mb-em-2 b8 shadow-xs hide">
@@ -144,28 +156,36 @@
         </div>
         @endif
         <div class="col-9 sd-12 @if($agent->isDesktop()) pl-5 @endif">
-            <div class="container__sorting col-12 pt-em-1 pb-em-1 pl-5 bb-light">
-
-                @if ($agent->isMobile())
-                <a href="#" class="trigger b5 flex-center-center hover pt-4 pb-4" onclick="
-                event.preventDefault();
-                document.querySelector('.sorting__wrapp').classList.add('active');
-                document.querySelector('.sorting__back').classList.add('active')
-                ">Фильтры</a>
-
+            <div class="">
+                @if($search != NULL)
+                <div class="col-6">
+                    <h5 class="m-0 col-12">Поиск: {{ $search }}</h5>
+                </div>
                 @endif
+            
+                <div class="container__sorting col-12 pt-em-1 pb-em-1 pl-5 bb-light">
 
-                <div class="dropdown bc pt-em-1 pb-em-1 b5 rel">
-                    <div class="dropdown__list rel flex-center-center">
-                        <img class="ml-em-1" src="{{ asset('img/icon/chevron-arrow-down.svg') }}" alt="Запчасти для телевизоров, продать телевизор +на запчасти, телевизор скупка, телезапчасти">
-                        <span class="dropdown_placeholder col-9 cc c-p flex-center-center">
-                            {!! $value !!}
-                        </span>
-                        <ul class="dropdown__list__ul abs top-max-left shadow col-12 b5 back-back" id="sortingProduct">
-                            @foreach ($sorting as $item)
-                            <li class="flex-center-between rel bt-light pt-2 pb-2 pr-5 pl-5"><a class="sort-link hover pt-2 pb-2 pr-5 pl-5 block" href="{{ route( $route, [ 'part_types_id' => $part_types_id, 'sort' => $item[0], 'brands' => $brands, 'stock' => $stock, 'from' => $from, 'to' => $to ]) }}">{!! $item[1] !!}</a></li>
-                            @endforeach
-                        </ul>
+                    @if ($agent->isMobile())
+                    <a href="#" class="trigger b5 flex-center-center hover pt-4 pb-4" onclick="
+                    event.preventDefault();
+                    document.querySelector('.sorting__wrapp').classList.add('active');
+                    document.querySelector('.sorting__back').classList.add('active')
+                    ">Фильтры</a>
+
+                    @endif
+
+                    <div class="dropdown bc pt-em-1 pb-em-1 b5 rel">
+                        <div class="dropdown__list rel flex-center-center">
+                            <img class="ml-em-1" src="{{ asset('img/icon/chevron-arrow-down.svg') }}" alt="Запчасти для телевизоров, продать телевизор +на запчасти, телевизор скупка, телезапчасти">
+                            <span class="dropdown_placeholder col-9 cc c-p flex-center-center">
+                                {!! $value !!}
+                            </span>
+                            <ul class="dropdown__list__ul abs top-max-left shadow col-12 b5 back-back" id="sortingProduct">
+                                @foreach ($sorting as $item)
+                                <li class="flex-center-between rel bt-light pt-2 pb-2 pr-5 pl-5"><a class="sort-link hover pt-2 pb-2 pr-5 pl-5 block" href="{{ route( $route, [ 'part_types_id' => $part_types_id, 'sort' => $item[0], 'brands' => $brands, 'stock' => $stock, 'from' => $from, 'to' => $to, 'search' => $search ]) }}">{!! $item[1] !!}</a></li>
+                                @endforeach
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

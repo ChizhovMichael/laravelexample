@@ -36,10 +36,21 @@
 
 
         <!-- Selected Image -->
-
-        <div class="b8 image_selected flex-center-center bc-light shadow hide p-em-1 col-5 sd-12 @if($agent->isMobile()) mb-em-5 @endif">
-            <img class="col-12 sd-12" src="/img/products/{{ $part_types->company_id }}/{{ $part_types->tv_id }}/{{ $part_types->part_img->first()->part_img_name }}" alt="Запчасть" class="image_list_cont">
+        <div class="col-5 sd-12 @if($agent->isMobile()) mb-em-5 @endif">
+            <div class="b8 image_selected flex-center-center bc-light shadow hide p-em-1 mb-em-2">
+                @if($part_types->part_img->first() !== NULL)
+                <img class="col-12 sd-12 image_list_cont" src="/img/products/{{ $part_types->company_id }}/{{ $part_types->tv_id }}/{{ $part_types->part_img->first()->part_img_name }}" alt="Запчасть">
+                @endif
+            </div>
+            <ul class="image_list col-12 m-0 sd-12 flex-between">
+                @foreach($part_types->tv_img as $part)
+                <li data-image="/img/products/{{ $part_types->company_id }}/{{ $part_types->tv_id }}/{{ $part->tv_img_name }}" class="b4 image_list_li flex-center-center bc-light shadow-xs mb-em-1 c-p p-em-1 hide col-4 sd-4">
+                    <img class="col-12 sd-12" src="/img/products/{{ $part_types->company_id }}/{{ $part_types->tv_id }}/{{ $part->tv_img_name }}" alt="Запчаcть {{ $part_types->parttype_type }} {{ $part_types->part_model }} для {{ $part_types->company }} {{ $part_types->tv_model }}">
+                </li>
+                @endforeach
+            </ul>
         </div>
+        
 
 
         <!-- Description -->
@@ -48,16 +59,20 @@
             <span class="cc">{{ $part_types->parttype_type }}</span>
             <h1 class="ct">{{ $part_types->part_model }}</h1>
             
-            <p class="cc">{{ $part_types->parttype_type }} {{ $part_types->part_model }} снята с телевизора {{ $part_types->company }} {{ $part_types->tv_model }}. Maecenas fermentum. laoreet turpis, nec sollicitudin dolor cursus at. Maecenas aliquet, dolor a faucibus efficitur, nisi tellus cursus urna, eget dictum lacus turpis.</p>
+            @if($part_types->part_comment_for_client)
+            <p class="bb bt m-1 pt-em-1 pb-em-1 found not">{{ $part_types->part_comment_for_client }}</p>
+            @endif
+            <p class="cc">{{ $part_types->parttype_type }} {{ $part_types->part_model }} снят(-а) с телевизора {{ $part_types->company }} {{ $part_types->tv_model }} с разбитой матрицей {{ $part_types->matrix->matrix_model }}.</p>
+            <p class="cc">Доставка в любой регион почтой России или транспортной компанией.</p>
             <span class="found {{ $additionalClass }}">{{ $isStock }}</span>
             <div>
-                <form action="{!! $action !!}">
+                <form action="{!! $action !!}" method="POST">
                     <div>
 
                         <!-- Product Quantity -->
                         <div class="product_quantity">
                             <span>Количество: </span>
-                            <input id="quantity_input" type="text" pattern="[0-9]*" value="1">
+                            <input name="qty" id="quantity_input" type="text" pattern="[0-9]*" value="1">
                             <div class="quantity_buttons">
                                 <div id="quantity_inc_button" class="quantity_inc quantity_control">
                                     <img src="{{ asset('img/icon/chevron-arrow-up.svg') }}" alt="">
@@ -72,7 +87,18 @@
 
                     <h5>{{ $part_types->part_cost }}&nbsp;&#x20bd;</h5>
                     <div>
-                        <input type="hidden">
+                        <!-- <input type="hidden" name="id" value="{{ $part_types->id }}">
+                        <input type="hidden" name="type" value="{{ $part_types->parttype_type }}">
+                        <input type="hidden" name="company" value="{{ $part_types->company_id }}">
+                        <input type="hidden" name="tv" value="{{ $part_types->tv_id }}">
+                        @if($part_types->part_img->first() !== NULL)
+                        <input type="hidden" name="img" value="{{ $part_types->part_img->first()->part_img_name }}">
+                        @else
+                        <input type="hidden" name="img" value="">
+                        @endif
+                        <input type="hidden" name="name" value="{{ $part_types->part_model }}">
+                        <input type="hidden" name="price" value="{{ $part_types->part_cost }}"> -->
+
 
                         <button class="back-main col-6 sd-6 b5 pt-1 pb-1 b-main shadow c-p">
                             {!! $buttonName !!}

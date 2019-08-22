@@ -33,7 +33,8 @@ Route::post('/add/{id}/{type}/{company}/{tv}/{img}/{name}/{qty}/{price}', 'Produ
 
 Route::get('/контакты', 'ContactController@getPage')->name('contacts');
 
-Route::get('/артикул/{slug}', 'ProductController@getItemProduct')->name('product.show');
+Route::get('/продукт/{slug}', 'ProductController@getItemProduct')->name('product.show');
+Route::post('/addproduct', 'ProductController@addToCartItemProduct')->name('product.add');
 
 Route::get('/корзина', 'CartController@getPage')->name('cart');
 
@@ -48,6 +49,7 @@ Route::get('/доставка', function () {
  * Search Route
  */
 Route::get('/search','SearchController@search');
+Route::get('/каталог/поиск/{search}', 'ProductController@getSearchProduct')->name('search.product');
 
 /**
  * Search Route mobile link

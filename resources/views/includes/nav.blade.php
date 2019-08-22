@@ -54,7 +54,7 @@
 	<!-- Search + Logo + Card -->
 
 
-	<div class="col-12 sd-12 flex-center-between pt-em-2 pb-em-2 pl-5 pr-5 back-back">
+	<div class="nav-bar col-12 sd-12 flex-center-between pt-em-2 pb-em-2 pl-5 pr-5 back-back">
 		<div class="col-4 sd-7">
 			<a class="logo flex-center sd-12" href="{{ route('main') }}">
 				<img class="sd-2" src="{{ asset('img/icon/logo.svg') }}" alt="Телезапчасти">
@@ -104,7 +104,7 @@
 		@endif
 
 
-		<div class="col-3 sd-4">
+		<div class="col-3 sd-5">
 			<div class="@if ($agent->isDesktop()) flex-center-end @else flex-center-start @endif sd-12">
 				<div class="rel">
 					<img class="col-12" src="{{ asset('img/icon/cart.png')}}" alt="Запчасти для телевизоров, продать телевизор +на запчасти, телевизор скупка, телезапчасти">
@@ -112,7 +112,7 @@
 						<span id="countProducts">{!! $cart['cart_count'] !!}</span>
 					</div>
 				</div>
-				<div class="ml-em-2 col-5">
+				<div class="ml-em-2 col-5 sd-7">
 					<div class="cart_text">
 						<a href="{{ route('cart') }}">Корзина</a>
 					</div>
@@ -190,7 +190,7 @@
 	s-17-7.626-17-17S14.61,6,23.984,6z" /></svg>
 		</a>
 	
-		<a href="{{ urldecode(route('catalog')) }}"  class="p-em-1 @if(Request::is('каталог') || Request::is('каталог/*') || Request::is('корзина')) active @endif">
+		<a href="{{ urldecode(route('catalog')) }}"  class="p-em-1 @if(Request::is('каталог') || Request::is('каталог/*') || Request::is('корзина') || Request::is('продукт/*')) active @endif">
 			<svg viewBox="0 0 489 489" width="20" style="enable-background:new 0 0 489 489;" xml:space="preserve">
 				<path d="M440.1,422.7l-28-315.3c-0.6-7-6.5-12.3-13.4-12.3h-57.6C340.3,42.5,297.3,0,244.5,0s-95.8,42.5-96.6,95.1H90.3
 		c-7,0-12.8,5.3-13.4,12.3l-28,315.3c0,0.4-0.1,0.8-0.1,1.2c0,35.9,32.9,65.1,73.4,65.1h244.6c40.5,0,73.4-29.2,73.4-65.1

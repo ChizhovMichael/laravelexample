@@ -8,6 +8,7 @@ use App\Navigation;
 use App\Http\Controllers\NavigationController;
 use App\Http\Controllers\SortingController;
 use Cart;
+use Illuminate\Support\Facades\URL;
 
 
 /*************
@@ -21,7 +22,7 @@ use Cart;
  * | 4. Get All Product (вывод всей продукции с погинацией и get запросами-сортировкой)
  * | 5. Item Product (получить единичный продукт)
  * | 6. Get Categories Product (вывод всей продукции с погинацией и get запросами-сортировкой по категориям)
- * | 6. 
+ * | 6. Get Search Product (Получаем все продукты соответствующие критерию поиска)
  * |
  * |
  **************/
@@ -112,13 +113,14 @@ class ProductController extends Controller
         $brands = $this->getBrands($request->brands);
         $products = $brands != NUll ? $products->whereBrands($brands) : $products;
 
-        // Минимальная максимальная цена пока берет совместно с пагинацией
-        $min = $products->min('part_cost');
-        $max = $products->max('part_cost');
 
         // Сортировка по категориям
         $stock = $this->getStock($request->stock);
         $products = $stock != NULL ? $products->whereStock($stock) : $products;
+
+        // Минимальная максимальная цена пока берет совместно с пагинацией
+        $min = $products->min('part_cost');
+        $max = $products->max('part_cost');
 
 
         // Сортировка по цене
@@ -153,7 +155,8 @@ class ProductController extends Controller
             'to'            => $to, // правильно
             'route'         => 'catalog', // правильно
             'part_types_id' => NULL, // правильно
-            'cart'          =>  $this->getCartCount(),
+            'cart'          => $this->getCartCount(),
+            'search'        => NULL, // правильно
         ]);
     }
 
@@ -183,18 +186,23 @@ class ProductController extends Controller
         $products = $products->getImgMain();
         $products = $products->orderBy($sorting['column'], $sorting['sort']);
 
+        if ($products->first() === NULL) {
+            return abort('404');
+        }
+
 
         // Сортировка по компаниям
         $brands = $this->getBrands($request->brands);
         $products = $brands != NUll ? $products->whereBrands($brands) : $products;
 
-        // Минимальная максимальная цена пока берет совместно с пагинацией
-        $min = $products->min('part_cost');
-        $max = $products->max('part_cost');
 
         // Сортировка по категориям
         $stock = $this->getStock($request->stock);
         $products = $stock != NULL ? $products->whereStock($stock) : $products;
+
+        // Минимальная максимальная цена пока берет совместно с пагинацией
+        $min = $products->min('part_cost');
+        $max = $products->max('part_cost');
 
         // Сортировка по цене
         $from = $this->getFrom($request->from, $min);
@@ -228,7 +236,8 @@ class ProductController extends Controller
             'to'            => $to, // правильно
             'route'         => 'category.show', // правильно
             'part_types_id' => $part_types_id, // правильно
-            'cart'          =>  $this->getCartCount(),
+            'cart'          => $this->getCartCount(),
+            'search'        => NULL, //правильно
         ]);
     }
 
@@ -244,13 +253,15 @@ class ProductController extends Controller
         $products = $products->selectAllInfoWithoutMainImg();
         $products = $products->selectAllTable();
         $products = $products->with('part_img');
+        $products = $products->with('tv_img');
+        $products = $products->with('matrix');
         $products = $products->first();
-        
 
-        if ($products->part_count >= 1) {
+
+        if ($products->part_status == 0) {
             $additionalClass = '';
             $isStock = 'В наличии';
-            $action = 'Купить';
+            $action = route('product.add');
             $buttonName = '<img class="col-2 sd-2" src="'.asset('img/icon/shopping-bag.svg').'" alt="Запчасти для телевизоров, название товара + артикул">';
         } else {
             $additionalClass = 'not';
@@ -295,6 +306,85 @@ class ProductController extends Controller
             'count' => Cart::count(),
             'total' => Cart::total(),
             'content' => Cart::content(),
+        ]);
+    }
+
+    /**
+     * | Get Search Product
+     * | Получаем все продукты соответствующие критерию поиска
+     */
+    public function getSearchProduct($search, Request $request)
+    {
+        // Сортировка по названию, по цене
+        $sorting = $this->getSort($request->sort);
+
+
+        $products = Product::where('part_model', 'LIKE', '%' . $search . "%");
+        $products = $products->selectAllInfo();
+        $products = $products->selectAllTable();
+        $products = $products->getImgMain();
+        $products = $products->orderBy($sorting['column'], $sorting['sort']);
+        
+        // Получаем бренды для найденных товаров
+        $company = $part->groupBy('company')->get();
+
+        return $products->get();
+
+
+        if ($products->first() === NULL) {
+            return abort('404');
+        }
+
+        // Сортировка по компаниям
+        $brands = $this->getBrands($request->brands);
+        $products = $brands != NUll ? $products->whereBrands($brands) : $products;
+
+        
+        
+
+        // Сортировка по категориям
+        $stock = $this->getStock($request->stock);
+        $products = $stock != NULL ? $products->whereStock($stock) : $products;
+
+        // Минимальная максимальная цена пока берет совместно с пагинацией
+        $min = $products->min('part_cost');
+        $max = $products->max('part_cost');
+
+        // Сортировка по цене
+        $from = $this->getFrom($request->from, $min);
+        $to = $this->getTo($request->to, $max);
+        $products = $products->wherePriceMore($from);
+        $products = $products->wherePriceLess($to);
+
+        // Вывод c пагинацией в 12
+        
+        $products = $products->paginate(12);
+
+        
+
+        return view('page/shop', [
+            'part_types'    => $products->appends([
+                'sort'      => $request->sort,
+                'stock'     => $request->stock,
+                'brands'    => $request->brands,
+                'from'      => $from,
+                'to'        => $to,
+            ]),
+            'navigations'   => $this->navigation(),
+            'brand'         => $companies,
+            'sort'          => $request->sort,
+            'value'         => $sorting['value'],
+            'sorting'       => $sorting['sorting'],
+            'brands'        => $request->brands,
+            'stock'         => $request->stock,
+            'min'           => $min,
+            'max'           => $max,
+            'from'          => $from, // правильно
+            'to'            => $to, // правильно
+            'route'         => 'search.product', // правильно
+            'part_types_id' => NULL, // правильно
+            'cart'          => $this->getCartCount(),
+            'search'        => $search, //правильно
         ]);
     }
 }
