@@ -7063,6 +7063,11 @@ function searchArticle() {
   var category = search.parentNode,
       wrapp = category.nextElementSibling,
       container = wrapp.querySelector('span');
+  search.addEventListener('keydown', function (event) {
+    if (event.keyCode == 13) {
+      event.preventDefault();
+    }
+  });
 
   function getContent() {
     var searchValue = search.value;

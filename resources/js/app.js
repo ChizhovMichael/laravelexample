@@ -293,6 +293,13 @@ function searchArticle() {
         wrapp = category.nextElementSibling,
         container = wrapp.querySelector('span');
 
+    // Блокируем отправку input через enter
+    search.addEventListener('keydown', function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+        }
+    });
+
 
     function getContent() {
 
@@ -481,7 +488,7 @@ function navigationScroll() {
     }
     var elemHeight = elem.clientHeight;
     var elemChild = elem.querySelector('.nav-bar');
-    
+
 
     if (device.desktop() === true) {
         var windowShame = document.querySelector('.os-viewport');
@@ -493,7 +500,7 @@ function navigationScroll() {
 
         var scrolled = windowShame.pageYOffset || windowShame.scrollTop;
 
-        if ( scrolled > elemHeight ) {
+        if (scrolled > elemHeight) {
             elemChild.classList.add('fixed')
         } else {
             elemChild.classList.remove('fixed')

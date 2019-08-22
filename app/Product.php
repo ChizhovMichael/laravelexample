@@ -27,6 +27,8 @@ use Illuminate\Database\Eloquent\Model;
  * | 11. WherePriceMore (Получаем сортировку по минимальной цене)
  * | 12. WherePriceLess (Получаем сортировку по максимальной цене)
  * | 13. GetImgMain (Получаем главное изображение для каталога продукции)
+ * | 14. TV images (Получаем изображения телевизора)
+ * | 15. Matrix (Получаем матрицу телевизора)
  **************/
 
 
@@ -155,6 +157,9 @@ class Product extends Model
             'products.part_link',
             'products.part_count',
             'products.tv_id',
+            'products.matrix_id',
+            'products.part_comment_for_client',
+            'products.part_status',
             'companies.company',
             'part_types.parttype_type',
             'tvs.tv_model',
@@ -213,6 +218,15 @@ class Product extends Model
     public function scopeWherePriceMore($query, $param)
     {
         return $query->where('products.part_cost', '>=', $param);
+        // if ($query->whereNotNull('products.part_cost')) {
+        //     if ($query->where('products.part_cost', $param)->exists()) {
+        //         return $query->where('products.part_cost', '>=', $param);
+        //     } else {
+        //         return $query;
+        //     }
+        // } else {
+        //     return $query;
+        // }
     }
     /**
      * | WherePriceLess
@@ -221,6 +235,15 @@ class Product extends Model
     public function scopeWherePriceLess($query, $param)
     {
         return $query->where('products.part_cost', '<=', $param);
+        // if ($query->whereNotNull('products.part_cost')) {
+        //     if ($query->where('products.part_cost', '<=', $param)->exists()) {
+        //         return $query->where('products.part_cost', '<=', $param);
+        //     } else {
+        //         return $query;
+        //     }
+        // } else {
+        //     return $query;
+        // }
     }
 
 
@@ -236,4 +259,23 @@ class Product extends Model
                 ->where('part_img_main', '=', '1');
         });
     }
+
+    /**
+     * | TV images
+     * | Получаем изображения телевизора
+     */
+
+     public function tv_img()
+     {
+        return $this->hasMany('App\TvImg', 'tv_id', 'tv_id');
+     }
+
+     /**
+     * | Matrix
+     * | Получаем матрицу телевизора
+     */
+     public function matrix()
+     {
+        return $this->belongsTo('App\Matrix', 'matrix_id');
+     }
 }
