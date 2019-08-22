@@ -218,15 +218,6 @@ class Product extends Model
     public function scopeWherePriceMore($query, $param)
     {
         return $query->where('products.part_cost', '>=', $param);
-        // if ($query->whereNotNull('products.part_cost')) {
-        //     if ($query->where('products.part_cost', $param)->exists()) {
-        //         return $query->where('products.part_cost', '>=', $param);
-        //     } else {
-        //         return $query;
-        //     }
-        // } else {
-        //     return $query;
-        // }
     }
     /**
      * | WherePriceLess
@@ -235,15 +226,6 @@ class Product extends Model
     public function scopeWherePriceLess($query, $param)
     {
         return $query->where('products.part_cost', '<=', $param);
-        // if ($query->whereNotNull('products.part_cost')) {
-        //     if ($query->where('products.part_cost', '<=', $param)->exists()) {
-        //         return $query->where('products.part_cost', '<=', $param);
-        //     } else {
-        //         return $query;
-        //     }
-        // } else {
-        //     return $query;
-        // }
     }
 
 

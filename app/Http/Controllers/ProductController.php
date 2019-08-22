@@ -113,13 +113,14 @@ class ProductController extends Controller
         $brands = $this->getBrands($request->brands);
         $products = $brands != NUll ? $products->whereBrands($brands) : $products;
 
-        // Минимальная максимальная цена пока берет совместно с пагинацией
-        $min = $products->min('part_cost');
-        $max = $products->max('part_cost');
 
         // Сортировка по категориям
         $stock = $this->getStock($request->stock);
         $products = $stock != NULL ? $products->whereStock($stock) : $products;
+
+        // Минимальная максимальная цена пока берет совместно с пагинацией
+        $min = $products->min('part_cost');
+        $max = $products->max('part_cost');
 
 
         // Сортировка по цене
@@ -185,18 +186,23 @@ class ProductController extends Controller
         $products = $products->getImgMain();
         $products = $products->orderBy($sorting['column'], $sorting['sort']);
 
+        if ($products->first() === NULL) {
+            return abort('404');
+        }
+
 
         // Сортировка по компаниям
         $brands = $this->getBrands($request->brands);
         $products = $brands != NUll ? $products->whereBrands($brands) : $products;
 
-        // Минимальная максимальная цена пока берет совместно с пагинацией
-        $min = $products->min('part_cost');
-        $max = $products->max('part_cost');
 
         // Сортировка по категориям
         $stock = $this->getStock($request->stock);
         $products = $stock != NULL ? $products->whereStock($stock) : $products;
+
+        // Минимальная максимальная цена пока берет совместно с пагинацией
+        $min = $products->min('part_cost');
+        $max = $products->max('part_cost');
 
         // Сортировка по цене
         $from = $this->getFrom($request->from, $min);
@@ -309,42 +315,42 @@ class ProductController extends Controller
      */
     public function getSearchProduct($search, Request $request)
     {
-        // Что то с этим сделать
-        // URL::defaults('search', function() {
-        //     return redirect('/rfnfkju');
-        // });
         // Сортировка по названию, по цене
         $sorting = $this->getSort($request->sort);
+
 
         $products = Product::where('part_model', 'LIKE', '%' . $search . "%");
         $products = $products->selectAllInfo();
         $products = $products->selectAllTable();
         $products = $products->getImgMain();
         $products = $products->orderBy($sorting['column'], $sorting['sort']);
-
+        
         // Получаем бренды для найденных товаров
-        $companies = $products->groupBy('company')->get();
+        $company = $part->groupBy('company')->get();
+
+        return $products->get();
 
 
         if ($products->first() === NULL) {
             return abort('404');
         }
-        
+
         // Сортировка по компаниям
         $brands = $this->getBrands($request->brands);
         $products = $brands != NUll ? $products->whereBrands($brands) : $products;
 
         
-        // Минимальная максимальная цена пока берет совместно с пагинацией
-        $min = $products->min('part_cost');
-        $max = $products->max('part_cost');
+        
 
         // Сортировка по категориям
         $stock = $this->getStock($request->stock);
         $products = $stock != NULL ? $products->whereStock($stock) : $products;
 
+        // Минимальная максимальная цена пока берет совместно с пагинацией
+        $min = $products->min('part_cost');
+        $max = $products->max('part_cost');
+
         // Сортировка по цене
-        
         $from = $this->getFrom($request->from, $min);
         $to = $this->getTo($request->to, $max);
         $products = $products->wherePriceMore($from);
