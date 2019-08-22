@@ -52,15 +52,21 @@ trait NavigationController
         $companies = Product::selectRaw('count(company_id) AS cnt, company')
             ->groupBy('company_id')
             ->orderBy('cnt', 'DESC')
-            ->leftJoin('companies', 'products.company_id', '=', 'companies.id')
-            ->where(function ($query) use ($category) {
+            ->leftJoin('companies', 'products.company_id', '=', 'companies.id');
+
+        if (is_string($category)) {
+            $companies = $companies->where('part_model', 'LIKE', '%' . $category . "%");
+        } else {
+            $companies = $companies->where(function ($query) use ($category) {
                 if ($category == NULL) {
                     $query->where('products.parttype_id', '!=', $category);
                 } else {
                     $query->whereIn('products.parttype_id', $category);
                 }
-            })
-            ->get();
+            });
+        } 
+
+        $companies = $companies->get();
 
 
 

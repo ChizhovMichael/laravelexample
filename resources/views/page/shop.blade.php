@@ -116,7 +116,7 @@
                         Цена
                         <img class="ml-em-1" src="{{ asset('img/icon/chevron-arrow-down.svg') }}" alt="arrow">
                     </label>
-                    <ul class="m-0 pr-em-2 pl-em-2">
+                    <ul class="m-0 pr-em-2 pl-em-2 @if($from == $to) rel disable @endif">
                         <li class="mt-1 mb-1">
                             <div class="price">
                                 <span id="from">{{ $from }} &#x20bd;</span>
@@ -156,14 +156,14 @@
         </div>
         @endif
         <div class="col-9 sd-12 @if($agent->isDesktop()) pl-5 @endif">
-            <div class="">
+            <div class="@if($search != NULL) flex-center-between @endif">
                 @if($search != NULL)
-                <div class="col-6">
-                    <h5 class="m-0 col-12">Поиск: {{ $search }}</h5>
+                <div class="col-5">
+                    <p class="m-0 col-12 ct pr-em-2 pl-em-2 pt-em-1 pb-em-1 back-back shadow-xs b4">Поиск: <span class="cm">{{ $search }}</span></p>
                 </div>
                 @endif
             
-                <div class="container__sorting col-12 pt-em-1 pb-em-1 pl-5 bb-light">
+                <div class="container__sorting @if($search != NULL) col-6 @else col-12 @endif pt-em-1 pb-em-1 pl-5 bb-light">
 
                     @if ($agent->isMobile())
                     <a href="#" class="trigger b5 flex-center-center hover pt-4 pb-4" onclick="

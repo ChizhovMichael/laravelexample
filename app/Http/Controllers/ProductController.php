@@ -323,12 +323,7 @@ class ProductController extends Controller
         $products = $products->selectAllInfo();
         $products = $products->selectAllTable();
         $products = $products->getImgMain();
-        $products = $products->orderBy($sorting['column'], $sorting['sort']);
-        
-        // Получаем бренды для найденных товаров
-        $company = $part->groupBy('company')->get();
-
-        return $products->get();
+        $products = $products->orderBy($sorting['column'], $sorting['sort']);       
 
 
         if ($products->first() === NULL) {
@@ -371,7 +366,7 @@ class ProductController extends Controller
                 'to'        => $to,
             ]),
             'navigations'   => $this->navigation(),
-            'brand'         => $companies,
+            'brand'         => $this->getAllBrand($search),
             'sort'          => $request->sort,
             'value'         => $sorting['value'],
             'sorting'       => $sorting['sorting'],

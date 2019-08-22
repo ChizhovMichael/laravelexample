@@ -7062,7 +7062,8 @@ function searchArticle() {
   var tableBody = document.getElementById('tbody');
   var category = search.parentNode,
       wrapp = category.nextElementSibling,
-      container = wrapp.querySelector('span');
+      container = wrapp.querySelector('span'); // Блокируем отправку input через enter
+
   search.addEventListener('keydown', function (event) {
     if (event.keyCode == 13) {
       event.preventDefault();
