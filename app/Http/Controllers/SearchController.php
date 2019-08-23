@@ -88,7 +88,7 @@ class SearchController extends Controller
                     $output .= '<div class="articles back-body bb-light sd-12 col-12 bb pt-em-1 pb-em-1 pr-em-2 pl-em-2">' .
                         '<div class="title flex-center-between">'.
                         '<a class="hover-main sd-8 col-8 m-0 ct" href="/продукт/' . $part->part_link . '">' . $part->parttype_type . ' ' . $part->part_model . '</a>' .
-                        '<p class="sd-4 col-4 text-right cm-bold">' . $part->part_cost . '</p>' .
+                        '<p class="sd-4 col-4 text-right cm-bold m-0">' . $part->part_cost . '</p>' .
                         '</div>' .
                         '<div class="sd-12 col-12">' .
                         '<p class="cc mt-0 mb-0">' . $part->company . ' ' . $part->tv_model . '</p>' .
