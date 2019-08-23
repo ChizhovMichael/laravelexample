@@ -48,7 +48,7 @@
                 <div class="result__wrapp">
                     <div class="container">
                         <div class="noscroll">
-                            <div class="article" id="tbody">
+                            <div class="article pb-em-3em" id="tbody">
 
                             </div>
                         </div>

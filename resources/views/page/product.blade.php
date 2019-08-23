@@ -66,7 +66,7 @@
             <p class="cc">Доставка в любой регион почтой России или транспортной компанией.</p>
 
             @if($part_types->part_status == 0)
-                <span class="found">В наличии</span>
+                <span class="found">В наличии {{ $part_types->part_count }} шт</span>
             @else
                 <span class="found not">Нет в наличии</span>
             @endif
@@ -76,7 +76,7 @@
                     <div>
 
                         <!-- Product Quantity -->
-                        @if($part_types->part_status == 0)
+                        @if($part_types->part_status == 0 && $part_types->part_count > 1)
                         <div class="product_quantity">
                             <span>Количество: </span>
                             <input name="qty" id="quantity_input" type="text" pattern="[0-9]*" value="1">
