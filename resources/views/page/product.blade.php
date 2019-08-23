@@ -64,12 +64,19 @@
             @endif
             <p class="cc">{{ $part_types->parttype_type }} {{ $part_types->part_model }} снят(-а) с телевизора {{ $part_types->company }} {{ $part_types->tv_model }} с разбитой матрицей {{ $part_types->matrix->matrix_model }}.</p>
             <p class="cc">Доставка в любой регион почтой России или транспортной компанией.</p>
-            <span class="found {{ $additionalClass }}">{{ $isStock }}</span>
+
+            @if($part_types->part_status == 0)
+                <span class="found">В наличии</span>
+            @else
+                <span class="found not">Нет в наличии</span>
+            @endif
+
             <div>
                 <form action="{!! $action !!}" method="POST">
                     <div>
 
                         <!-- Product Quantity -->
+                        @if($part_types->part_status == 0)
                         <div class="product_quantity">
                             <span>Количество: </span>
                             <input name="qty" id="quantity_input" type="text" pattern="[0-9]*" value="1">
@@ -82,11 +89,49 @@
                                 </div>
                             </div>
                         </div>
+                        @endif
 
                     </div>
-
-                    <h5>{{ $part_types->part_cost }}&nbsp;&#x20bd;</h5>
+                    @if($partsAdditional->count() > 0)
+                        <p class="mt-em-2 mb-em-2">Такие же, но с других телевизоров</p>
+                    @endif
                     <div>
+                        <ul>
+                            @foreach($partsAdditional as $item)
+                            @if ($item->part_status == 0)
+                                <li class="mt-em-1 mb-em-1 pr-em-2 pl-em-2 pt-em-1 pb-em-1 bc-light shadow-xs b3">
+                                    <div class="form-check">
+                                        
+                                        <input class="form-check-input" data-form="brands-check" type="checkbox" id="{{ $item->id }}">
+                                        <span class="form-check-span"></span>
+                                        
+                                        <label class="form-check-label col-8" for="{{ $item->id }}">
+                                            {{ $item->parttype_type }} {{ $item->part_model }}
+                                        </label>
+                                        
+                                        <img class="col-1" src="{{ asset('img/icon/cart_yes.png') }}" alt="В наличие">
+                                        <!-- <img class="col-1" src="{{ asset('img/icon/cart_not.png') }}" alt="Нет в налиии"> -->
+                                    
+                                    </div>
+                                </li>
+                            @endif
+                            @endforeach
+                        </ul>
+                    </div>
+
+                    <h5 class="mb-5">{{ $part_types->part_cost }}&nbsp;&#x20bd;</h5>
+                    @if($part_types->part_status == 0)
+                        <a href="#" class="cm hover">Нашли дешевле? Снизим цену!</a>
+                    @else
+                    <div class="bb bt m-1 pt-em-1 pb-em-1 flex-start">
+                        <div class="warning mr-em-2"></div>
+                        <div class="col-8">
+                            <p class="m-0 cc">Данный товар временно отсутствует в продаже, но вы можете приобрести идентичный ему</p>
+                        </div>
+                    </div>
+
+                    @endif
+                    <div class="mt-em-2">
                         <!-- <input type="hidden" name="id" value="{{ $part_types->id }}">
                         <input type="hidden" name="type" value="{{ $part_types->parttype_type }}">
                         <input type="hidden" name="company" value="{{ $part_types->company_id }}">
@@ -99,10 +144,11 @@
                         <input type="hidden" name="name" value="{{ $part_types->part_model }}">
                         <input type="hidden" name="price" value="{{ $part_types->part_cost }}"> -->
 
-
-                        <button class="back-main col-6 sd-6 b5 pt-1 pb-1 b-main shadow c-p">
-                            {!! $buttonName !!}
-                        </button>
+                        @if($part_types->part_status == 0)
+                            <button class="back-main col-6 sd-6 b5 pt-1 pb-1 b-main shadow c-p">
+                                <img class="col-2 sd-2" src="{{ asset('img/icon/shopping-bag.svg') }}" alt="Запчасти для телевизоров, название товара + артикул">
+                            </button>
+                        @endif
                         
                     </div>
 

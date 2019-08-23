@@ -4105,6 +4105,21 @@ input[type=range]::-webkit-slider-thumb:active {
   color: #be2626;
 }
 
+.warning {
+  width: 20px;
+  height: 20px;
+  background: #be2626;
+  border-radius: 50%;
+  text-align: center;
+}
+
+.warning::after {
+  content: "i";
+  font-size: 15px;
+  color: #fafafa;
+  font-weight: 700;
+}
+
 /* Fallback for Edge
 -------------------------------------------------- */
 

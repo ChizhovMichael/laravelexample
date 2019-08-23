@@ -108,7 +108,9 @@
 
 
                     </ul>
+                    @if($brand->count() > 0)
                     <a href="#" class="toggle--content button__trigger"></a>
+                    @endif
                 </div>
                 <div class="sorting__item mt-em-2 mb-em-2 b8 shadow-xs hide">
                     <input type="checkbox" id="price" checked />

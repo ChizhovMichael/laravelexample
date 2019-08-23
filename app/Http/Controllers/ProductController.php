@@ -258,26 +258,27 @@ class ProductController extends Controller
         $products = $products->first();
 
 
+        $productsAdditional = Product::where('part_link', '=', $slug);
+        $productsAdditional = $productsAdditional->selectAllInfoWithoutMainImg();
+        $productsAdditional = $productsAdditional->selectAllTable();
+        $productsAdditional = $productsAdditional->with('matrix');
+        $productsAdditional = $productsAdditional->get();
+        $productsAdditional = $productsAdditional->slice(1);
+
+
+
         if ($products->part_status == 0) {
-            $additionalClass = '';
-            $isStock = 'В наличии';
             $action = route('product.add');
-            $buttonName = '<img class="col-2 sd-2" src="'.asset('img/icon/shopping-bag.svg').'" alt="Запчасти для телевизоров, название товара + артикул">';
         } else {
-            $additionalClass = 'not';
-            $isStock = 'Нет в наличии';
-            $action = 'Заказать';
-            $buttonName = '<p class="cb mt-2 mb-2">Заказать</p>';
+            $action = '#';
         }
 
         return view('page/product', [
             'part_types'    => $products,
+            'partsAdditional' => $productsAdditional,
             'navigations'   => $this->navigation(),
             'cart'          =>  $this->getCartCount(),
-            'additionalClass' => $additionalClass,
-            'isStock' => $isStock,
             'action' => $action,
-            'buttonName' => $buttonName,
         ]);
     }
 
@@ -323,7 +324,7 @@ class ProductController extends Controller
         $products = $products->selectAllInfo();
         $products = $products->selectAllTable();
         $products = $products->getImgMain();
-        $products = $products->orderBy($sorting['column'], $sorting['sort']);       
+        $products = $products->orderBy($sorting['column'], $sorting['sort']);
 
 
         if ($products->first() === NULL) {
