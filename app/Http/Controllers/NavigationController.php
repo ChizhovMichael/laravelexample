@@ -47,8 +47,6 @@ trait NavigationController
      */
     public function getAllBrand($category)
     {
-
-
         $companies = Product::selectRaw('count(company_id) AS cnt, company')
             ->groupBy('company_id')
             ->orderBy('cnt', 'DESC')
@@ -67,8 +65,6 @@ trait NavigationController
         } 
 
         $companies = $companies->get();
-
-
 
         return $companies;
     }
