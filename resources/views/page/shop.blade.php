@@ -53,7 +53,7 @@
                     <ul class="m-0 pr-em-2 pl-em-2">
                         @foreach($navigations as $item)
                         <li class="mt-1 mb-1">
-                            <a class="block hover @if (Request::is('каталог/'.$item->slug )) active @endif" href="{{ route('category.show', ['part_types_id' => $item->slug ]) }}">{{ $item->name }}</a>
+                            <a class="block hover @if (Request::is('catalog/'.$item->slug )) active @endif" href="{{ route('category.show', ['part_types_id' => $item->slug ]) }}">{{ $item->name }}</a>
                         </li>
                         @endforeach
                     </ul>
@@ -151,7 +151,7 @@
                     </ul>
                 </div>
                 <div class="sorting__item mt-em-2 mb-em-2 b8 shadow-xs hide">
-                    <a href="{!! urldecode(\Request::url()) !!}" class="button__trigger">Очистить фильтры</a>
+                    <a href="{!! \Request::url() !!}" class="button__trigger">Очистить фильтры</a>
                 </div>
             </div>
             @if ($agent->isMobile())
@@ -207,10 +207,10 @@
                             </div>
                             <div class="product_name">
                                 <p class="block pr-em-1 pl-em-1">{{ $part->company }} {{ $part->tv_model }}</p>
-                                <a href="{{ urldecode(route('product.show', ['slug' => $part->part_link ])) }}" class="hover-main block pr-em-1 pl-em-1">{{ ltrim($part->part_model) }}</a>
+                                <a href="{{ route('product.show', ['slug' => $part->part_link ]) }}" class="hover-main block pr-em-1 pl-em-1">{{ ltrim($part->part_model) }}</a>
                             </div>
                             <div class="product_extras col-12 back-body hide">
-                                <a class="cart-link flex-center-center rel top-left col-12 back-main mt-em-1 bbl5 bbr5" href="{{ urldecode(route('addproduct', [ 'id' => $part->id, 'type' => $part->parttype_type, 'company' => $part->company_id, 'tv' => $part->tv_id, 'img' => $part->part_img_name , 'name' => $part->part_model, 'qty' => 1,  'price' => $part->part_cost ])) }}">
+                                <a class="cart-link flex-center-center rel top-left col-12 back-main mt-em-1 bbl5 bbr5" href="{{ route('addproduct', [ 'id' => $part->id, 'type' => $part->parttype_type, 'company' => $part->company_id, 'tv' => $part->tv_id, 'img' => $part->part_img_name , 'name' => $part->part_model, 'qty' => 1,  'price' => $part->part_cost ]) }}">
                                     <img src="{{ asset('img/icon/shopping-bag.svg') }}" alt="Купить">
                                 </a>
                             </div>
@@ -224,9 +224,9 @@
                 @endforeach
             </div>
             @if ($agent->isDesktop())
-            {!! urldecode($part_types->links()) !!}
+            {!! $part_types->links() !!}
             @else
-            {!! urldecode($part_types->onEachSide(1)->links()) !!}
+            {!! $part_types->onEachSide(1)->links() !!}
             @endif
         </div>
     </div>

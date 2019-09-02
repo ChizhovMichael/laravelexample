@@ -141,13 +141,13 @@
 				<ul class="abs top-max-left shadow col-12 back-back bbl5 bbr5 mt-0 dropdown__list__ul @if(Request::is('/') || Request::is('запчасти_для_телевизоров') && $agent->isDesktop()) active @endif">
 					@foreach($navigations as $item)
 					<li class="flex-center-between rel bt-light">
-						<a class="hover-main pr-em-1 pl-em-1 block sd-9 col-10" href="{{ urldecode(route('category.show', ['part_types_id' => $item->slug ])) }}">{{ $item->name }}</a>
+						<a class="hover-main pr-em-1 pl-em-1 block sd-9 col-10" href="{{ route('category.show', ['part_types_id' => $item->slug ]) }}">{{ $item->name }}</a>
 						@if($item->navigation_items->count() > 1)
 						<img class="m-em-1" src="{{ asset('img/icon/chevron-arrow-left.svg') }}" alt="Запчасти для телевизоров, продать телевизор +на запчасти, телевизор скупка, телезапчасти">
 						<ul class="dropdown__list__ul additional abs @if ($agent->isDesktop()) top-left-max @else top-left-middle @endif shadow col-12 back-back bbl5 bbr5">
 							@foreach($item->navigation_items as $add)
 							<li class="flex-center-between rel bt-light">
-								<a class="hover-main pr-em-1 pl-em-1 block" href="{{ urldecode(route('category.show', ['part_types_id' => $add->additional_slug ])) }}">{{ $add->additional_name }}</a>
+								<a class="hover-main pr-em-1 pl-em-1 block" href="{{ route('category.show', ['part_types_id' => $add->additional_slug ]) }}">{{ $add->additional_name }}</a>
 							</li>
 							@endforeach
 						</ul>
@@ -163,10 +163,10 @@
 		<!-- Дополнительное меню -->
 
 		<div class="menu flex-center-between pt-0 pb-0 pl-10 pr-5">
-			<div class="menu__item"><a href="{{ urldecode(route('about')) }}" class="hover">О нас</a></div>
-			<div class="menu__item"><a href="{{ urldecode(route('catalog')) }}" class="hover">Каталог</a></div>
-			<div class="menu__item"><a href="{{ urldecode(route('delivery')) }}" class="hover">Доставка</a></div>
-			<div class="menu__item"><a href="{{ urldecode(route('contacts')) }}" class="hover">Контакты</a></div>
+			<div class="menu__item"><a href="{{ route('about') }}" class="hover">О нас</a></div>
+			<div class="menu__item"><a href="{{ route('catalog') }}" class="hover">Каталог</a></div>
+			<div class="menu__item"><a href="{{ route('delivery') }}" class="hover">Доставка</a></div>
+			<div class="menu__item"><a href="{{ route('contacts') }}" class="hover">Контакты</a></div>
 		</div>
 
 		@endif
@@ -182,7 +182,7 @@
 
 <div class="footer-bar fix bottom-left sd-12 flex-center-between back-body pr-5 pl-5">
 	
-		<a href="{{ urldecode(route('search.mobile')) }}" class="p-em-1 @if(Request::is('find')) active @endif" >
+		<a href="{{ route('search.mobile') }}" class="p-em-1 @if(Request::is('find')) active @endif" >
 			<svg x="0px" y="0px" width="20" viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;">
 				<path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23
 	s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92
@@ -190,7 +190,7 @@
 	s-17-7.626-17-17S14.61,6,23.984,6z" /></svg>
 		</a>
 	
-		<a href="{{ urldecode(route('catalog')) }}"  class="p-em-1 @if(Request::is('каталог') || Request::is('каталог/*') || Request::is('корзина') || Request::is('продукт/*')) active @endif">
+		<a href="{{ route('catalog') }}"  class="p-em-1 @if(Request::is('catalog') || Request::is('catalog/*') || Request::is('cart') || Request::is('product/*')) active @endif">
 			<svg viewBox="0 0 489 489" width="20" style="enable-background:new 0 0 489 489;" xml:space="preserve">
 				<path d="M440.1,422.7l-28-315.3c-0.6-7-6.5-12.3-13.4-12.3h-57.6C340.3,42.5,297.3,0,244.5,0s-95.8,42.5-96.6,95.1H90.3
 		c-7,0-12.8,5.3-13.4,12.3l-28,315.3c0,0.4-0.1,0.8-0.1,1.2c0,35.9,32.9,65.1,73.4,65.1h244.6c40.5,0,73.4-29.2,73.4-65.1
@@ -199,7 +199,7 @@
 		c0,7.5,6,13.5,13.5,13.5s13.5-6,13.5-13.5v-41h45.2l26.9,302.3C412.8,445.2,392.1,462,366.8,462z" /></svg>
 		</a>
 	
-		<a href="{{ urldecode(route('main')) }}" class="p-em-1 @if (Request::is('/') || Request::is('/запчасти_для_телевизоров')) active @endif">
+		<a href="{{ route('main') }}" class="p-em-1 @if (Request::is('/') || Request::is('/запчасти_для_телевизоров')) active @endif">
 			<svg viewBox="0 0 495.398 495.398" width="20" style="enable-background:new 0 0 495.398 495.398;" xml:space="preserve">
 				<path d="M487.083,225.514l-75.08-75.08V63.704c0-15.682-12.708-28.391-28.413-28.391c-15.669,0-28.377,12.709-28.377,28.391
 				v29.941L299.31,37.74c-27.639-27.624-75.694-27.575-103.27,0.05L8.312,225.514c-11.082,11.104-11.082,29.071,0,40.158
@@ -234,7 +234,7 @@
 			</svg>
 		</a>
 	
-		<a href="{{ urldecode(route('contacts')) }}" class="p-em-1 @if (Request::is('контакты')) active @endif">
+		<a href="{{ route('contacts') }}" class="p-em-1 @if (Request::is('contacts')) active @endif">
 			<svg viewBox="0 0 437.6 437.6" width="20" style="enable-background:new 0 0 437.6 437.6;" xml:space="preserve">
 				<path d="M194,142.8c0.8,1.6,1.6,3.2,2.4,4.4c0.8,1.2,2,2.4,2.8,3.6c1.2,1.2,2.4,2.4,4,3.6c1.2,0.8,2.8,2,4.8,2.4
 				c1.6,0.8,3.2,1.2,5.2,1.6c2,0.4,3.6,0.4,5.2,0.4c1.6,0,3.6,0,5.2-0.4c1.6-0.4,3.2-0.8,4.4-1.6h0.4c1.6-0.8,3.2-1.6,4.8-2.8

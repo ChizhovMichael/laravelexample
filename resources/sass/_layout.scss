@@ -855,10 +855,11 @@ input[type=range]::-webkit-slider-thumb:active {
 }
 
 .found {
-	font-size: 1.5em;
+	font-size: 2em;
 	color: #1e7145;
 	margin: 1em 0;
 	display: block;
+	font-weight: 700;
 	&.not {
 		color: #be2626;
 	}

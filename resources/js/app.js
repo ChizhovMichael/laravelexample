@@ -9,6 +9,7 @@
 
 import OverlayScrollbars from 'overlayscrollbars';
 import device from 'current-device';
+import popupS from 'popups';
 
 
 /**
@@ -41,6 +42,8 @@ document.addEventListener("DOMContentLoaded", function () {
     addCart();
 
     navigationScroll();
+
+    popup('popup');
 
 });
 
@@ -509,5 +512,30 @@ function navigationScroll() {
 }
 
 
+function popup(el) {
+
+    document.addEventListener('click', function (event) {
+
+        event = event || window.event;
+        var target = event.target || event.srcElement;
+
+        while (target != this) {
+            if (target.classList.contains(el)) break;
+            target = target.parentNode;
+        }
+
+        if (target == this) return;
+
+        popupS.modal({
+            title:   'Himalaya',
+            content: {
+                tag: 'img#himalaya.picture',
+                src: 'http://static.hdw.eweb4.com/media/wallpapers_1920x1080/nature/1/1/himalaya-nature-hd-wallpaper-1920x1080-6944.jpg'
+            }
+        });
+
+
+    }, true)
+}
 
 

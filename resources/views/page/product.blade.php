@@ -100,7 +100,7 @@
                             @foreach($partsAdditional as $item)
                             @if ($item->part_status == 0)
                                 <li class="mt-em-1 mb-em-1 pr-em-2 pl-em-2 pt-em-1 pb-em-1 bc-light shadow-xs b3">
-                                    <div class="form-check">
+                                    <div class="form-check ">
                                         
                                         <input class="form-check-input" data-form="brands-check" type="checkbox" id="{{ $item->id }}">
                                         <span class="form-check-span"></span>
@@ -109,7 +109,7 @@
                                             {{ $item->parttype_type }} {{ $item->part_model }}
                                         </label>
                                         
-                                        <img class="col-1" src="{{ asset('img/icon/cart_yes.png') }}" alt="В наличие">
+                                        <img class="col-1" style="margin-left: auto;" src="{{ asset('img/icon/cart_yes.png') }}" alt="В наличие">
                                         <!-- <img class="col-1" src="{{ asset('img/icon/cart_not.png') }}" alt="Нет в налиии"> -->
                                     
                                     </div>
@@ -121,7 +121,7 @@
 
                     <h5 class="mb-5">{{ $part_types->part_cost }}&nbsp;&#x20bd;</h5>
                     @if($part_types->part_status == 0)
-                        <a href="#" class="cm hover">Нашли дешевле? Снизим цену!</a>
+                        <a href="#" class="cm hover popup">Нашли дешевле? Снизим цену!</a>
                     @else
                     <div class="bb bt m-1 pt-em-1 pb-em-1 flex-start">
                         <div class="warning mr-em-2"></div>

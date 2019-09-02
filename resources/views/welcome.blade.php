@@ -66,10 +66,10 @@
                                 </div>
                                 <div class="product_name">
                                     <p class="block pr-em-1 pl-em-1">{{ $part->company }} {{ $part->tv_model }}</p>
-                                    <a href="{{ urldecode(route('product.show', ['slug' => $part->part_link ])) }}" class="hover-main block pr-em-1 pl-em-1">{{ $part->part_model }}</a>
+                                    <a href="{{ route('product.show', ['slug' => $part->part_link ]) }}" class="hover-main block pr-em-1 pl-em-1">{{ $part->part_model }}</a>
                                 </div>
                                 <div class="product_extras col-12 back-body hide">
-                                    <a class="cart-link flex-center-center rel top-left col-12 back-main mt-em-1 bbl5 bbr5" href="{{ urldecode(route('addproduct', [ 'id' => $part->id, 'type' => $part->parttype_type, 'company' => $part->company_id, 'tv' => $part->tv_id, 'img' => $part->part_img_name , 'name' => $part->part_model, 'qty' => 1,  'price' => $part->part_cost ])) }}">
+                                    <a class="cart-link flex-center-center rel top-left col-12 back-main mt-em-1 bbl5 bbr5" href="{{ route('addproduct', [ 'id' => $part->id, 'type' => $part->parttype_type, 'company' => $part->company_id, 'tv' => $part->tv_id, 'img' => $part->part_img_name , 'name' => $part->part_model, 'qty' => 1,  'price' => $part->part_cost ]) }}">
                                         <img src="{{ asset('img/icon/shopping-bag.svg') }}" alt="Купить">
                                     </a>
                                 </div>
@@ -102,10 +102,10 @@
                                 </div>
                                 <div class="product_name">
                                     <p class="block pr-em-1 pl-em-1">{{ $part->company }} {{ $part->tv_model }}</p>
-                                    <a href="{{ urldecode(route('product.show', ['slug' => $part->part_link ])) }}" class="hover-main block pr-em-1 pl-em-1">{{ $part->part_model }}</a>
+                                    <a href="{{ route('product.show', ['slug' => $part->part_link ]) }}" class="hover-main block pr-em-1 pl-em-1">{{ $part->part_model }}</a>
                                 </div>
                                 <div class="product_extras col-12 back-body hide">
-                                    <a class="cart-link flex-center-center rel top-left col-12 back-main mt-em-1 bbl5 bbr5" href="{{ urldecode(route('addproduct', [ 'id' => $part->id, 'type' => $part->parttype_type, 'company' => $part->company_id, 'tv' => $part->tv_id, 'img' => $part->part_img_name , 'name' => $part->part_model, 'qty' => 1,  'price' => $part->part_cost ])) }}">
+                                    <a class="cart-link flex-center-center rel top-left col-12 back-main mt-em-1 bbl5 bbr5" href="{{ route('addproduct', [ 'id' => $part->id, 'type' => $part->parttype_type, 'company' => $part->company_id, 'tv' => $part->tv_id, 'img' => $part->part_img_name , 'name' => $part->part_model, 'qty' => 1,  'price' => $part->part_cost ]) }}">
                                         <img src="{{ asset('img/icon/shopping-bag.svg') }}" alt="Купить">
                                     </a>
                                 </div>
@@ -136,10 +136,10 @@
                                 </div>
                                 <div class="product_name">
                                     <p class="block pr-em-1 pl-em-1">{{ $part->company }} {{ $part->tv_model }}</p>
-                                    <a href="{{ urldecode(route('product.show', ['slug' => $part->part_link ])) }}" class="hover-main block pr-em-1 pl-em-1">{{ $part->part_model }}</a>
+                                    <a href="{{ route('product.show', ['slug' => $part->part_link ]) }}" class="hover-main block pr-em-1 pl-em-1">{{ $part->part_model }}</a>
                                 </div>
                                 <div class="product_extras col-12 back-body hide">
-                                    <a class="cart-link flex-center-center rel top-left col-12 back-main mt-em-1 bbl5 bbr5" href="{{ urldecode(route('addproduct', [ 'id' => $part->id, 'type' => $part->parttype_type, 'company' => $part->company_id, 'tv' => $part->tv_id, 'img' => $part->part_img_name , 'name' => $part->part_model, 'qty' => 1,  'price' => $part->part_cost ])) }}">
+                                    <a class="cart-link flex-center-center rel top-left col-12 back-main mt-em-1 bbl5 bbr5" href="{{ route('addproduct', [ 'id' => $part->id, 'type' => $part->parttype_type, 'company' => $part->company_id, 'tv' => $part->tv_id, 'img' => $part->part_img_name , 'name' => $part->part_model, 'qty' => 1,  'price' => $part->part_cost ]) }}">
                                         <img src="{{ asset('img/icon/shopping-bag.svg') }}" alt="Купить">
                                     </a>
                                 </div>
@@ -168,7 +168,7 @@
                 </div>
                 <div class="np__content col-7 sd-7 pr-em-1 pl-em-1 flex-start">
                     <p class="block pr-em-2 pl-em-2">{{ $part->company }} {{ $part->tv_model }}</p>
-                    <a class="block hover-main pr-em-2 pl-em-2" href="{{ urldecode(route('product.show', ['slug' => $part->part_link ])) }}">{{ $part->part_model }}</a>
+                    <a class="block hover-main pr-em-2 pl-em-2" href="{{ route('product.show', ['slug' => $part->part_link ]) }}">{{ $part->part_model }}</a>
                     <h6 class="ct mt-em-1 mb-em-1 pr-em-2 pl-em-2">
                         {{ $part->part_cost }}&nbsp;&#x20bd;
                         <span class="cc ml-em-1">{{ $part->price }}&nbsp;&#x20bd;</span>
@@ -194,7 +194,7 @@
                 </div>
                 <div class="np__content col-7 sd-7 pr-em-1 pl-em-1 flex-start">
                     <p class="block pr-em-2 pl-em-2">{{ $part->company }} {{ $part->tv_model }}</p>
-                    <a class="block hover-main pr-em-2 pl-em-2" href="{{ urldecode(route('product.show', ['slug' => $part->part_link ])) }}">{{ $part->part_model }}</a>
+                    <a class="block hover-main pr-em-2 pl-em-2" href="{{ route('product.show', ['slug' => $part->part_link ]) }}">{{ $part->part_model }}</a>
                     <h6 class="ct mt-em-1 mb-em-1 pr-em-2 pl-em-2">
                         {{ $part->part_cost }}&nbsp;&#x20bd;
                         <span class="cc ml-em-1">{{ $part->price }}&nbsp;&#x20bd;</span>

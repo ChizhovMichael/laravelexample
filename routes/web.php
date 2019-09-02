@@ -23,22 +23,22 @@ Auth::routes();
  * Page Routes
  */
 
-Route::get('/о_нас', 'AboutController@index')->name('about');
+Route::get('/about', 'AboutController@index')->name('about');
 
-Route::get('/каталог', 'ProductController@getAllProduct')->name('catalog');
+Route::get('/catalog', 'ProductController@getAllProduct')->name('catalog');
 
-Route::get('/каталог/{part_types_id}', 'ProductController@getFullCategory')->name('category.show');
+Route::get('/catalog/{part_types_id}', 'ProductController@getFullCategory')->name('category.show');
 
 Route::post('/add/{id}/{type}/{company}/{tv}/{img}/{name}/{qty}/{price}', 'ProductController@addProductToCart')->name('addproduct');
 
-Route::get('/контакты', 'ContactController@getPage')->name('contacts');
+Route::get('/contacts', 'ContactController@getPage')->name('contacts');
 
-Route::get('/продукт/{slug}', 'ProductController@getItemProduct')->name('product.show');
+Route::get('/product/{slug}', 'ProductController@getItemProduct')->name('product.show');
 Route::post('/addproduct', 'ProductController@addToCartItemProduct')->name('product.add');
 
-Route::get('/корзина', 'CartController@getPage')->name('cart');
+Route::get('/cart', 'CartController@getPage')->name('cart');
 
-Route::get('/доставка', function () {
+Route::get('/delivery', function () {
     return view('page/delivery');
 })->name('delivery');
 
