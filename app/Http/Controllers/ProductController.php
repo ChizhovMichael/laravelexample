@@ -248,8 +248,32 @@ class ProductController extends Controller
      ***************/
     public function getItemProduct($slug)
     {
+        $slugMain = explode('_', $slug);
+        $slugMain = $slugMain[0];
 
+        // 1. Получаем продукт по его слугу
         $products = Product::where('part_link', '=', $slug);
+
+        // 2. Если данного продукта нет в наличии, то отображаем первый
+        // из массива slugMain с таким же названием
+        if ($products->first()->part_status != 0) {
+
+            $productsExternal = Product::where('part_link', 'LIKE', '%' . $slugMain . '%');
+            $productsExternal = $productsExternal->where('part_link', '!=', $slug);
+            $productsExternal = $productsExternal->where('part_model', 'LIKE', '%' . $products->first()->part_model . '%');
+
+            if ($productsExternal->doesntExist()) {
+
+                // 3. Если такого продукта не существует
+                // то идем ко всем продуктам
+                $productsExternal = Product::where('part_link', 'LIKE', '%' . $slugMain . '%');
+            }
+            
+        }
+
+        $products = $productsExternal;
+
+        $products = $products->where('part_status', '=', '0');
         $products = $products->selectAllInfoWithoutMainImg();
         $products = $products->selectAllTable();
         $products = $products->with('part_img');
@@ -257,13 +281,19 @@ class ProductController extends Controller
         $products = $products->with('matrix');
         $products = $products->first();
 
+        
+        
 
-        $productsAdditional = Product::where('part_link', '=', $slug);
+
+        $productsAdditional = Product::where('part_link', 'LIKE', '%' . $slugMain . '%');
         $productsAdditional = $productsAdditional->selectAllInfoWithoutMainImg();
         $productsAdditional = $productsAdditional->selectAllTable();
         $productsAdditional = $productsAdditional->with('matrix');
+        // вставить главное изображение
         $productsAdditional = $productsAdditional->get();
         $productsAdditional = $productsAdditional->slice(1);
+
+        
 
 
 

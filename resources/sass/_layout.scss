@@ -546,7 +546,11 @@ input[type=range]::-webkit-slider-thumb:active {
         @include transition(0.3s);
         cursor: pointer;
         background: none !important;
-        color: $color-content;
+		color: $color-content;
+		span {
+			font-size: 1em;
+			color: $color-add;
+		}
     }
 }
 

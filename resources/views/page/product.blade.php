@@ -106,11 +106,10 @@
                                         <span class="form-check-span"></span>
                                         
                                         <label class="form-check-label col-8" for="{{ $item->id }}">
-                                            {{ $item->parttype_type }} {{ $item->part_model }}
+                                            {{ $item->parttype_type }} {{ $item->part_model }} c телевизора <span>{{ $item->company }} {{ $item->tv_model }}</span>
                                         </label>
                                         
                                         <img class="col-1" style="margin-left: auto;" src="{{ asset('img/icon/cart_yes.png') }}" alt="В наличие">
-                                        <!-- <img class="col-1" src="{{ asset('img/icon/cart_not.png') }}" alt="Нет в налиии"> -->
                                     
                                     </div>
                                 </li>
@@ -166,23 +165,27 @@
             <h4 class="m-0">Похожие товары</h4>
         </div>
         <div class="flex-between">
-            <div class="card__item__np flex-center-between b8 p-em-2 back-body col-5 sd-12 rel discount">
+            @foreach($partsAdditional as $item)
+            @if ($item->part_status == 0)
+            <div class="card__item__np flex-center-between b8 p-em-2 back-body col-5 sd-12 rel {{ $item->stock }}">
                 <div class="np__image col-5 sd-5 flex-center-center">
-                    <img class="col-12 sd-12 b5" src="#" alt="#">
+                    <img class="col-12 sd-12 b5" src="/img/products/{{ $item->company_id }}/{{ $item->tv_id }}/m{{ $item->part_img_name }}" alt="Запчасти для телевизоров, {{ $item->parttype_type }} {{ $item->part_model }} c телевизора {{ $item->company }} {{ $item->tv_model }}">
                 </div>
                 <div class="np__content col-7 sd-7 pr-em-1 pl-em-1 flex-start">
-                    <p class="block pr-em-2 pl-em-2">Lorem ipsum</p>
-                    <a class="block hover-main pr-em-2 pl-em-2" href="#">Lorem ipsum</a>
+                    <p class="block pr-em-2 pl-em-2">{{ $item->company }} {{ $item->tv_model }}</p>
+                    <a class="block hover-main pr-em-2 pl-em-2" href="{{ route('product.show', ['slug' => $item->part_link ]) }}">{{ $item->part_model }}</a>
                     <h6 class="ct mt-em-1 mb-em-1 pr-em-2 pl-em-2">
-                        2200&nbsp;&#x20bd;
-                        <span class="cc ml-em-1">3200&nbsp;&#x20bd;</span>
+                        {{ $item->part_cost }}&nbsp;&#x20bd;
+                        <span class="cc ml-em-1">{{ $item->price }}&nbsp;&#x20bd;</span>
                     </h6>
                 </div>
                 <ul class="product_marks">
                     <li class="product_marks__item product_new">new</li>
-                    <li class="product_marks__item product_discount">-25%</li>
+                    <li class="product_marks__item product_discount">-{{ $item->percent }}%</li>
                 </ul>
             </div>
+            @endif
+            @endforeach
         </div>
     </div>
     <div class="slider-full">

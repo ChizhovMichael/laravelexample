@@ -49,7 +49,7 @@ Route::get('/delivery', function () {
  * Search Route
  */
 Route::get('/search','SearchController@search');
-Route::get('/каталог/поиск/{search}', 'ProductController@getSearchProduct')->name('search.product');
+Route::get('/catalog/search/{search}', 'ProductController@getSearchProduct')->name('search.product');
 
 /**
  * Search Route mobile link

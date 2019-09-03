@@ -3857,6 +3857,11 @@ input[type=range]::-webkit-slider-thumb:active {
   color: #a5a5a5;
 }
 
+.form-check .form-check-label span {
+  font-size: 1em;
+  color: #fe4e4e;
+}
+
 /***********
 // Product
 ***********/
