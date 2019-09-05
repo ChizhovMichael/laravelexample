@@ -268,10 +268,12 @@ class ProductController extends Controller
                 // то идем ко всем продуктам
                 $productsExternal = Product::where('part_link', 'LIKE', '%' . $slugMain . '%');
             }
+
+            $products = $productsExternal;
             
         }
 
-        $products = $productsExternal;
+        
 
         $products = $products->where('part_status', '=', '0');
         $products = $products->selectAllInfoWithoutMainImg();
@@ -281,19 +283,27 @@ class ProductController extends Controller
         $products = $products->with('matrix');
         $products = $products->first();
 
-        
-        
-
 
         $productsAdditional = Product::where('part_link', 'LIKE', '%' . $slugMain . '%');
         $productsAdditional = $productsAdditional->selectAllInfoWithoutMainImg();
         $productsAdditional = $productsAdditional->selectAllTable();
         $productsAdditional = $productsAdditional->with('matrix');
-        // вставить главное изображение
         $productsAdditional = $productsAdditional->get();
-        $productsAdditional = $productsAdditional->slice(1);
+        $productsAdditional = $productsAdditional->filter(function($item) use ($products) {
+            return $item->id != $products->id;
+        });
 
         
+
+        $productsSimilar = Product::where('part_link', 'LIKE', '%' . $slugMain . '%');
+        $productsSimilar = $productsSimilar->selectAllInfo();
+        $productsSimilar = $productsSimilar->selectAllTable();
+        $productsSimilar = $productsSimilar->getImgMain();
+        $productsSimilar = $productsSimilar->get();
+        $productsSimilar = $productsSimilar->filter(function($item) use ($products) {
+            return $item->id != $products->id;
+        });
+
 
 
 
@@ -306,6 +316,7 @@ class ProductController extends Controller
         return view('page/product', [
             'part_types'    => $products,
             'partsAdditional' => $productsAdditional,
+            'productsSimilar' => $productsSimilar,
             'navigations'   => $this->navigation(),
             'cart'          =>  $this->getCartCount(),
             'action' => $action,

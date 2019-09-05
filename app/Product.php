@@ -133,6 +133,7 @@ class Product extends Model
             'products.part_link',
             'products.part_count',
             'products.tv_id',
+            'products.part_status',
             'companies.company',
             'part_imgs.part_img_name',
             'part_types.parttype_type',

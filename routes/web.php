@@ -43,8 +43,6 @@ Route::get('/delivery', function () {
 })->name('delivery');
 
 
-
-
 /**
  * Search Route
  */
@@ -55,6 +53,13 @@ Route::get('/catalog/search/{search}', 'ProductController@getSearchProduct')->na
  * Search Route mobile link
  */
 Route::get('/find','SearchController@getMobilePage')->name('search.mobile');
+
+/**
+ * Sale Form 
+ */
+Route::post('/saleform', function() {
+    return view('includes/saleform');
+});
 
 
 

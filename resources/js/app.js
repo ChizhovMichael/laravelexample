@@ -9,7 +9,7 @@
 
 import OverlayScrollbars from 'overlayscrollbars';
 import device from 'current-device';
-import popupS from 'popups';
+
 
 
 /**
@@ -526,14 +526,45 @@ function popup(el) {
 
         if (target == this) return;
 
-        popupS.modal({
-            title:   'Himalaya',
-            content: {
-                tag: 'img#himalaya.picture',
-                src: 'http://static.hdw.eweb4.com/media/wallpapers_1920x1080/nature/1/1/himalaya-nature-hd-wallpaper-1920x1080-6944.jpg'
-            }
-        });
+        var container = document.createElement("DIV");
+        var window = document.createElement("DIV");
+        var close = document.createElement("DIV");
 
+
+        container.classList.add('modal');
+        window.className = "modal__wrapp col-6 sd-12 shadow-xs back-body b8";
+        close.className = "close c-p";
+
+        var myImage = new Image(30, 30);
+        myImage.src = '/img/icon/cancel.svg';
+
+        
+        document.body.appendChild(container);
+        container.appendChild(window);
+
+        window.appendChild(close);
+        close.appendChild(myImage);
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/saleform', true);
+        xhr.setRequestHeader(
+            'X-CSRF-TOKEN',
+            document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        );
+        xhr.onreadystatechange = function () {
+
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                // console.log(xhr.responseText);
+                window.innerHTML += xhr.responseText;
+            }
+        }
+        xhr.send()
+
+
+        // Добавить функцию на закрытие
+
+
+        
 
     }, true)
 }

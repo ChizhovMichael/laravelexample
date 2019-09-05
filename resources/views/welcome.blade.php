@@ -162,7 +162,7 @@
         </div>
         <div class="flex-between">
             @foreach($products_discount as $part)
-            <div class="card__item__np flex-center-between b8 p-em-2 back-body col-5 sd-12 rel {{ $part->stock }}">
+            <div class="card__item__np flex-center-between mb-em-2 b8 p-em-2 back-body col-5 sd-12 rel {{ $part->stock }}">
                 <div class="np__image col-5 sd-5 flex-center-center">
                     <img class="col-12 sd-12 b5" src="/img/products/{{ $part->company_id }}/{{ $part->tv_id }}/m{{ $part->part_img_name }}" alt="Запчасти для телевизоров, {{ $part->parttype_type }} {{ $part->part_model }} c телевизора {{ $part->company }} {{ $part->tv_model }}">
                 </div>
@@ -188,7 +188,7 @@
         </div>
         <div class="flex-between">
             @foreach($products_new as $part)
-            <div class="card__item__np flex-center-between b8 p-em-2 back-body col-5 sd-12 rel {{ $part->stock }}">
+            <div class="card__item__np flex-center-between mb-em-2 b8 p-em-2 back-body col-5 sd-12 rel {{ $part->stock }}">
                 <div class="np__image col-5 sd-5 flex-center-center">
                     <img class="col-12 sd-12 b5" src="/img/products/{{ $part->company_id }}/{{ $part->tv_id }}/m{{ $part->part_img_name }}" alt="Запчасти для телевизоров, {{ $part->parttype_type }} {{ $part->part_model }} c телевизора {{ $part->company }} {{ $part->tv_model }}">
                 </div>
