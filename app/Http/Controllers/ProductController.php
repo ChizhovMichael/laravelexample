@@ -105,7 +105,7 @@ class ProductController extends Controller
     public function getAllProduct(Request $request)
     {
 
-        // Сортировка по названию, по цене
+        // 0. Сортировка по названию, по цене
         $sorting = $this->getSort($request->sort);
 
         $products = Product::selectAllInfo();
@@ -119,17 +119,17 @@ class ProductController extends Controller
         $newCount = $products->where('stock', 'new')->count();
         $saleCount = $products->where('stock', 'discount')->count();
 
-        return $products->paginate(12);
+        
 
 
         // Сортировка по компаниям
-        $brands = $this->getBrands($request->brands);
-        $products = $brands != NUll ? $products->whereBrands($brands) : $products;
+        // $brands = $this->getBrands($request->brands);
+        // $products = $brands != NUll ? $products->whereBrands($brands) : $products;
 
 
         // Сортировка по категориям
-        $stock = $this->getStock($request->stock);
-        $products = $stock != NULL ? $products->whereStock($stock) : $products;
+        // $stock = $this->getStock($request->stock);
+        // $products = $stock != NULL ? $products->whereStock($stock) : $products;
 
         // Минимальная максимальная цена пока берет совместно с пагинацией
         $min = $products->min('part_cost');
@@ -139,14 +139,14 @@ class ProductController extends Controller
         // Сортировка по цене
         $from = $this->getFrom($request->from, $min);
         $to = $this->getTo($request->to, $max);
-        $products = $products->wherePriceMore($from);
-        $products = $products->wherePriceLess($to);
+        // $products = $products->wherePriceMore($from);
+        // $products = $products->wherePriceLess($to);
 
         
 
 
         // Вывод c пагинацией в 12
-        // $part_types = $products;
+        $products = $products->paginate(12);
 
         
         
