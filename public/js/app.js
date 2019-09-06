@@ -6821,8 +6821,13 @@ __webpack_require__.r(__webpack_exports__);
  * dependencies. Then, we will be ready to develop a robust and powerful
  * application frontend using useful Laravel and JavaScript libraries.
  */
-// require('./bootstrap');
 
+
+/******************************
+[Table of Contents]
+
+
+******************************/
 
 /**
    * Scroll customization
@@ -6847,6 +6852,8 @@ document.addEventListener("DOMContentLoaded", function () {
   addCart();
   navigationScroll();
   popup('popup');
+  closePopup('close');
+  navigationItemShow('navigation__trigger');
 });
 
 function toggleMenu(el) {
@@ -7151,7 +7158,37 @@ function sortingItemShow(el) {
       e.preventDefault();
       this.innerText = 'Свернуть';
       container.classList.toggle('show');
+
+      if (!container.classList.contains('show')) {
+        this.innerText = 'Еще';
+      }
     });
+  }
+}
+/**
+ * Кнопка свернуть-развернуть список категорий в сортировке товаров
+ * @param {*} el 
+ */
+
+
+function navigationItemShow(el) {
+  var elem = document.querySelectorAll('.' + el);
+
+  if (!elem) {
+    return;
+  }
+
+  var _loop = function _loop(i) {
+    var element = elem[i];
+    element.addEventListener('click', function () {
+      var parent = element.parentElement;
+      var nextElem = parent.nextElementSibling;
+      nextElem.classList.toggle('show');
+    });
+  };
+
+  for (var i = 0; i < elem.length; i++) {
+    _loop(i);
   }
 }
 /**
@@ -7289,8 +7326,6 @@ function popup(el) {
     myImage.src = '/img/icon/cancel.svg';
     document.body.appendChild(container);
     container.appendChild(window);
-    window.appendChild(close);
-    close.appendChild(myImage);
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/saleform', true);
     xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
@@ -7299,10 +7334,59 @@ function popup(el) {
       if (xhr.readyState == 4 && xhr.status == 200) {
         // console.log(xhr.responseText);
         window.innerHTML += xhr.responseText;
+        window.appendChild(close);
+        close.appendChild(myImage);
       }
     };
 
     xhr.send();
+  }, true);
+}
+
+function closePopup(el) {
+  document.addEventListener('click', function (event) {
+    event = event || window.event;
+    var target = event.target || event.srcElement;
+
+    while (target != this) {
+      if (target.classList.contains(el)) break;
+      target = target.parentNode;
+    }
+
+    if (target == this) return;
+
+    if (!Element.prototype.matches) {
+      Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
+    }
+
+    if (!Element.prototype.closest) {
+      Element.prototype.closest = function (s) {
+        var el = this;
+
+        do {
+          if (el.matches(s)) return el;
+          el = el.parentElement || el.parentNode;
+        } while (el !== null && el.nodeType === 1);
+
+        return null;
+      };
+    }
+
+    var parent = target.closest('.modal');
+
+    Element.prototype.remove = function () {
+      this.parentElement.removeChild(this);
+    };
+
+    NodeList.prototype.remove = HTMLCollection.prototype.remove = function () {
+      for (var i = this.length - 1; i >= 0; i--) {
+        if (this[i] && this[i].parentElement) {
+          this[i].parentElement.removeChild(this[i]);
+        }
+      }
+    };
+
+    parent.remove();
   }, true);
 }
 

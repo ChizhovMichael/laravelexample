@@ -50,7 +50,7 @@ trait NavigationController
         $companies = Product::selectRaw('count(company_id) AS cnt, company')
             ->groupBy('company_id')
             ->orderBy('cnt', 'DESC')
-            ->leftJoin('companies', 'products.company_id', '=', 'companies.id');
+            ->join('companies', 'products.company_id', '=', 'companies.id');
 
         if (is_string($category)) {
             $companies = $companies->where('part_model', 'LIKE', '%' . $category . "%");

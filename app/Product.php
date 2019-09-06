@@ -161,6 +161,7 @@ class Product extends Model
             'products.matrix_id',
             'products.part_comment_for_client',
             'products.part_status',
+            'products.parttype_id',
             'companies.company',
             'part_types.parttype_type',
             'tvs.tv_model',
@@ -237,7 +238,7 @@ class Product extends Model
      */
     public function scopeGetImgMain($query)
     {
-        return $query->join('part_imgs', function ($join) {
+        return $query->leftJoin('part_imgs', function ($join) {
             $join->on('part_imgs.product_id', '=', 'products.id')
                 ->where('part_img_main', '=', '1');
         });
@@ -261,4 +262,9 @@ class Product extends Model
      {
         return $this->belongsTo('App\Matrix', 'matrix_id');
      }
+
+     
+
+
+
 }

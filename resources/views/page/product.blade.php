@@ -20,7 +20,7 @@
 <body>
 
     @include('includes.nav')
-    <div class="col-12 sd-12 @if($agent->isMobile()) pt-em-5 pb-em-5 @else pt-em-10 pb-em-10 @endif pr-5 pl-5 flex-between">
+    <div class="col-12 sd-12 @if($agent->isMobile()) pt-em-5 pb-em-5 @else pt-em-10 pb-em-5 @endif pr-5 pl-5 flex-between align-start">
 
 
 
@@ -62,7 +62,7 @@
             @if($part_types->part_comment_for_client)
             <p class="bb bt m-1 pt-em-1 pb-em-1 found not">{{ $part_types->part_comment_for_client }}</p>
             @endif
-            <p class="cc wwbw">{{ $part_types->parttype_type }} {{ $part_types->part_model }} снят(-а) с телевизора {{ $part_types->company }} {{ $part_types->tv_model }} с разбитой матрицей {{ $part_types->matrix->matrix_model }}.</p>
+            <p class="cc wwbw">{{ $part_types->parttype_type }} {{ $part_types->part_model }} снят(-а) с телевизора <a class="cm hover" href="{{ route('category.tv', [ 'tv' => $part_types->company, 'model' => $part_types->tv_model ]) }}">{{ $part_types->company }} {{ $part_types->tv_model }}</a> с разбитой матрицей {{ $part_types->matrix->matrix_model }}.</p>
             <p class="cc">Доставка в любой регион почтой России или транспортной компанией.</p>
 
             @if($part_types->part_status == 0)
@@ -92,20 +92,20 @@
                         @endif
 
                     </div>
-                    @if($partsAdditional->count() > 0)
+                    @if($partsAdditional->isNotEmpty() && $partsAdditional->count() > 0)
                         <p class="mt-em-2 mb-em-2">Такие же, но с других телевизоров</p>
                     @endif
-                    <div>
-                        <ul>
-                            @foreach($partsAdditional as $item)
+                    <div class="mb-em-2 hide">
+                        <ul class="hide">
+                            @foreach($partsAdditional->splice(0, 3)->all() as $item)
                             @if ($item->part_status == 0)
-                                <li class="mt-em-1 mb-em-1 pr-em-2 pl-em-2 pt-em-1 pb-em-1 bc-light shadow-xs b3">
+                                <li class="m-em-1 pr-em-2 pl-em-2 pt-em-1 pb-em-1 bc-light shadow-xs b3">
                                     <div class="form-check ">
                                         
                                         <input class="form-check-input" data-form="brands-check" type="checkbox" id="{{ $item->id }}">
                                         <span class="form-check-span"></span>
                                         
-                                        <label class="form-check-label col-8" for="{{ $item->id }}">
+                                        <label class="form-check-label col-8 wwbw" for="{{ $item->id }}">
                                             {{ $item->parttype_type }} {{ $item->part_model }} c телевизора <span>{{ $item->company }} {{ $item->tv_model }}</span>
                                         </label>
                                         
@@ -115,9 +115,36 @@
                                 </li>
                             @endif
                             @endforeach
+                            <div class="toggle__sorting">
+                                @foreach($partsAdditional->all() as $item)
+                                @if ($item->part_status == 0)
+                                <li class="m-em-1 pr-em-2 pl-em-2 pt-em-1 pb-em-1 bc-light shadow-xs b3">
+                                    <div class="form-check ">
+                                        
+                                        <input class="form-check-input" data-form="brands-check" type="checkbox" id="{{ $item->id }}">
+                                        <span class="form-check-span"></span>
+                                        
+                                        <label class="form-check-label col-8 wwbw" for="{{ $item->id }}">
+                                            {{ $item->parttype_type }} {{ $item->part_model }} c телевизора <span>{{ $item->company }} {{ $item->tv_model }}</span>
+                                        </label>
+                                        
+                                        <img class="col-1" style="margin-left: auto;" src="{{ asset('img/icon/cart_yes.png') }}" alt="В наличие">
+                                    
+                                    </div>
+                                </li>
+                                @endif
+                                @endforeach
+                            </div>
                         </ul>
+                        @if($partsAdditional->count() > 0)
+                            <a href="#" class="toggle--content button__trigger"></a>
+                        @endif
                     </div>
 
+                    @foreach($category as $item)
+                    <p class="cc mt-2 mb-2">Категория: <a class="cm hover" href="{{ route('category.show', [ 'parttype_id' => $item->additional_slug ]) }}">{{ $item->additional_name }}</a></p>
+                    @endforeach
+                    <p class="cc mt-2 mb-2">Для телвизора: <a class="cm hover" href="{{ route('category.tv', [ 'tv' => $part_types->company, 'model' => $part_types->tv_model ]) }}">{{ $part_types->company }} {{ $part_types->tv_model }}</a></p>
                     <h5 class="mb-5">{{ $part_types->part_cost }}&nbsp;&#x20bd;</h5>
                     @if($part_types->part_status == 0)
                         <span class="cm hover popup c-p">Нашли дешевле? Снизим цену!</span>

@@ -26,8 +26,8 @@ Auth::routes();
 Route::get('/about', 'AboutController@index')->name('about');
 
 Route::get('/catalog', 'ProductController@getAllProduct')->name('catalog');
-
 Route::get('/catalog/{part_types_id}', 'ProductController@getFullCategory')->name('category.show');
+Route::get('/catalog/tv/{company}/{model}', 'ProductController@getTvCategory')->name('category.tv');
 
 Route::post('/add/{id}/{type}/{company}/{tv}/{img}/{name}/{qty}/{price}', 'ProductController@addProductToCart')->name('addproduct');
 

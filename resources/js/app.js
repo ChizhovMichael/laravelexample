@@ -4,12 +4,16 @@
  * application frontend using useful Laravel and JavaScript libraries.
  */
 
-// require('./bootstrap');
-
 
 import OverlayScrollbars from 'overlayscrollbars';
 import device from 'current-device';
 
+
+/******************************
+[Table of Contents]
+
+
+******************************/
 
 
 /**
@@ -44,9 +48,11 @@ document.addEventListener("DOMContentLoaded", function () {
     navigationScroll();
 
     popup('popup');
+    closePopup('close');
+
+    navigationItemShow('navigation__trigger');
 
 });
-
 
 
 
@@ -380,8 +386,37 @@ function sortingItemShow(el) {
             this.innerText = 'Свернуть';
             container.classList.toggle('show');
 
+            if (!container.classList.contains('show')) {
+                this.innerText = 'Еще';
+            }
+
         })
     }
+}
+
+/**
+ * Кнопка свернуть-развернуть список категорий в сортировке товаров
+ * @param {*} el 
+ */
+
+function navigationItemShow(el) {
+    var elem = document.querySelectorAll('.' + el);
+    if (!elem) {
+        return;
+    }
+
+    for (let i = 0; i < elem.length; i++) {
+        const element = elem[i];
+
+        element.addEventListener('click', function () {
+            var parent = element.parentElement;
+            var nextElem = parent.nextElementSibling;
+
+            nextElem.classList.toggle('show')
+        })
+        
+    }
+    
 }
 
 
@@ -542,9 +577,6 @@ function popup(el) {
         document.body.appendChild(container);
         container.appendChild(window);
 
-        window.appendChild(close);
-        close.appendChild(myImage);
-
         const xhr = new XMLHttpRequest();
         xhr.open('POST', '/saleform', true);
         xhr.setRequestHeader(
@@ -556,15 +588,58 @@ function popup(el) {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 // console.log(xhr.responseText);
                 window.innerHTML += xhr.responseText;
+                window.appendChild(close);
+                close.appendChild(myImage);
             }
         }
         xhr.send()
 
 
-        // Добавить функцию на закрытие
+    }, true)
+}
 
+function closePopup(el) {
+    document.addEventListener('click', function (event) {
+        event = event || window.event;
+        var target = event.target || event.srcElement;
 
-        
+        while (target != this) {
+            if (target.classList.contains(el)) break;
+            target = target.parentNode;
+        }
+
+        if (target == this) return;
+
+        if (!Element.prototype.matches) {
+            Element.prototype.matches = Element.prototype.msMatchesSelector || 
+                                        Element.prototype.webkitMatchesSelector;
+          }
+          
+          if (!Element.prototype.closest) {
+            Element.prototype.closest = function(s) {
+              var el = this;
+          
+              do {
+                if (el.matches(s)) return el;
+                el = el.parentElement || el.parentNode;
+              } while (el !== null && el.nodeType === 1);
+              return null;
+            };
+          }
+
+        var parent = target.closest('.modal');
+
+        Element.prototype.remove = function() {
+            this.parentElement.removeChild(this);
+        }
+        NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+            for(var i = this.length - 1; i >= 0; i--) {
+                if(this[i] && this[i].parentElement) {
+                    this[i].parentElement.removeChild(this[i]);
+                }
+            }
+        }
+        parent.remove();
 
     }, true)
 }

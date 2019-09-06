@@ -53,7 +53,19 @@
                     <ul class="m-0 pr-em-2 pl-em-2">
                         @foreach($navigations as $item)
                         <li class="mt-1 mb-1">
-                            <a class="block hover @if (Request::is('catalog/'.$item->slug )) active @endif" href="{{ route('category.show', ['part_types_id' => $item->slug ]) }}">{{ $item->name }}</a>
+                            <div class="flex-center-between">
+                                <a class="block hover @if (Request::is('catalog/'.$item->slug ))) bold cm @endif col-11 sd-10" href="{{ route('category.show', ['part_types_id' => $item->slug ]) }}">{{ $item->name }}</a>
+                                @if($item->navigation_items->count() > 1)
+                                    <div class="navigation__trigger">+</div>
+                                @endif
+                            </div>
+                            @if($item->navigation_items->count() > 1)
+                                <div class="navigation__drop__wrapp">
+                                    @foreach($item->navigation_items as $add)
+                                    <a class="block hover @if (Request::is('catalog/'.$add->additional_slug  )) bold cm @endif col-11 sd-10" href="{{ route('category.show', ['part_types_id' => $add->additional_slug ]) }}">{{ $add->additional_name }}</a>
+                                    @endforeach
+                                </div>
+						    @endif
                         </li>
                         @endforeach
                     </ul>
@@ -63,14 +75,14 @@
                     <label class="m-0 pt-3 pb-3 text-center flex-center-center c-p">
                         Бренд телевизора
                     </label>
-                    <ul class="m-0 pr-em-2 pl-em-2">
+                    <ul class="m-0 pr-em-2 pl-em-2 @if($brand->count() <= 1) rel disable @endif">
                         @foreach($brand->splice(0, 7)->all() as $item)
                         <li class="mt-1 mb-1">
                             <div class="form-check">
                                 <input class="form-check-input" data-form="brands-check" type="checkbox" @if(preg_match("/{$item->company}/i", $brands)) checked @endif value="{{ $item->company }}" id="{{ $item->company }}">
                                 <span class="form-check-span"></span>
                                 <label class="form-check-label" for="{{ $item->company }}">
-                                    {{ $item->company }}
+                                    {{ $item->company }} ({{ $item->cnt }})
                                 </label>
                             </div>
                         </li>
@@ -82,7 +94,7 @@
                                     <input class="form-check-input" data-form="brands-check" type="checkbox" @if(preg_match("/{$item->company}/i", $brands)) checked @endif value="{{ $item->company }}" id="{{ $item->company }}">
                                     <span class="form-check-span"></span>
                                     <label class="form-check-label" for="{{ $item->company }}">
-                                        {{ $item->company }}
+                                        {{ $item->company }} ({{ $item->cnt }})
                                     </label>
                                 </div>
                             </li>
@@ -145,9 +157,18 @@
                         <img class="ml-em-1" src="{{ asset('img/icon/chevron-arrow-down.svg') }}" alt="arrow">
                     </label>
                     <ul class="m-0 pr-em-2 pl-em-2">
-                        <li class="mt-1 mb-1"><a href="{{ route( $route, [ 'part_types_id' => $part_types_id, 'sort' => $sort, 'brands' => $brands, 'stock' => 'all', 'from' => $from, 'to' => $to, 'search' => $search ]) }}" class="@if ($stock == null || $stock == 'all') active @endif block hover">Вся продукция</a></li>
-                        <li class="mt-1 mb-1"><a href="{{ route( $route, [ 'part_types_id' => $part_types_id, 'sort' => $sort, 'brands' => $brands, 'stock' => 'new', 'from' => $from, 'to' => $to, 'search' => $search]) }}" class="@if ($stock == 'new') active @endif block hover">Новые поступления</a></li>
-                        <li class="mt-1 mb-1"><a href="{{ route( $route, [ 'part_types_id' => $part_types_id, 'sort' => $sort, 'brands' => $brands, 'stock' => 'discount', 'from' => $from, 'to' => $to, 'search' => $search]) }}" class="@if ($stock == 'discount') active @endif block hover">Акция</a></li>
+                        <li class="mt-1 mb-1 flex-between"><a href="{{ route( $route, [ 'company' => $company, 'model'=> $model, 'part_types_id' => $part_types_id, 'sort' => $sort, 'brands' => $brands, 'stock' => 'all', 'search' => $search ]) }}" class="@if ($stock == null || $stock == 'all') active @endif block hover">Вся продукция</a><span class="cc">({{ $productsCount }})</span></li>
+
+                        
+                    
+
+                        <li class="mt-1 mb-1 flex-between @if($newCount < 1) rel disable @endif"><a href="{{ route( $route, [ 'company' => $company, 'model'=> $model, 'part_types_id' => $part_types_id, 'sort' => $sort, 'brands' => $brands, 'stock' => 'new', 'search' => $search]) }}" class="@if ($stock == 'new') active @endif block hover">Новые поступления</a><span class="cc">({{ $newCount }})</span></li>
+
+
+
+
+                        <li class="mt-1 mb-1 flex-between @if($saleCount < 1) rel disable @endif"><a href="{{ route( $route, [ 'company' => $company, 'model'=> $model, 'part_types_id' => $part_types_id, 'sort' => $sort, 'brands' => $brands, 'stock' => 'discount', 'search' => $search]) }}" class="@if ($stock == 'discount') active @endif block hover">Акция</a><span class="cc">({{ $saleCount }})</span></li>
+
                     </ul>
                 </div>
                 <div class="sorting__item mt-em-2 mb-em-2 b8 shadow-xs hide">
@@ -184,7 +205,7 @@
                             </span>
                             <ul class="dropdown__list__ul abs top-max-left shadow col-12 b5 back-back" id="sortingProduct">
                                 @foreach ($sorting as $item)
-                                <li class="flex-center-between rel bt-light pt-2 pb-2 pr-5 pl-5"><a class="sort-link hover pt-2 pb-2 pr-5 pl-5 block" href="{{ route( $route, [ 'part_types_id' => $part_types_id, 'sort' => $item[0], 'brands' => $brands, 'stock' => $stock, 'from' => $from, 'to' => $to, 'search' => $search ]) }}">{!! $item[1] !!}</a></li>
+                                <li class="flex-center-between rel bt-light pt-2 pb-2 pr-5 pl-5"><a class="sort-link hover pt-2 pb-2 pr-5 pl-5 block" href="{{ route( $route, [ 'company' => $company, 'model'=> $model, 'part_types_id' => $part_types_id, 'sort' => $item[0], 'brands' => $brands, 'stock' => $stock, 'from' => $from, 'to' => $to, 'search' => $search ]) }}">{!! $item[1] !!}</a></li>
                                 @endforeach
                             </ul>
                         </div>
@@ -207,7 +228,7 @@
                             </div>
                             <div class="product_name">
                                 <p class="block pr-em-1 pl-em-1">{{ $part->company }} {{ $part->tv_model }}</p>
-                                <a href="{{ route('product.show', ['slug' => $part->part_link ]) }}" class="hover-main block pr-em-1 pl-em-1">{{ ltrim($part->part_model) }}</a>
+                                <a href="{{ route('product.show', ['slug' => $part->part_link ]) }}" class="hover-main block pr-em-1 pl-em-1 wwbw">{{ ltrim($part->part_model) }}</a>
                             </div>
                             <div class="product_extras col-12 back-body hide">
                                 <a class="cart-link flex-center-center rel top-left col-12 back-main mt-em-1 bbl5 bbr5" href="{{ route('addproduct', [ 'id' => $part->id, 'type' => $part->parttype_type, 'company' => $part->company_id, 'tv' => $part->tv_id, 'img' => $part->part_img_name , 'name' => $part->part_model, 'qty' => 1,  'price' => $part->part_cost ]) }}">

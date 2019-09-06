@@ -57,6 +57,9 @@
 .flexFoot {
     @include flex(0 0 auto);
 }
+.align-start {
+    @include align-items(flex-start);
+}
 
 .fix {
     position: fixed;
@@ -170,6 +173,12 @@
 }
 .wwbw {
 	word-wrap: break-word; 
+}
+.ca {
+    color: $color-add;
+}
+.bold {
+    font-weight: 700;
 }
 /***********
 // background

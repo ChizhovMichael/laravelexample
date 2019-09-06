@@ -8,6 +8,10 @@ use App\Navigation;
 use App\Http\Controllers\NavigationController;
 use App\Http\Controllers\SortingController;
 use Cart;
+use App\Company;
+use App\Tv;
+use App\NavigationAdditional;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\URL;
 
 
@@ -22,8 +26,8 @@ use Illuminate\Support\Facades\URL;
  * | 4. Get All Product (вывод всей продукции с погинацией и get запросами-сортировкой)
  * | 5. Item Product (получить единичный продукт)
  * | 6. Get Categories Product (вывод всей продукции с погинацией и get запросами-сортировкой по категориям)
- * | 6. Get Search Product (Получаем все продукты соответствующие критерию поиска)
- * |
+ * | 7. Get Search Product (Получаем все продукты соответствующие критерию поиска)
+ * | 8. Get Tv Product (Получаем все продукты соответствующие данному телевизору)
  * |
  **************/
 
@@ -108,6 +112,15 @@ class ProductController extends Controller
         $products = $products->selectAllTable();
         $products = $products->getImgMain();
         $products = $products->orderBy($sorting['column'], $sorting['sort']);
+        $products = $products->get();
+
+        // 1. Получаем количество продукции, новой, акционной
+        $productsCount = $products->count();
+        $newCount = $products->where('stock', 'new')->count();
+        $saleCount = $products->where('stock', 'discount')->count();
+
+        return $products->paginate(12);
+
 
         // Сортировка по компаниям
         $brands = $this->getBrands($request->brands);
@@ -129,9 +142,15 @@ class ProductController extends Controller
         $products = $products->wherePriceMore($from);
         $products = $products->wherePriceLess($to);
 
+        
+
 
         // Вывод c пагинацией в 12
-        $products = $products->paginate(12);
+        // $part_types = $products;
+
+        
+        
+        
 
 
         return view('page/shop', [
@@ -157,6 +176,11 @@ class ProductController extends Controller
             'part_types_id' => NULL, // правильно
             'cart'          => $this->getCartCount(),
             'search'        => NULL, // правильно
+            'company'       => NULL,
+            'model'         => NULL,
+            'productsCount' => $productsCount,
+            'newCount'      => $newCount,
+            'saleCount'     => $saleCount,
         ]);
     }
 
@@ -186,6 +210,8 @@ class ProductController extends Controller
         $products = $products->getImgMain();
         $products = $products->orderBy($sorting['column'], $sorting['sort']);
 
+        $productsCount = $products->getProductsCount()->count();
+
         if ($products->first() === NULL) {
             return abort('404');
         }
@@ -195,10 +221,13 @@ class ProductController extends Controller
         $brands = $this->getBrands($request->brands);
         $products = $brands != NUll ? $products->whereBrands($brands) : $products;
 
+        
+
 
         // Сортировка по категориям
         $stock = $this->getStock($request->stock);
         $products = $stock != NULL ? $products->whereStock($stock) : $products;
+        
 
         // Минимальная максимальная цена пока берет совместно с пагинацией
         $min = $products->min('part_cost');
@@ -212,11 +241,15 @@ class ProductController extends Controller
 
 
         // Вывод c пагинацией в 12
-        $products = $products->paginate(12);
+        $part_types = $products->paginate(12);
+
+        
+        $newCount = $products->getNewCount()->count();
+        $saleCount = $products->getSaleCount()->count();
 
 
         return view('page/shop', [
-            'part_types'    => $products->appends([
+            'part_types'    => $part_types->appends([
                 'sort'      => $request->sort,
                 'stock'     => $request->stock,
                 'brands'    => $request->brands,
@@ -238,6 +271,11 @@ class ProductController extends Controller
             'part_types_id' => $part_types_id, // правильно
             'cart'          => $this->getCartCount(),
             'search'        => NULL, //правильно
+            'company'       => NULL,
+            'model'         => NULL,
+            'productsCount' => $productsCount,
+            'newCount'      => $newCount,
+            'saleCount'     => $saleCount,
         ]);
     }
 
@@ -284,27 +322,53 @@ class ProductController extends Controller
         $products = $products->first();
 
 
-        $productsAdditional = Product::where('part_link', 'LIKE', '%' . $slugMain . '%');
-        $productsAdditional = $productsAdditional->selectAllInfoWithoutMainImg();
-        $productsAdditional = $productsAdditional->selectAllTable();
-        $productsAdditional = $productsAdditional->with('matrix');
-        $productsAdditional = $productsAdditional->get();
-        $productsAdditional = $productsAdditional->filter(function($item) use ($products) {
-            return $item->id != $products->id;
-        });
 
-        
-
-        $productsSimilar = Product::where('part_link', 'LIKE', '%' . $slugMain . '%');
-        $productsSimilar = $productsSimilar->selectAllInfo();
-        $productsSimilar = $productsSimilar->selectAllTable();
-        $productsSimilar = $productsSimilar->getImgMain();
-        $productsSimilar = $productsSimilar->get();
-        $productsSimilar = $productsSimilar->filter(function($item) use ($products) {
-            return $item->id != $products->id;
-        });
+        if ($products !== NULL) {
 
 
+            // 4. Если продукт существуем ищем его аналоги
+
+            $productsAdditional = Product::where('part_link', 'LIKE', '%' . $slugMain . '%');
+            $productsAdditional = $productsAdditional->selectAllInfoWithoutMainImg();
+            $productsAdditional = $productsAdditional->selectAllTable();
+            $productsAdditional = $productsAdditional->with('matrix');
+            $productsAdditional = $productsAdditional->get();
+            $productsAdditional = $productsAdditional->filter(function($item) use ($products) {
+                return $item->id != $products->id;
+            });
+
+            $productsSimilar = Product::where('part_link', 'LIKE', '%' . $slugMain . '%');
+            $productsSimilar = $productsSimilar->selectAllInfo();
+            $productsSimilar = $productsSimilar->selectAllTable();
+            $productsSimilar = $productsSimilar->getImgMain();
+            $productsSimilar = $productsSimilar->get();
+            $productsSimilar = $productsSimilar->filter(function($item) use ($products) {
+                return $item->id != $products->id;
+            });
+
+        } else {
+
+            // 5. Если продукта не существует и нет аналогов
+            // то выводим что его нет в налиии
+
+            $productsEmpty = Product::where('part_link', '=', $slug);
+            $productsEmpty = $productsEmpty->where('part_status', '=', '1');
+            $productsEmpty = $productsEmpty->selectAllInfoWithoutMainImg();
+            $productsEmpty = $productsEmpty->selectAllTable();
+            $productsEmpty = $productsEmpty->with('part_img');
+            $productsEmpty = $productsEmpty->with('tv_img');
+            $productsEmpty = $productsEmpty->with('matrix');
+            $productsEmpty = $productsEmpty->first();
+
+
+            $products = $productsEmpty;
+            
+
+            $productsAdditional = collect([]);
+            $productsSimilar = collect([]);
+        }
+
+        $category = NavigationAdditional::where('additional_id', '=', $products->parttype_id)->get();        
 
 
         if ($products->part_status == 0) {
@@ -314,12 +378,13 @@ class ProductController extends Controller
         }
 
         return view('page/product', [
-            'part_types'    => $products,
-            'partsAdditional' => $productsAdditional,
-            'productsSimilar' => $productsSimilar,
-            'navigations'   => $this->navigation(),
-            'cart'          =>  $this->getCartCount(),
-            'action' => $action,
+            'part_types'        => $products,
+            'partsAdditional'   => $productsAdditional,
+            'productsSimilar'   => $productsSimilar,
+            'navigations'       => $this->navigation(),
+            'cart'              =>  $this->getCartCount(),
+            'action'            => $action,
+            'category'          => $category,
         ]);
     }
 
@@ -422,6 +487,92 @@ class ProductController extends Controller
             'part_types_id' => NULL, // правильно
             'cart'          => $this->getCartCount(),
             'search'        => $search, //правильно
+            'company'       => NULL,
+            'model'         => NULL,
         ]);
+    }
+
+    /**
+     * | Get Tv Product
+     * | Получаем все продукты соответствующие данному телевизору
+     */
+    public function getTvCategory( $company, $model, Request $request )
+    {
+        // Сортировка по названию, по цене
+        $sorting = $this->getSort($request->sort);
+
+
+        $company = Company::where('company', '=', $company)->first();
+        $model = Tv::where('tv_model', '=', $model)->first();
+        $company_id = $company->id;
+        $model_id = $model->id;
+
+
+        $products = Product::selectAllInfo();
+        $products = $products->selectAllTable();
+        $products = $products->getImgMain();
+        $products = $products->where('company_id', '=', $company_id);
+        $products = $products->where('tv_id', '=', $model_id);
+        $products = $products->orderBy($sorting['column'], $sorting['sort']);
+
+        if ($products->first() === NULL) {
+            return abort('404');
+        }
+
+
+        // Сортировка по компаниям
+        $brands = $this->getBrands($request->brands);
+        $products = $brands != NUll ? $products->whereBrands($brands) : $products;
+
+
+        // Сортировка по категориям
+        $stock = $this->getStock($request->stock);
+        $products = $stock != NULL ? $products->whereStock($stock) : $products;
+
+        // Минимальная максимальная цена пока берет совместно с пагинацией
+        $min = $products->min('part_cost');
+        $max = $products->max('part_cost');
+
+        // Сортировка по цене
+        $from = $this->getFrom($request->from, $min);
+        $to = $this->getTo($request->to, $max);
+        $products = $products->wherePriceMore($from);
+        $products = $products->wherePriceLess($to);
+
+        // Вывод c пагинацией в 12
+        $products = $products->paginate(12);
+
+
+        return view('page/shop', [
+            'part_types'    => $products->appends([
+                'sort'      => $request->sort,
+                'stock'     => $request->stock,
+                'brands'    => $request->brands,
+                'from'      => $from,
+                'to'        => $to,
+            ]),
+            'navigations'   => $this->navigation(),
+            'brand'         => collect([$company]),
+            'sort'          => $request->sort,
+            'value'         => $sorting['value'],
+            'sorting'       => $sorting['sorting'],
+            'brands'        => $request->brands,
+            'stock'         => $request->stock,
+            'min'           => $min,
+            'max'           => $max,
+            'from'          => $from, // правильно
+            'to'            => $to, // правильно
+            'route'         => 'category.tv', // правильно
+            'part_types_id' => NULL, // правильно
+            'cart'          => $this->getCartCount(),
+            'search'        => NULL, // правильно
+            'company'       => $company->company,
+            'model'         => $model->tv_model,
+        ]);
+
+
+        // Сделать чтобы в запчастях были подкатегории
+        // Выделить комплекты
+        // Отображение другого товара при нажатии на инпут
     }
 }
