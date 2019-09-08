@@ -24,11 +24,9 @@ use Illuminate\Database\Eloquent\Model;
  * | 8. SelectProductWithCategories (получение дополнительных таблиц для каталога товаров)
  * | 9. WhereStock (Получаем сортировку по стоковому товару)
  * | 10. WhereBrands (Получаем сортировку по выделенным checkbox брендов)
- * | 11. WherePriceMore (Получаем сортировку по минимальной цене)
- * | 12. WherePriceLess (Получаем сортировку по максимальной цене)
- * | 13. GetImgMain (Получаем главное изображение для каталога продукции)
- * | 14. TV images (Получаем изображения телевизора)
- * | 15. Matrix (Получаем матрицу телевизора)
+ * | 11. GetImgMain (Получаем главное изображение для каталога продукции)
+ * | 12. TV images (Получаем изображения телевизора)
+ * | 13. Matrix (Получаем матрицу телевизора)
  **************/
 
 
@@ -95,7 +93,7 @@ class Product extends Model
      */
     public function part_img_main()
     {
-        return $this->hasMany('App\PartImg', 'product_id')->where('part_img_main', 1);
+        return $this->hasOne('App\PartImg', 'product_id')->where('part_img_main', 1);
     }
 
 
@@ -212,24 +210,6 @@ class Product extends Model
     {
         return $query->whereIn('companies.company', $param);
     }
-
-    /**
-     * | WherePriceMore
-     * | Получаем сортировку по минимальной цене
-     */
-    public function scopeWherePriceMore($query, $param)
-    {
-        return $query->where('products.part_cost', '>=', $param);
-    }
-    /**
-     * | WherePriceLess
-     * | Получаем сортировку по максимальной цене
-     */
-    public function scopeWherePriceLess($query, $param)
-    {
-        return $query->where('products.part_cost', '<=', $param);
-    }
-
 
 
     /**

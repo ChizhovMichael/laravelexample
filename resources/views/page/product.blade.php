@@ -98,41 +98,39 @@
                     <div class="mb-em-2 hide">
                         <ul class="hide">
                             @foreach($partsAdditional->splice(0, 3)->all() as $item)
-                            @if ($item->part_status == 0)
                                 <li class="m-em-1 pr-em-2 pl-em-2 pt-em-1 pb-em-1 bc-light shadow-xs b3">
-                                    <div class="form-check ">
+                                    <div class="form-check">
                                         
-                                        <input class="form-check-input" data-form="brands-check" type="checkbox" id="{{ $item->id }}">
-                                        <span class="form-check-span"></span>
+                                        <a class="cart-link flex-center-center rel top-left col-2 sd-2 back-main b5 mr-em-1 shadow-xs" href="{{ route('addproduct', [ 'id' => $item->id, 'type' => $item->parttype_type, 'company' => $item->company_id, 'tv' => $item->tv_id, 'img' => $item->part_img_main->part_img_name , 'name' => $item->part_model, 'qty' => 1,  'price' => $item->part_cost ]) }}">
+                                            <img class="p-12 col-8" src="{{ asset('img/icon/shopping-bag.svg') }}" alt="Купить">
+                                        </a>
                                         
-                                        <label class="form-check-label col-8 wwbw" for="{{ $item->id }}">
-                                            {{ $item->parttype_type }} {{ $item->part_model }} c телевизора <span>{{ $item->company }} {{ $item->tv_model }}</span>
-                                        </label>
+                                        <p class="form-check-label col-8 wwbw">
+                                            {{ $item->parttype_type }} {{ $item->part_model }} c телевизора <span class="ca">{{ $item->company }} {{ $item->tv_model }}</span><span class="block cm">{{ $item->part_cost }} руб</span>
+                                        </p>
                                         
                                         <img class="col-1" style="margin-left: auto;" src="{{ asset('img/icon/cart_yes.png') }}" alt="В наличие">
                                     
                                     </div>
                                 </li>
-                            @endif
                             @endforeach
                             <div class="toggle__sorting">
                                 @foreach($partsAdditional->all() as $item)
-                                @if ($item->part_status == 0)
                                 <li class="m-em-1 pr-em-2 pl-em-2 pt-em-1 pb-em-1 bc-light shadow-xs b3">
                                     <div class="form-check ">
                                         
-                                        <input class="form-check-input" data-form="brands-check" type="checkbox" id="{{ $item->id }}">
-                                        <span class="form-check-span"></span>
+                                    <a class="cart-link flex-center-center rel top-left col-2 sd-2 back-main b5 mr-em-1 shadow-xs" href="{{ route('addproduct', [ 'id' => $item->id, 'type' => $item->parttype_type, 'company' => $item->company_id, 'tv' => $item->tv_id, 'img' => $item->part_img_main->part_img_name , 'name' => $item->part_model, 'qty' => 1,  'price' => $item->part_cost ]) }}">
+                                            <img class="p-12 col-8" src="{{ asset('img/icon/shopping-bag.svg') }}" alt="Купить">
+                                        </a>
                                         
-                                        <label class="form-check-label col-8 wwbw" for="{{ $item->id }}">
-                                            {{ $item->parttype_type }} {{ $item->part_model }} c телевизора <span>{{ $item->company }} {{ $item->tv_model }}</span>
-                                        </label>
+                                        <p class="form-check-label col-8 wwbw">
+                                            {{ $item->parttype_type }} {{ $item->part_model }} c телевизора <span class="ca">{{ $item->company }} {{ $item->tv_model }}</span><span class="block cm">{{ $item->part_cost }} руб</span>
+                                        </p>
                                         
                                         <img class="col-1" style="margin-left: auto;" src="{{ asset('img/icon/cart_yes.png') }}" alt="В наличие">
                                     
                                     </div>
                                 </li>
-                                @endif
                                 @endforeach
                             </div>
                         </ul>
@@ -158,22 +156,11 @@
 
                     @endif
                     <div class="mt-em-2">
-                        <!-- <input type="hidden" name="id" value="{{ $part_types->id }}">
-                        <input type="hidden" name="type" value="{{ $part_types->parttype_type }}">
-                        <input type="hidden" name="company" value="{{ $part_types->company_id }}">
-                        <input type="hidden" name="tv" value="{{ $part_types->tv_id }}">
-                        @if($part_types->part_img->first() !== NULL)
-                        <input type="hidden" name="img" value="{{ $part_types->part_img->first()->part_img_name }}">
-                        @else
-                        <input type="hidden" name="img" value="">
-                        @endif
-                        <input type="hidden" name="name" value="{{ $part_types->part_model }}">
-                        <input type="hidden" name="price" value="{{ $part_types->part_cost }}"> -->
 
                         @if($part_types->part_status == 0)
-                            <button class="back-main col-6 sd-6 b5 pt-1 pb-1 b-main shadow c-p">
+                            <a class="block text-center back-main col-6 sd-6 b5 pt-1 pb-1 b-main shadow c-p" href="{{ route('addproduct', [ 'id' => $part_types->id, 'type' => $part_types->parttype_type, 'company' => $part_types->company_id, 'tv' => $part_types->tv_id, 'img' => $part_types->part_img_main->part_img_name , 'name' => $part_types->part_model, 'qty' => 1,  'price' => $part_types->part_cost ]) }}">
                                 <img class="col-2 sd-2" src="{{ asset('img/icon/shopping-bag.svg') }}" alt="Запчасти для телевизоров, название товара + артикул">
-                            </button>
+                            </a>
                         @endif
                         
                     </div>
@@ -182,15 +169,14 @@
             </div>
         </div>
     </div>
-    @if($productsSimilar->isNotEmpty())
+    @if($partsSame->isNotEmpty())
         <div class="back-body new pt-em-5 pb-em-5 pr-5 pl-5">
             <div class="pt-em-2 pb-em-2 bb-light mb-em-3">
                 <h4 class="m-0">Комплекты</h4>
                 <p class="cc col-5 sd-12">Покупать вместе выгодно! Вы можете приобрести вместе с данной запчастью дополнительный товар по специальной цене</p>
             </div>
             <div class="flex-between">
-                @foreach($productsSimilar as $part)
-                @if ($part->part_status == 0)
+                @foreach($partsSame as $part)
                 <div class="card__item__np flex-center-between mb-em-2 b8 p-em-2 back-body col-5 sd-12 rel {{ $part->stock }}">
                     <div class="np__image col-5 sd-5 flex-center-center">
                         <img class="col-12 sd-12 b5" src="/img/products/{{ $part->company_id }}/{{ $part->tv_id }}/m{{ $part->part_img_name }}" alt="Запчасти для телевизоров, {{ $part->parttype_type }} {{ $part->part_model }} c телевизора {{ $part->company }} {{ $part->tv_model }}">
@@ -208,19 +194,17 @@
                         <li class="product_marks__item product_discount">-{{ $part->percent }}%</li>
                     </ul>
                 </div>
-                @endif
                 @endforeach
             </div>
         </div>
     @endif
-    @if($productsSimilar->isNotEmpty())
+    @if($partsSame->isNotEmpty())
         <div class="back-back-add pt-em-5 pb-em-5 pr-5 pl-5">
             <div class="pt-em-2 pb-em-2 bb-light mb-em-3">
                 <h4 class="m-0">Похожие товары</h4>
             </div>
             <div class="flex-between">
-                @foreach($productsSimilar as $part)
-                @if ($part->part_status == 0)
+                @foreach($partsSame as $part)
                 <div class="card__item__np flex-center-between mb-em-2 b8 p-em-2 back-body col-5 sd-12 rel {{ $part->stock }}">
                     <div class="np__image col-5 sd-5 flex-center-center">
                         <img class="col-12 sd-12 b5" src="/img/products/{{ $part->company_id }}/{{ $part->tv_id }}/m{{ $part->part_img_name }}" alt="Запчасти для телевизоров, {{ $part->parttype_type }} {{ $part->part_model }} c телевизора {{ $part->company }} {{ $part->tv_model }}">
@@ -238,7 +222,6 @@
                         <li class="product_marks__item product_discount">-{{ $part->percent }}%</li>
                     </ul>
                 </div>
-                @endif
                 @endforeach
             </div>
         </div>

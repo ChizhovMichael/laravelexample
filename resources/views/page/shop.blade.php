@@ -60,7 +60,7 @@
                                 @endif
                             </div>
                             @if($item->navigation_items->count() > 1)
-                                <div class="navigation__drop__wrapp">
+                                <div class="navigation__drop__wrapp @foreach($item->navigation_items as $add) @if (Request::is('catalog/'.$add->additional_slug  )) show @endif @endforeach">
                                     @foreach($item->navigation_items as $add)
                                     <a class="block hover @if (Request::is('catalog/'.$add->additional_slug  )) bold cm @endif col-11 sd-10" href="{{ route('category.show', ['part_types_id' => $add->additional_slug ]) }}">{{ $add->additional_name }}</a>
                                     @endforeach
@@ -158,15 +158,7 @@
                     </label>
                     <ul class="m-0 pr-em-2 pl-em-2">
                         <li class="mt-1 mb-1 flex-between"><a href="{{ route( $route, [ 'company' => $company, 'model'=> $model, 'part_types_id' => $part_types_id, 'sort' => $sort, 'brands' => $brands, 'stock' => 'all', 'search' => $search ]) }}" class="@if ($stock == null || $stock == 'all') active @endif block hover">Вся продукция</a><span class="cc">({{ $productsCount }})</span></li>
-
-                        
-                    
-
                         <li class="mt-1 mb-1 flex-between @if($newCount < 1) rel disable @endif"><a href="{{ route( $route, [ 'company' => $company, 'model'=> $model, 'part_types_id' => $part_types_id, 'sort' => $sort, 'brands' => $brands, 'stock' => 'new', 'search' => $search]) }}" class="@if ($stock == 'new') active @endif block hover">Новые поступления</a><span class="cc">({{ $newCount }})</span></li>
-
-
-
-
                         <li class="mt-1 mb-1 flex-between @if($saleCount < 1) rel disable @endif"><a href="{{ route( $route, [ 'company' => $company, 'model'=> $model, 'part_types_id' => $part_types_id, 'sort' => $sort, 'brands' => $brands, 'stock' => 'discount', 'search' => $search]) }}" class="@if ($stock == 'discount') active @endif block hover">Акция</a><span class="cc">({{ $saleCount }})</span></li>
 
                     </ul>

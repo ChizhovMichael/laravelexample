@@ -7421,9 +7421,9 @@ function closePopup(el) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! E:\laravelexample\resources\js\app.js */"./resources/js/app.js");
-__webpack_require__(/*! E:\laravelexample\resources\sass\mobile.scss */"./resources/sass/mobile.scss");
-module.exports = __webpack_require__(/*! E:\laravelexample\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/michael/Рабочий стол/laravelexample/resources/js/app.js */"./resources/js/app.js");
+__webpack_require__(/*! /home/michael/Рабочий стол/laravelexample/resources/sass/mobile.scss */"./resources/sass/mobile.scss");
+module.exports = __webpack_require__(/*! /home/michael/Рабочий стол/laravelexample/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

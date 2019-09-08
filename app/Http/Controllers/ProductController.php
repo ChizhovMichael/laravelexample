@@ -119,38 +119,29 @@ class ProductController extends Controller
         $newCount = $products->where('stock', 'new')->count();
         $saleCount = $products->where('stock', 'discount')->count();
 
-        
+        // 2. Сортировка по компаниям
+        $brands = $this->getBrands($request->brands);
+        $products = $brands != NUll ? $products->whereIn('company', $brands) : $products;
 
 
-        // Сортировка по компаниям
-        // $brands = $this->getBrands($request->brands);
-        // $products = $brands != NUll ? $products->whereBrands($brands) : $products;
+        // 3. Сортировка по категориям
+        $stock = $this->getStock($request->stock);
+        $products = $stock != NULL ? $products->where('stock', $stock) : $products;
 
-
-        // Сортировка по категориям
-        // $stock = $this->getStock($request->stock);
-        // $products = $stock != NULL ? $products->whereStock($stock) : $products;
-
-        // Минимальная максимальная цена пока берет совместно с пагинацией
+        // 4. Минимальная максимальная цена пока берет совместно с пагинацией
         $min = $products->min('part_cost');
         $max = $products->max('part_cost');
 
 
-        // Сортировка по цене
+        // 5. Сортировка по цене
         $from = $this->getFrom($request->from, $min);
         $to = $this->getTo($request->to, $max);
-        // $products = $products->wherePriceMore($from);
-        // $products = $products->wherePriceLess($to);
+        $products = $products->where('part_cost', '>=', $from);
+        $products = $products->where('part_cost', '<=', $to);
 
         
-
-
-        // Вывод c пагинацией в 12
-        $products = $products->paginate(12);
-
-        
-        
-        
+        // 6. Вывод c пагинацией в 12
+        $products = $products->paginate(12);       
 
 
         return view('page/shop', [
@@ -193,7 +184,7 @@ class ProductController extends Controller
      ***************/
     public function getFullCategory($part_types_id, Request $request)
     {
-        // Сортировка по названию, по цене
+        // 0. Сортировка по названию, по цене
         $sorting = $this->getSort($request->sort);
 
         $categories = [];
@@ -204,52 +195,45 @@ class ProductController extends Controller
         }
 
         $products = Product::whereIn('parttype_id', $categories);
-
         $products = $products->selectAllInfo();
         $products = $products->selectAllTable();
         $products = $products->getImgMain();
         $products = $products->orderBy($sorting['column'], $sorting['sort']);
+        $products = $products->get();
 
-        $productsCount = $products->getProductsCount()->count();
+        // 1. Получаем количество продукции, новой, акционной
+        $productsCount = $products->count();
+        $newCount = $products->where('stock', 'new')->count();
+        $saleCount = $products->where('stock', 'discount')->count();
 
-        if ($products->first() === NULL) {
-            return abort('404');
-        }
 
-
-        // Сортировка по компаниям
+        // 2. Сортировка по компаниям
         $brands = $this->getBrands($request->brands);
-        $products = $brands != NUll ? $products->whereBrands($brands) : $products;
-
-        
+        $products = $brands != NUll ? $products->whereIn('company', $brands) : $products;
 
 
-        // Сортировка по категориям
+        // 3. Сортировка по категориям
         $stock = $this->getStock($request->stock);
-        $products = $stock != NULL ? $products->whereStock($stock) : $products;
-        
+        $products = $stock != NULL ? $products->where('stock', $stock) : $products;
 
-        // Минимальная максимальная цена пока берет совместно с пагинацией
+        // 4. Минимальная максимальная цена пока берет совместно с пагинацией
         $min = $products->min('part_cost');
         $max = $products->max('part_cost');
 
-        // Сортировка по цене
+
+        // 5. Сортировка по цене
         $from = $this->getFrom($request->from, $min);
         $to = $this->getTo($request->to, $max);
-        $products = $products->wherePriceMore($from);
-        $products = $products->wherePriceLess($to);
-
-
-        // Вывод c пагинацией в 12
-        $part_types = $products->paginate(12);
+        $products = $products->where('part_cost', '>=', $from);
+        $products = $products->where('part_cost', '<=', $to);
 
         
-        $newCount = $products->getNewCount()->count();
-        $saleCount = $products->getSaleCount()->count();
+        // 6. Вывод c пагинацией в 12
+        $products = $products->paginate(12);
 
 
         return view('page/shop', [
-            'part_types'    => $part_types->appends([
+            'part_types'    => $products->appends([
                 'sort'      => $request->sort,
                 'stock'     => $request->stock,
                 'brands'    => $request->brands,
@@ -332,19 +316,13 @@ class ProductController extends Controller
             $productsAdditional = $productsAdditional->selectAllInfoWithoutMainImg();
             $productsAdditional = $productsAdditional->selectAllTable();
             $productsAdditional = $productsAdditional->with('matrix');
+            $productsAdditional = $productsAdditional->with('part_img_main');
             $productsAdditional = $productsAdditional->get();
             $productsAdditional = $productsAdditional->filter(function($item) use ($products) {
                 return $item->id != $products->id;
             });
-
-            $productsSimilar = Product::where('part_link', 'LIKE', '%' . $slugMain . '%');
-            $productsSimilar = $productsSimilar->selectAllInfo();
-            $productsSimilar = $productsSimilar->selectAllTable();
-            $productsSimilar = $productsSimilar->getImgMain();
-            $productsSimilar = $productsSimilar->get();
-            $productsSimilar = $productsSimilar->filter(function($item) use ($products) {
-                return $item->id != $products->id;
-            });
+            $productsAdditional = $productsAdditional->where('part_status', 0);
+            $productsSame = $productsAdditional->where('part_status', 0);
 
         } else {
 
@@ -362,10 +340,8 @@ class ProductController extends Controller
 
 
             $products = $productsEmpty;
-            
-
             $productsAdditional = collect([]);
-            $productsSimilar = collect([]);
+            $productsSame = collect([]);
         }
 
         $category = NavigationAdditional::where('additional_id', '=', $products->parttype_id)->get();        
@@ -377,12 +353,13 @@ class ProductController extends Controller
             $action = '#';
         }
 
+
         return view('page/product', [
             'part_types'        => $products,
             'partsAdditional'   => $productsAdditional,
-            'productsSimilar'   => $productsSimilar,
+            'partsSame'          => $productsSame,
             'navigations'       => $this->navigation(),
-            'cart'              =>  $this->getCartCount(),
+            'cart'              => $this->getCartCount(),
             'action'            => $action,
             'category'          => $category,
         ]);
@@ -422,7 +399,7 @@ class ProductController extends Controller
      */
     public function getSearchProduct($search, Request $request)
     {
-        // Сортировка по названию, по цене
+        // 0. Сортировка по названию, по цене
         $sorting = $this->getSort($request->sort);
 
 
@@ -431,35 +408,35 @@ class ProductController extends Controller
         $products = $products->selectAllTable();
         $products = $products->getImgMain();
         $products = $products->orderBy($sorting['column'], $sorting['sort']);
+        $products = $products->get();
 
+        // 1. Получаем количество продукции, новой, акционной
+        $productsCount = $products->count();
+        $newCount = $products->where('stock', 'new')->count();
+        $saleCount = $products->where('stock', 'discount')->count();
 
-        if ($products->first() === NULL) {
-            return abort('404');
-        }
-
-        // Сортировка по компаниям
+        // 2. Сортировка по компаниям
         $brands = $this->getBrands($request->brands);
-        $products = $brands != NUll ? $products->whereBrands($brands) : $products;
+        $products = $brands != NUll ? $products->whereIn('company', $brands) : $products;
 
-        
-        
 
-        // Сортировка по категориям
+        // 3. Сортировка по категориям
         $stock = $this->getStock($request->stock);
-        $products = $stock != NULL ? $products->whereStock($stock) : $products;
+        $products = $stock != NULL ? $products->where('stock', $stock) : $products;
 
-        // Минимальная максимальная цена пока берет совместно с пагинацией
+        // 4. Минимальная максимальная цена пока берет совместно с пагинацией
         $min = $products->min('part_cost');
         $max = $products->max('part_cost');
 
-        // Сортировка по цене
+
+        // 5. Сортировка по цене
         $from = $this->getFrom($request->from, $min);
         $to = $this->getTo($request->to, $max);
-        $products = $products->wherePriceMore($from);
-        $products = $products->wherePriceLess($to);
+        $products = $products->where('part_cost', '>=', $from);
+        $products = $products->where('part_cost', '<=', $to);
 
-        // Вывод c пагинацией в 12
         
+        // 6. Вывод c пагинацией в 12
         $products = $products->paginate(12);
 
         
@@ -489,6 +466,9 @@ class ProductController extends Controller
             'search'        => $search, //правильно
             'company'       => NULL,
             'model'         => NULL,
+            'productsCount' => $productsCount,
+            'newCount'      => $newCount,
+            'saleCount'     => $saleCount,
         ]);
     }
 
@@ -498,7 +478,7 @@ class ProductController extends Controller
      */
     public function getTvCategory( $company, $model, Request $request )
     {
-        // Сортировка по названию, по цене
+        // 0. Сортировка по названию, по цене
         $sorting = $this->getSort($request->sort);
 
 
@@ -514,32 +494,35 @@ class ProductController extends Controller
         $products = $products->where('company_id', '=', $company_id);
         $products = $products->where('tv_id', '=', $model_id);
         $products = $products->orderBy($sorting['column'], $sorting['sort']);
+        $products = $products->get();
 
-        if ($products->first() === NULL) {
-            return abort('404');
-        }
+        // 1. Получаем количество продукции, новой, акционной
+        $productsCount = $products->count();
+        $newCount = $products->where('stock', 'new')->count();
+        $saleCount = $products->where('stock', 'discount')->count();
 
-
-        // Сортировка по компаниям
+        // 2. Сортировка по компаниям
         $brands = $this->getBrands($request->brands);
-        $products = $brands != NUll ? $products->whereBrands($brands) : $products;
+        $products = $brands != NUll ? $products->whereIn('company', $brands) : $products;
 
 
-        // Сортировка по категориям
+        // 3. Сортировка по категориям
         $stock = $this->getStock($request->stock);
-        $products = $stock != NULL ? $products->whereStock($stock) : $products;
+        $products = $stock != NULL ? $products->where('stock', $stock) : $products;
 
-        // Минимальная максимальная цена пока берет совместно с пагинацией
+        // 4. Минимальная максимальная цена пока берет совместно с пагинацией
         $min = $products->min('part_cost');
         $max = $products->max('part_cost');
 
-        // Сортировка по цене
+
+        // 5. Сортировка по цене
         $from = $this->getFrom($request->from, $min);
         $to = $this->getTo($request->to, $max);
-        $products = $products->wherePriceMore($from);
-        $products = $products->wherePriceLess($to);
+        $products = $products->where('part_cost', '>=', $from);
+        $products = $products->where('part_cost', '<=', $to);
 
-        // Вывод c пагинацией в 12
+        
+        // 6. Вывод c пагинацией в 12
         $products = $products->paginate(12);
 
 
@@ -568,11 +551,12 @@ class ProductController extends Controller
             'search'        => NULL, // правильно
             'company'       => $company->company,
             'model'         => $model->tv_model,
+            'productsCount' => $productsCount,
+            'newCount'      => $newCount,
+            'saleCount'     => $saleCount,
         ]);
 
 
-        // Сделать чтобы в запчастях были подкатегории
         // Выделить комплекты
-        // Отображение другого товара при нажатии на инпут
     }
 }

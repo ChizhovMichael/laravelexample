@@ -643,5 +643,3 @@ function closePopup(el) {
 
     }, true)
 }
-
-
