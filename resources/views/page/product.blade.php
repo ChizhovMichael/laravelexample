@@ -72,6 +72,7 @@
             @endif
 
             <div>
+                <!-- Требуется ли данная форма -->
                 <form action="{!! $action !!}" method="POST">
                     <div>
 
@@ -158,7 +159,7 @@
                     <div class="mt-em-2">
 
                         @if($part_types->part_status == 0)
-                            <a class="block text-center back-main col-6 sd-6 b5 pt-1 pb-1 b-main shadow c-p" href="{{ route('addproduct', [ 'id' => $part_types->id, 'type' => $part_types->parttype_type, 'company' => $part_types->company_id, 'tv' => $part_types->tv_id, 'img' => $part_types->part_img_main->part_img_name , 'name' => $part_types->part_model, 'qty' => 1,  'price' => $part_types->part_cost ]) }}">
+                            <a class="cart-link block text-center back-main col-6 sd-6 b5 pt-1 pb-1 b-main shadow c-p" href="{{ route('addproduct', [ 'id' => $part_types->id, 'qty' => 1 ]) }}">
                                 <img class="col-2 sd-2" src="{{ asset('img/icon/shopping-bag.svg') }}" alt="Запчасти для телевизоров, название товара + артикул">
                             </a>
                         @endif
@@ -169,30 +170,26 @@
             </div>
         </div>
     </div>
-    @if($partsSame->isNotEmpty())
+    @if($partsSet->isNotEmpty())
         <div class="back-body new pt-em-5 pb-em-5 pr-5 pl-5">
             <div class="pt-em-2 pb-em-2 bb-light mb-em-3">
                 <h4 class="m-0">Комплекты</h4>
                 <p class="cc col-5 sd-12">Покупать вместе выгодно! Вы можете приобрести вместе с данной запчастью дополнительный товар по специальной цене</p>
             </div>
             <div class="flex-between">
-                @foreach($partsSame as $part)
-                <div class="card__item__np flex-center-between mb-em-2 b8 p-em-2 back-body col-5 sd-12 rel {{ $part->stock }}">
+                @foreach($partsSet as $part)
+                <div class="card__item__np flex-center-between mb-em-2 b8 p-em-2 back-body col-5 sd-12 rel">
                     <div class="np__image col-5 sd-5 flex-center-center">
-                        <img class="col-12 sd-12 b5" src="/img/products/{{ $part->company_id }}/{{ $part->tv_id }}/m{{ $part->part_img_name }}" alt="Запчасти для телевизоров, {{ $part->parttype_type }} {{ $part->part_model }} c телевизора {{ $part->company }} {{ $part->tv_model }}">
+                        <img class="col-12 sd-12 b5" src="/img/sets/{{ $part->set_img }}" alt="Запчасти для телевизоров, {{ $part->set_name }}">
                     </div>
                     <div class="np__content col-7 sd-7 pr-em-1 pl-em-1 flex-start">
-                        <p class="block pr-em-2 pl-em-2">{{ $part->company }} {{ $part->tv_model }}</p>
-                        <a class="block hover-main pr-em-2 pl-em-2" href="{{ route('product.show', ['slug' => $part->part_link ]) }}">{{ $part->part_model }}</a>
-                        <h6 class="ct mt-em-1 mb-em-1 pr-em-2 pl-em-2">
-                            {{ $part->part_cost }}&nbsp;&#x20bd;
-                            <span class="cc ml-em-1">{{ $part->price }}&nbsp;&#x20bd;</span>
+                        <p class="block pr-em-2 pl-em-2 cc">{{ $part->set_comment }}</p>
+                        <a class="block hover-main pr-em-2 pl-em-2" href="{{ route('set.show', [ 'slug' => $part->set_slug ]) }}">{{ $part->set_name }}</a>
+                        <h6 class="ca mt-em-1 mb-em-1 pr-em-2 pl-em-2">
+                            {{ $part->set_cost }}&nbsp;&#x20bd;
+                            <span class="cc ml-em-1 line-through">{{ $part->set_full_cost }}&nbsp;&#x20bd;</span>
                         </h6>
                     </div>
-                    <ul class="product_marks">
-                        <li class="product_marks__item product_new">new</li>
-                        <li class="product_marks__item product_discount">-{{ $part->percent }}%</li>
-                    </ul>
                 </div>
                 @endforeach
             </div>

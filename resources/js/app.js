@@ -485,6 +485,10 @@ function addCart() {
                 if (target.classList.contains('cart-link')) {
                     event.preventDefault();
 
+                    if (!target.getAttribute('href')) {
+                        return;
+                    }
+
                     const xhr = new XMLHttpRequest();
                     xhr.open('POST', target.getAttribute('href'), true);
                     xhr.setRequestHeader(

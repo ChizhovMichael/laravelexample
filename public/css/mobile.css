@@ -3158,6 +3158,10 @@ https://flickity.metafizzy.co
   font-weight: 700;
 }
 
+.line-through {
+  text-decoration: line-through;
+}
+
 /***********
 // background
 ***********/

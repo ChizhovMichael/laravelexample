@@ -11,8 +11,7 @@ use Cart;
 use App\Company;
 use App\Tv;
 use App\NavigationAdditional;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\URL;
+use App\Set;
 
 
 /*************
@@ -28,7 +27,7 @@ use Illuminate\Support\Facades\URL;
  * | 6. Get Categories Product (вывод всей продукции с погинацией и get запросами-сортировкой по категориям)
  * | 7. Get Search Product (Получаем все продукты соответствующие критерию поиска)
  * | 8. Get Tv Product (Получаем все продукты соответствующие данному телевизору)
- * |
+ * | 9. Add Set To Cart (Добавление продукции в карзину);
  **************/
 
 
@@ -139,9 +138,12 @@ class ProductController extends Controller
         $products = $products->where('part_cost', '>=', $from);
         $products = $products->where('part_cost', '<=', $to);
 
-        
-        // 6. Вывод c пагинацией в 12
-        $products = $products->paginate(12);       
+
+        // 6. Убираем товар которого нет в наличии в конец 
+        $products = $products->sortBy('part_status');
+
+        // 7. Вывод c пагинацией в 12
+        $products = $products->paginate(12);
 
 
         return view('page/shop', [
@@ -227,8 +229,11 @@ class ProductController extends Controller
         $products = $products->where('part_cost', '>=', $from);
         $products = $products->where('part_cost', '<=', $to);
 
-        
-        // 6. Вывод c пагинацией в 12
+
+        // 6. Убираем товар которого нет в наличии в конец 
+        $products = $products->sortBy('part_status');
+
+        // 7. Вывод c пагинацией в 12
         $products = $products->paginate(12);
 
 
@@ -292,10 +297,9 @@ class ProductController extends Controller
             }
 
             $products = $productsExternal;
-            
         }
 
-        
+
 
         $products = $products->where('part_status', '=', '0');
         $products = $products->selectAllInfoWithoutMainImg();
@@ -318,11 +322,15 @@ class ProductController extends Controller
             $productsAdditional = $productsAdditional->with('matrix');
             $productsAdditional = $productsAdditional->with('part_img_main');
             $productsAdditional = $productsAdditional->get();
-            $productsAdditional = $productsAdditional->filter(function($item) use ($products) {
+            $productsAdditional = $productsAdditional->filter(function ($item) use ($products) {
                 return $item->id != $products->id;
             });
             $productsAdditional = $productsAdditional->where('part_status', 0);
             $productsSame = $productsAdditional->where('part_status', 0);
+
+            // 5. Ищем комплекты с данным продуктом
+            $productsSet = Set::setProduct($products->id)
+                ->get();
 
         } else {
 
@@ -342,22 +350,25 @@ class ProductController extends Controller
             $products = $productsEmpty;
             $productsAdditional = collect([]);
             $productsSame = collect([]);
+            $productsSet = collect([]);
         }
 
-        $category = NavigationAdditional::where('additional_id', '=', $products->parttype_id)->get();        
+        $category = NavigationAdditional::where('additional_id', '=', $products->parttype_id)->get();
 
-
+        //Требуется ли данная форма?
         if ($products->part_status == 0) {
             $action = route('product.add');
         } else {
             $action = '#';
         }
 
+        // return $productsSet;
 
         return view('page/product', [
             'part_types'        => $products,
             'partsAdditional'   => $productsAdditional,
-            'partsSame'          => $productsSame,
+            'partsSame'         => $productsSame,
+            'partsSet'          => $productsSet,
             'navigations'       => $this->navigation(),
             'cart'              => $this->getCartCount(),
             'action'            => $action,
@@ -370,19 +381,25 @@ class ProductController extends Controller
      * | Add Product To Cart
      * | Добавление продукции в карзину
      ***************/
-    public function addProductToCart($id, $type, $company, $tv, $img = NULL, $name, $qty, $price)
+    public function addProductToCart($id, $qty)
     {
+        $products = Product::where('products.id', '=', $id);
+        $products = $products->selectAllInfo();
+        $products = $products->selectAllTable();
+        $products = $products->getImgMain();
+        $products = $products->first();
+
 
         Cart::add([
             'id' => $id,
-            'name' => $name,
+            'name' => $products->part_model,
             'qty' => $qty,
-            'price' => $price,
+            'price' => $products->part_cost,
             'options' => [
-                'type' => $type,
-                'company' => $company,
-                'tv' => $tv,
-                'img' => $img
+                'type' => $products->parttype_type,
+                'company' => $products->company_id,
+                'tv' => $products->tv_id,
+                'img' => $products->part_img_name
             ],
         ]);
 
@@ -435,11 +452,14 @@ class ProductController extends Controller
         $products = $products->where('part_cost', '>=', $from);
         $products = $products->where('part_cost', '<=', $to);
 
-        
-        // 6. Вывод c пагинацией в 12
+
+        // 6. Убираем товар которого нет в наличии в конец 
+        $products = $products->sortBy('part_status');
+
+        // 7. Вывод c пагинацией в 12
         $products = $products->paginate(12);
 
-        
+
 
         return view('page/shop', [
             'part_types'    => $products->appends([
@@ -476,7 +496,7 @@ class ProductController extends Controller
      * | Get Tv Product
      * | Получаем все продукты соответствующие данному телевизору
      */
-    public function getTvCategory( $company, $model, Request $request )
+    public function getTvCategory($company, $model, Request $request)
     {
         // 0. Сортировка по названию, по цене
         $sorting = $this->getSort($request->sort);
@@ -521,8 +541,11 @@ class ProductController extends Controller
         $products = $products->where('part_cost', '>=', $from);
         $products = $products->where('part_cost', '<=', $to);
 
-        
-        // 6. Вывод c пагинацией в 12
+
+        // 6. Убираем товар которого нет в наличии в конец 
+        $products = $products->sortBy('part_status');
+
+        // 7. Вывод c пагинацией в 12
         $products = $products->paginate(12);
 
 
@@ -556,7 +579,71 @@ class ProductController extends Controller
             'saleCount'     => $saleCount,
         ]);
 
+    }
 
-        // Выделить комплекты
+
+    /**
+     * | Get Set Product
+     * | Получаем комплект продукции, соответствующий данному комплекту
+     */
+    public function getItemSet( $slug ) 
+    {
+        $products = Set::where('set_slug', $slug);
+        $products = $products->with('get_set_products');
+        $products = $products->first();
+        
+
+        $productsInfo = Set::where('set_slug', $slug);
+        $productsInfo = $productsInfo->getSetProducts();
+        $productsInfo = $productsInfo->getProductsItem();
+        $productsInfo = $productsInfo->get();    
+
+
+        //Требуется ли данная форма?
+        if ($products->set_count > 0) {
+            $action = route('product.add');
+        } else {
+            $action = '#';
+        }
+
+        return view('page/set',[
+            'navigations'   => $this->navigation(),
+            'set'           => $products,
+            'setInfo'       => $productsInfo,
+            'cart'          => $this->getCartCount(),
+            'action'        => $action
+        ]);
+
+    }
+
+    /**********
+     * | Add Set To Cart
+     * | Добавление продукции в карзину
+     ***************/
+    public function addSetToCart($id, $qty)
+    {
+        $products = Set::where('sets.id', '=', $id);
+        $products = $products->first();
+
+
+        Cart::add([
+            'id' => $id,
+            'name' => $products->set_name,
+            'qty' => $qty,
+            'price' => $products->set_cost,
+            'options' => [
+                'img' => $products->set_img
+            ],
+        ]);
+
+        return response()->json([
+            'count' => Cart::count(),
+            'total' => Cart::total(),
+            'content' => Cart::content(),
+        ]);
+
+        // Разобраться с количеством добавляемой продукции
+        // Разобраться с формами в продукциях и сэтах
+        
     }
 }

@@ -223,9 +223,15 @@
                                 <a href="{{ route('product.show', ['slug' => $part->part_link ]) }}" class="hover-main block pr-em-1 pl-em-1 wwbw">{{ ltrim($part->part_model) }}</a>
                             </div>
                             <div class="product_extras col-12 back-body hide">
-                                <a class="cart-link flex-center-center rel top-left col-12 back-main mt-em-1 bbl5 bbr5" href="{{ route('addproduct', [ 'id' => $part->id, 'type' => $part->parttype_type, 'company' => $part->company_id, 'tv' => $part->tv_id, 'img' => $part->part_img_name , 'name' => $part->part_model, 'qty' => 1,  'price' => $part->part_cost ]) }}">
+                                @if($part->part_status == 0)
+                                <a class="cart-link flex-center-center rel top-left col-12 back-main mt-em-1 bbl5 bbr5" href="{{ route('addproduct', [ 'id' => $part->id, 'qty' => 1 ]) }}">
                                     <img src="{{ asset('img/icon/shopping-bag.svg') }}" alt="Купить">
                                 </a>
+                                @else 
+                                <span class="cart-link flex-center-center rel top-left col-12 back-main mt-em-1 bbl5 bbr5 cb">
+                                    Нет в наличии
+                                </span>
+                                @endif
                             </div>
                         </div>
                         <ul class="product_marks">

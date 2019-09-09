@@ -29,11 +29,12 @@ Route::get('/catalog', 'ProductController@getAllProduct')->name('catalog');
 Route::get('/catalog/{part_types_id}', 'ProductController@getFullCategory')->name('category.show');
 Route::get('/catalog/tv/{company}/{model}', 'ProductController@getTvCategory')->name('category.tv');
 
-Route::post('/add/{id}/{type}/{company}/{tv}/{img}/{name}/{qty}/{price}', 'ProductController@addProductToCart')->name('addproduct');
-
+Route::post('/add/{id}/{qty}', 'ProductController@addProductToCart')->name('addproduct');
+Route::post('/add/set/{id}/{qty}', 'ProductController@addSetToCart')->name('addset');
 Route::get('/contacts', 'ContactController@getPage')->name('contacts');
 
 Route::get('/product/{slug}', 'ProductController@getItemProduct')->name('product.show');
+Route::get('/set/{slug}', 'ProductController@getItemSet')->name('set.show');
 Route::post('/addproduct', 'ProductController@addToCartItemProduct')->name('product.add');
 
 Route::get('/cart', 'CartController@getPage')->name('cart');

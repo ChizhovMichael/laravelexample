@@ -6816,6 +6816,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var overlayscrollbars__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! overlayscrollbars */ "./node_modules/overlayscrollbars/js/OverlayScrollbars.js");
 /* harmony import */ var overlayscrollbars__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(overlayscrollbars__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var current_device__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! current-device */ "./node_modules/current-device/es/index.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 /**
  * First, we will load all of this project's Javascript utilities and other
  * dependencies. Then, we will be ready to develop a robust and powerful
@@ -7248,6 +7250,13 @@ function addCart() {
         if (target.classList.contains('cart-link')) {
           var _ret = function () {
             event.preventDefault();
+
+            if (!target.getAttribute('href')) {
+              return {
+                v: void 0
+              };
+            }
+
             var xhr = new XMLHttpRequest();
             xhr.open('POST', target.getAttribute('href'), true);
             xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
@@ -7269,7 +7278,13 @@ function addCart() {
             return "break";
           }();
 
-          if (_ret === "break") break;
+          switch (_ret) {
+            case "break":
+              break;
+
+            default:
+              if (_typeof(_ret) === "object") return _ret.v;
+          }
         }
       }
 
@@ -7421,9 +7436,9 @@ function closePopup(el) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/michael/Рабочий стол/laravelexample/resources/js/app.js */"./resources/js/app.js");
-__webpack_require__(/*! /home/michael/Рабочий стол/laravelexample/resources/sass/mobile.scss */"./resources/sass/mobile.scss");
-module.exports = __webpack_require__(/*! /home/michael/Рабочий стол/laravelexample/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! E:\laravelexample\resources\js\app.js */"./resources/js/app.js");
+__webpack_require__(/*! E:\laravelexample\resources\sass\mobile.scss */"./resources/sass/mobile.scss");
+module.exports = __webpack_require__(/*! E:\laravelexample\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
