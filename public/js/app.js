@@ -6856,6 +6856,7 @@ document.addEventListener("DOMContentLoaded", function () {
   popup('popup');
   closePopup('close');
   navigationItemShow('navigation__trigger');
+  quantityOfGoods('product_quantity');
 });
 
 function toggleMenu(el) {
@@ -7403,6 +7404,71 @@ function closePopup(el) {
 
     parent.remove();
   }, true);
+}
+
+function quantityOfGoods(el) {
+  var elem = document.querySelector('.' + el);
+
+  if (!elem) {
+    return;
+  }
+
+  var add = elem.querySelector('#quantity_inc_button');
+  var sub = elem.querySelector('#quantity_dec_button');
+  var input = elem.querySelector('input');
+  var maxValue = input.getAttribute('max-value');
+  var typeId = input.getAttribute('product-id');
+
+  if (elem.classList.contains('set')) {
+    var path = 'addsetquantity';
+  } else {
+    var path = 'addquantity';
+  }
+
+  add.addEventListener('click', function () {
+    var value = parseInt(input.value);
+    maxValue = parseInt(maxValue);
+    typeId = parseInt(typeId);
+
+    if (value < maxValue) {
+      input.value = value + 1;
+
+      if (value === maxValue) {
+        input.value = maxValue;
+      }
+
+      sendQuantity(input.value, typeId);
+    }
+  });
+  sub.addEventListener('click', function () {
+    var value = parseInt(input.value);
+    maxValue = parseInt(maxValue);
+    typeId = parseInt(typeId);
+
+    if (value > 1) {
+      input.value = value - 1;
+
+      if (value === 1) {
+        input.value = 1;
+      }
+
+      sendQuantity(input.value, typeId);
+    }
+  });
+
+  var sendQuantity = function sendQuantity(value, product) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/' + path + '?qty=' + value + '&product=' + product, true);
+    xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        document.querySelector('.cart-link').href = xhr.responseText;
+      }
+    };
+
+    xhr.send();
+  };
 }
 
 /***/ }),

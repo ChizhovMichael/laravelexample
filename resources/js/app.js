@@ -52,6 +52,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     navigationItemShow('navigation__trigger');
 
+    quantityOfGoods('product_quantity');
+
 });
 
 
@@ -414,9 +416,9 @@ function navigationItemShow(el) {
 
             nextElem.classList.toggle('show')
         })
-        
+
     }
-    
+
 }
 
 
@@ -577,7 +579,7 @@ function popup(el) {
         var myImage = new Image(30, 30);
         myImage.src = '/img/icon/cancel.svg';
 
-        
+
         document.body.appendChild(container);
         container.appendChild(window);
 
@@ -615,30 +617,30 @@ function closePopup(el) {
         if (target == this) return;
 
         if (!Element.prototype.matches) {
-            Element.prototype.matches = Element.prototype.msMatchesSelector || 
-                                        Element.prototype.webkitMatchesSelector;
-          }
-          
-          if (!Element.prototype.closest) {
-            Element.prototype.closest = function(s) {
-              var el = this;
-          
-              do {
-                if (el.matches(s)) return el;
-                el = el.parentElement || el.parentNode;
-              } while (el !== null && el.nodeType === 1);
-              return null;
+            Element.prototype.matches = Element.prototype.msMatchesSelector ||
+                Element.prototype.webkitMatchesSelector;
+        }
+
+        if (!Element.prototype.closest) {
+            Element.prototype.closest = function (s) {
+                var el = this;
+
+                do {
+                    if (el.matches(s)) return el;
+                    el = el.parentElement || el.parentNode;
+                } while (el !== null && el.nodeType === 1);
+                return null;
             };
-          }
+        }
 
         var parent = target.closest('.modal');
 
-        Element.prototype.remove = function() {
+        Element.prototype.remove = function () {
             this.parentElement.removeChild(this);
         }
-        NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
-            for(var i = this.length - 1; i >= 0; i--) {
-                if(this[i] && this[i].parentElement) {
+        NodeList.prototype.remove = HTMLCollection.prototype.remove = function () {
+            for (var i = this.length - 1; i >= 0; i--) {
+                if (this[i] && this[i].parentElement) {
                     this[i].parentElement.removeChild(this[i]);
                 }
             }
@@ -646,4 +648,81 @@ function closePopup(el) {
         parent.remove();
 
     }, true)
+}
+
+
+function quantityOfGoods(el) {
+    var elem = document.querySelector('.' + el);
+    if (!elem) {
+        return;
+    }
+
+    var add = elem.querySelector('#quantity_inc_button');
+    var sub = elem.querySelector('#quantity_dec_button');
+    var input = elem.querySelector('input');
+    var maxValue = input.getAttribute('max-value');
+    var typeId = input.getAttribute('product-id');
+
+    if (elem.classList.contains('set')) {
+        var path = 'addsetquantity';
+    } else {
+        var path = 'addquantity';
+    }
+
+
+
+    add.addEventListener('click', () => {
+
+        let value = parseInt(input.value);
+        maxValue = parseInt(maxValue);
+        typeId = parseInt(typeId);
+
+        if (value < maxValue) {
+            input.value = value + 1;
+
+            if (value === maxValue) {
+                input.value = maxValue
+            }
+
+            sendQuantity(input.value, typeId);
+        }
+    })
+
+    sub.addEventListener('click', () => {
+
+        let value = parseInt(input.value);
+        maxValue = parseInt(maxValue);
+        typeId = parseInt(typeId);
+
+        if (value > 1) {
+            input.value = value - 1;
+
+            if (value === 1) {
+                input.value = 1
+            }
+
+            sendQuantity(input.value, typeId);
+        }
+
+    })
+
+
+    var sendQuantity = ( value, product ) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/' + path + '?qty=' + value + '&product=' + product, true);
+        xhr.setRequestHeader(
+            'X-CSRF-TOKEN',
+            document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        );
+        xhr.onreadystatechange = function () {
+
+            if (xhr.readyState == 4 && xhr.status == 200) {
+
+                document.querySelector('.cart-link').href = xhr.responseText;
+
+            }
+        }
+        xhr.send()
+    }
+
 }

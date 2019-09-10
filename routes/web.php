@@ -11,6 +11,8 @@
 |
 */
 
+use App\Http\Controllers\CartController;
+
 Route::get('/', 'ProductController@index')->name('main');
 Route::get('/запчасти_для_телевизоров', 'ProductController@index');
 
@@ -31,13 +33,14 @@ Route::get('/catalog/tv/{company}/{model}', 'ProductController@getTvCategory')->
 
 Route::post('/add/{id}/{qty}', 'ProductController@addProductToCart')->name('addproduct');
 Route::post('/add/set/{id}/{qty}', 'ProductController@addSetToCart')->name('addset');
-Route::get('/contacts', 'ContactController@getPage')->name('contacts');
 
 Route::get('/product/{slug}', 'ProductController@getItemProduct')->name('product.show');
 Route::get('/set/{slug}', 'ProductController@getItemSet')->name('set.show');
-Route::post('/addproduct', 'ProductController@addToCartItemProduct')->name('product.add');
 
 Route::get('/cart', 'CartController@getPage')->name('cart');
+Route::post('/cart/destroy/{cart_id}', 'CartController@destroyProduct')->name('cart.destroy');
+
+Route::get('/contacts', 'ContactController@getPage')->name('contacts');
 
 Route::get('/delivery', function () {
     return view('page/delivery');
@@ -62,5 +65,10 @@ Route::post('/saleform', function() {
     return view('includes/saleform');
 });
 
+/**
+ * Quantity From
+ */
+Route::post('/addquantity', 'ProductController@addQuantity');
+Route::post('/addsetquantity', 'ProductController@addSetQuantity');
 
 

@@ -46,10 +46,18 @@
             @foreach ($cartContent as $item)
             <div class="flex-center-between mt-em-1">
                 <div class="flex-center-center text-right col-2 pr-em-1 pl-em-1">
-                    <img class="col-12" src="/img/products/{{ $item->options->company }}/{{ $item->options->tv }}/m{{ $item->options->img }}" alt="Запчасти для телевизоров, название товара + артикул">
+                    @if($item->options->get('company') == NULL)
+                        <img class="sd-12 b4" src="/img/sets/{{ $item->options->img }}" alt="Запчасти для телевизоров, название товара + артикул">
+                    @else 
+                        <img class="sd-12 b4" src="/img/products/{{ $item->options->company }}/{{ $item->options->tv }}/m{{ $item->options->img }}" alt="Запчасти для телевизоров, название товара + артикул">
+                    @endif
                 </div>
                 <div  class="text-right col-3">
-                    <a href="#" class="cc mt-1 mb-1 hover-main">{{ $item->options->type }} {{ $item->name }}</a>                    
+                    @if($item->options->get('company') == NULL)
+                        <a href="{{ route('set.show', [ 'slug' => $item->options->part_link ]) }}" class="cc mt-1 mb-1 hover-main">{{ $item->options->type }} {{ $item->name }}</a>
+                    @else
+                        <a href="{{ route('product.show', [ 'slug' => $item->options->part_link ]) }}" class="cc mt-1 mb-1 hover-main">{{ $item->options->type }} {{ $item->name }}</a>
+                    @endif
                 </div>
                 <div  class="text-right col-2">
                     <p class="cc mt-1 mb-1">{{ $item->qty }}</p>
@@ -58,7 +66,11 @@
                     <p class="cc mt-1 mb-1">{{ $item->price }}</p>
                 </div>
                 <div  class="text-right col-2">
-                    <h6 class="ct mt-1 mb-1">{{ $item->subtotal }}</h6>
+                    <h6 class="ct mt-1 mb-1 rel">{{ $item->subtotal }}
+                        <a href="{{ route('cart.destroy', [ 'cart_id' => $item->rowId ]) }}" class="destroy flex-center shadow-xs cart-link">
+                            <img class="sd-12 col-12" src="{{ asset('img/icon/cancel.svg') }}" alt="delete">
+                        </a>
+                    </h6>
                 </div>
             </div>
             @endforeach
@@ -80,10 +92,18 @@
             @foreach ($cartContent as $item)
             <div class="flex mb-em-2 pb-em-2 bb-light">
                 <div class="mt-em-1 sd-12">
-                    <img class="sd-12 b4" src="/img/products/{{ $item->options->company }}/{{ $item->options->matrix }}/m{{ $item->options->img }}}" alt="Запчасти для телевизоров, название товара + артикул">
+                    @if($item->options->get('company') == NULL)
+                        <img class="sd-12 b4" src="/img/sets/{{ $item->options->img }}" alt="Запчасти для телевизоров, название товара + артикул">
+                    @else 
+                        <img class="sd-12 b4" src="/img/products/{{ $item->options->company }}/{{ $item->options->tv }}/m{{ $item->options->img }}" alt="Запчасти для телевизоров, название товара + артикул">
+                    @endif
                 </div>
                 <div class="mt-em-1 sd-12">
-                    <a href="#" class="cc mt-1 mb-1 hover-main">{{ $item->options->type }} {{ $item->name }}</a>
+                    @if($item->options->get('company') == NULL)
+                        <a href="{{ route('set.show', [ 'slug' => $item->options->part_link ]) }}" class="cc mt-1 mb-1 hover-main">{{ $item->options->type }} {{ $item->name }}</a>
+                    @else
+                        <a href="{{ route('product.show', [ 'slug' => $item->options->part_link ]) }}" class="cc mt-1 mb-1 hover-main">{{ $item->options->type }} {{ $item->name }}</a>
+                    @endif
                 </div>
                 <div class="mt-em-1 sd-12">
                     <p class="cc m-0">{{ $item->price }}&nbsp;&#x20bd; за 1 шт</p>
@@ -92,7 +112,11 @@
                     <p class="cc m-0">{{ $item->qty }}шт</p>
                 </div>
                 <div class="mt-em-1 sd-12">
-                    <h6 class="ct m-0">Сумма: {{ $item->subtotal }}&nbsp;&#x20bd;</h6>
+                    <h6 class="ct m-0 rel sd-6">Сумма: {{ $item->subtotal }}&nbsp;&#x20bd;
+                        <a href="{{ route('cart.destroy', [ 'cart_id' => $item->rowId ]) }}" class="destroy flex-center shadow-xs">
+                            <img class="sd-12 col-12" src="{{ asset('img/icon/cancel.svg') }}" alt="delete">
+                        </a>
+                    </h6>
                 </div>
             </div>
             @endforeach

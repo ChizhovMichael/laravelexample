@@ -72,15 +72,14 @@
             @endif
 
             <div>
-                <!-- Требуется ли данная форма -->
-                <form action="{!! $action !!}" method="POST">
+                
                     <div>
 
                         <!-- Product Quantity -->
                         @if($part_types->part_status == 0 && $part_types->part_count > 1)
                         <div class="product_quantity">
                             <span>Количество: </span>
-                            <input name="qty" id="quantity_input" type="text" pattern="[0-9]*" value="1">
+                            <input name="qty" id="quantity_input" type="text" pattern="[0-9]*" value="1" max-value="{{ $part_types->part_count }}" product-id="{{ $part_types->id }}">
                             <div class="quantity_buttons">
                                 <div id="quantity_inc_button" class="quantity_inc quantity_control">
                                     <img src="{{ asset('img/icon/chevron-arrow-up.svg') }}" alt="">
@@ -159,14 +158,13 @@
                     <div class="mt-em-2">
 
                         @if($part_types->part_status == 0)
-                            <a class="cart-link block text-center back-main col-6 sd-6 b5 pt-1 pb-1 b-main shadow c-p" href="{{ route('addproduct', [ 'id' => $part_types->id, 'qty' => 1 ]) }}">
+                            <a class="cart-link block text-center back-main col-6 sd-6 b5 pt-1 pb-1 b-main shadow c-p" href="{{ route('addproduct', [ 'id' => $part_types->id, 'qty' => $qty ]) }}">
                                 <img class="col-2 sd-2" src="{{ asset('img/icon/shopping-bag.svg') }}" alt="Запчасти для телевизоров, название товара + артикул">
                             </a>
                         @endif
                         
                     </div>
-
-                </form>
+                
             </div>
         </div>
     </div>

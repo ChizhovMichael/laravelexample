@@ -28,6 +28,7 @@ use App\Set;
  * | 7. Get Search Product (Получаем все продукты соответствующие критерию поиска)
  * | 8. Get Tv Product (Получаем все продукты соответствующие данному телевизору)
  * | 9. Add Set To Cart (Добавление продукции в карзину);
+ * | 10. Add Quantity to products (Изменяем количество товара)
  **************/
 
 
@@ -76,6 +77,10 @@ class ProductController extends Controller
         $products = $products->selectAllInfo();
         $products = $products->selectAllTable();
         $products = $products->getImgMain();
+        $products = $products->get();
+
+        // 6. Убираем товар которого нет в наличии в конец 
+        $products = $products->sortBy('part_status');
         $products = $products->paginate(10);
 
         return $products;
@@ -91,7 +96,10 @@ class ProductController extends Controller
         $products = $products->selectAllTable();
         $products = $products->getImgMain();
         $products = $products->whereStock($stock);
+        $products = $products->get();
 
+        // 6. Убираем товар которого нет в наличии в конец 
+        $products = $products->sortBy('part_status');
         $products = $products->paginate(10);
 
         return $products;
@@ -354,15 +362,7 @@ class ProductController extends Controller
         }
 
         $category = NavigationAdditional::where('additional_id', '=', $products->parttype_id)->get();
-
-        //Требуется ли данная форма?
-        if ($products->part_status == 0) {
-            $action = route('product.add');
-        } else {
-            $action = '#';
-        }
-
-        // return $productsSet;
+        
 
         return view('page/product', [
             'part_types'        => $products,
@@ -371,8 +371,8 @@ class ProductController extends Controller
             'partsSet'          => $productsSet,
             'navigations'       => $this->navigation(),
             'cart'              => $this->getCartCount(),
-            'action'            => $action,
             'category'          => $category,
+            'qty'               => 1,
         ]);
     }
 
@@ -396,10 +396,11 @@ class ProductController extends Controller
             'qty' => $qty,
             'price' => $products->part_cost,
             'options' => [
-                'type' => $products->parttype_type,
-                'company' => $products->company_id,
-                'tv' => $products->tv_id,
-                'img' => $products->part_img_name
+                'type'      => $products->parttype_type,
+                'company'   => $products->company_id,
+                'tv'        => $products->tv_id,
+                'img'       => $products->part_img_name,
+                'part_link' => $products->part_link,
             ],
         ]);
 
@@ -599,19 +600,12 @@ class ProductController extends Controller
         $productsInfo = $productsInfo->get();    
 
 
-        //Требуется ли данная форма?
-        if ($products->set_count > 0) {
-            $action = route('product.add');
-        } else {
-            $action = '#';
-        }
-
         return view('page/set',[
             'navigations'   => $this->navigation(),
             'set'           => $products,
             'setInfo'       => $productsInfo,
             'cart'          => $this->getCartCount(),
-            'action'        => $action
+            'qty'           => 1,
         ]);
 
     }
@@ -632,7 +626,8 @@ class ProductController extends Controller
             'qty' => $qty,
             'price' => $products->set_cost,
             'options' => [
-                'img' => $products->set_img
+                'img' => $products->set_img,
+                'part_link' => $products->set_slug,
             ],
         ]);
 
@@ -642,8 +637,37 @@ class ProductController extends Controller
             'content' => Cart::content(),
         ]);
 
-        // Разобраться с количеством добавляемой продукции
-        // Разобраться с формами в продукциях и сэтах
-        
+    }
+
+
+    /**
+     * Add Quantity to products
+     * Добавляем количество к товару
+     */
+    public function addQuantity(Request $request)
+    {
+
+        $link = route('addproduct', [ 'id' => $request->product, 'qty' => $request->qty ]);
+        return $link;
+
+    }
+
+    /**
+     * Add Set Quantity to products
+     * Добавляем количество к товару
+     */
+    public function addSetQuantity(Request $request)
+    {
+
+        $link = route('addset', [ 'id' => $request->product, 'qty' => $request->qty ]);
+        return $link;
+
+
+        // Удалять сам товар из корзины
+        // При клике на кнопку показывать форму для заполнения контактных данных
+        // Добавить страницу доставки
+        // Добавить ссылки в футер
+        // Подключить формы в том числе и в модальном окне
+        // Сделать страницы правила сайта и политика конфедициаьности
     }
 }

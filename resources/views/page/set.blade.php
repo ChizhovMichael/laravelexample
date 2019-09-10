@@ -38,7 +38,7 @@
 
         <ul class="image_list col-2 m-0 sd-12 flex-between">
             @foreach($setInfo as $item)
-                <li class="b4 image_list_li flex-center-center bc-light shadow-xs mb-em-1 c-p p-em-1 hide col-12 sd-4 rel">
+                <li class="b4 flex-center-center bc-light shadow-xs mb-em-1 c-p p-em-1 hide col-12 sd-4 rel">
                     <div class="abs top-left bottom-right" style="background: url('/img/products/{{ $item->company_id }}/{{ $item->tv_id }}/{{ $item->part_img_name }}') center center no-repeat; background-size: cover; z-index: 1"></div>
                     <div class="abs top-left bottom-right" style="background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)); z-index: 2;"></div>
                     <a href="{{ route( 'product.show', ['slug' => $item->part_link]) }}" class="abs bottom-left ml-em-1 mb-em-1 cb hover-main bold" style="z-index: 3">{{ $item->parttype_type }} {{ $item->part_model}}</a>
@@ -74,15 +74,14 @@
             @endif
 
             <div>
-                <!-- Требуется ли данная форма -->
-                <form action="{!! $action !!}" method="POST">
+                
                     <div>
 
                         <!-- Product Quantity -->
                         @if($set->set_count > 1)
-                        <div class="product_quantity">
+                        <div class="product_quantity set">
                             <span>Количество: </span>
-                            <input name="qty" id="quantity_input" type="text" pattern="[0-9]*" value="1">
+                            <input name="qty" id="quantity_input" type="text" pattern="[0-9]*" value="1" max-value="{{ $set->set_count }}" product-id="{{ $set->id }}">
                             <div class="quantity_buttons">
                                 <div id="quantity_inc_button" class="quantity_inc quantity_control">
                                     <img src="{{ asset('img/icon/chevron-arrow-up.svg') }}" alt="">
@@ -117,7 +116,7 @@
 
                     </div>
 
-                </form>
+                
             </div>
         </div>
     </div>
