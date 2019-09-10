@@ -11,8 +11,6 @@
 |
 */
 
-use App\Http\Controllers\CartController;
-
 Route::get('/', 'ProductController@index')->name('main');
 Route::get('/запчасти_для_телевизоров', 'ProductController@index');
 
@@ -24,9 +22,6 @@ Auth::routes();
 /**
  * Page Routes
  */
-
-Route::get('/about', 'AboutController@index')->name('about');
-
 Route::get('/catalog', 'ProductController@getAllProduct')->name('catalog');
 Route::get('/catalog/{part_types_id}', 'ProductController@getFullCategory')->name('category.show');
 Route::get('/catalog/tv/{company}/{model}', 'ProductController@getTvCategory')->name('category.tv');
@@ -40,12 +35,15 @@ Route::get('/set/{slug}', 'ProductController@getItemSet')->name('set.show');
 Route::get('/cart', 'CartController@getPage')->name('cart');
 Route::post('/cart/destroy/{cart_id}', 'CartController@destroyProduct')->name('cart.destroy');
 
-Route::get('/contacts', 'ContactController@getPage')->name('contacts');
 
-Route::get('/delivery', function () {
-    return view('page/delivery');
-})->name('delivery');
-
+/**
+ * Static Page
+ */
+Route::get('/about', 'AboutController@index')->name('about');
+Route::get('/contacts', 'ContactController@getPageContact')->name('contacts');
+Route::get('/delivery', 'ContactController@getPageDelivery')->name('delivery');
+Route::get('/private', 'ContactController@getPagePrivate')->name('private');
+Route::get('/regulations', 'ContactController@getPageRegulations')->name('regulations');
 
 /**
  * Search Route
