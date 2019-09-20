@@ -30,7 +30,7 @@
         <div class="col-12 pt-em-1 pb-em-2 pr-em-4 pl-em-4 shadow-xs bc-light b4 mt-em-4 mb-em-4">
             <div class="flex-center-between">
                 <div class="text-right col-2"></div>
-                <div  class="text-right col-3">
+                <div class="text-right col-3">
                     <p class="cc">Название</p>
                 </div>
                 <div class="text-right col-2">
@@ -44,30 +44,30 @@
                 </div>
             </div>
             @foreach ($cartContent as $item)
-            <div class="flex-center-between mt-em-1">
+            <div class="flex-center-between mt-em-1 destroyContainer">
                 <div class="flex-center-center text-right col-2 pr-em-1 pl-em-1">
                     @if($item->options->get('company') == NULL)
-                        <img class="sd-12 b4" src="/img/sets/{{ $item->options->img }}" alt="Запчасти для телевизоров, название товара + артикул">
-                    @else 
-                        <img class="sd-12 b4" src="/img/products/{{ $item->options->company }}/{{ $item->options->tv }}/m{{ $item->options->img }}" alt="Запчасти для телевизоров, название товара + артикул">
-                    @endif
-                </div>
-                <div  class="text-right col-3">
-                    @if($item->options->get('company') == NULL)
-                        <a href="{{ route('set.show', [ 'slug' => $item->options->part_link ]) }}" class="cc mt-1 mb-1 hover-main">{{ $item->options->type }} {{ $item->name }}</a>
+                    <img class="sd-12 b4" src="/img/sets/{{ $item->options->img }}" alt="Запчасти для телевизоров, название товара + артикул">
                     @else
-                        <a href="{{ route('product.show', [ 'slug' => $item->options->part_link ]) }}" class="cc mt-1 mb-1 hover-main">{{ $item->options->type }} {{ $item->name }}</a>
+                    <img class="sd-12 b4" src="/img/products/{{ $item->options->company }}/{{ $item->options->tv }}/m{{ $item->options->img }}" alt="Запчасти для телевизоров, название товара + артикул">
                     @endif
                 </div>
-                <div  class="text-right col-2">
+                <div class="text-right col-3">
+                    @if($item->options->get('company') == NULL)
+                    <a href="{{ route('set.show', [ 'slug' => $item->options->part_link ]) }}" class="cc mt-1 mb-1 hover-main">{{ $item->options->type }} {{ $item->name }}</a>
+                    @else
+                    <a href="{{ route('product.show', [ 'slug' => $item->options->part_link ]) }}" class="cc mt-1 mb-1 hover-main">{{ $item->options->type }} {{ $item->name }}</a>
+                    @endif
+                </div>
+                <div class="text-right col-2">
                     <p class="cc mt-1 mb-1">{{ $item->qty }}</p>
                 </div>
-                <div  class="text-right col-2">
+                <div class="text-right col-2">
                     <p class="cc mt-1 mb-1">{{ $item->price }}</p>
                 </div>
-                <div  class="text-right col-2">
+                <div class="text-right col-2">
                     <h6 class="ct mt-1 mb-1 rel">{{ $item->subtotal }}
-                        <a href="{{ route('cart.destroy', [ 'cart_id' => $item->rowId ]) }}" class="destroy flex-center shadow-xs cart-link">
+                        <a href="{{ route('cart.destroy', [ 'cart_id' => $item->rowId ]) }}" class="destroy flex-center shadow-xs">
                             <img class="sd-12 col-12" src="{{ asset('img/icon/cancel.svg') }}" alt="delete">
                         </a>
                     </h6>
@@ -76,12 +76,20 @@
             @endforeach
         </div>
         <div class="col-12 pt-em-1 pb-em-1 pr-em-4 pl-em-4 shadow-xs bc-light b4 mt-em-4 mb-em-4">
-            <div class="pt-2 pb-2 flex-center-end">
-                <div class="col-2">
+            <div class="flex-center-end">
+                <div class="col-2 br-light bb-light">
                     <p class="cc">Сумма заказа:</p>
                 </div>
-                <div class="col-2 text-right">
-                    <h6 class="ct mt-em-1 mb-em-1">{!! $cart['cart_total'] !!} &#x20bd;</h6>
+                <div class="col-3 text-right">
+                    <h6 class="ct m-0">{!! $cart['cart_total'] !!} &#x20bd;</h6>
+                </div>
+            </div>
+            <div class="flex-center-end">
+                <div class="col-2 br-light">
+                    <p class="cc">Доставка:</p>
+                </div>
+                <div class="col-3 text-right">
+                    <p class="cc">Варианты доставки будут представлены при оформлении заказа</p>
                 </div>
             </div>
         </div>
@@ -93,16 +101,16 @@
             <div class="flex mb-em-2 pb-em-2 bb-light">
                 <div class="mt-em-1 sd-12">
                     @if($item->options->get('company') == NULL)
-                        <img class="sd-12 b4" src="/img/sets/{{ $item->options->img }}" alt="Запчасти для телевизоров, название товара + артикул">
-                    @else 
-                        <img class="sd-12 b4" src="/img/products/{{ $item->options->company }}/{{ $item->options->tv }}/m{{ $item->options->img }}" alt="Запчасти для телевизоров, название товара + артикул">
+                    <img class="sd-12 b4" src="/img/sets/{{ $item->options->img }}" alt="Запчасти для телевизоров, название товара + артикул">
+                    @else
+                    <img class="sd-12 b4" src="/img/products/{{ $item->options->company }}/{{ $item->options->tv }}/m{{ $item->options->img }}" alt="Запчасти для телевизоров, название товара + артикул">
                     @endif
                 </div>
                 <div class="mt-em-1 sd-12">
                     @if($item->options->get('company') == NULL)
-                        <a href="{{ route('set.show', [ 'slug' => $item->options->part_link ]) }}" class="cc mt-1 mb-1 hover-main">{{ $item->options->type }} {{ $item->name }}</a>
+                    <a href="{{ route('set.show', [ 'slug' => $item->options->part_link ]) }}" class="cc mt-1 mb-1 hover-main">{{ $item->options->type }} {{ $item->name }}</a>
                     @else
-                        <a href="{{ route('product.show', [ 'slug' => $item->options->part_link ]) }}" class="cc mt-1 mb-1 hover-main">{{ $item->options->type }} {{ $item->name }}</a>
+                    <a href="{{ route('product.show', [ 'slug' => $item->options->part_link ]) }}" class="cc mt-1 mb-1 hover-main">{{ $item->options->type }} {{ $item->name }}</a>
                     @endif
                 </div>
                 <div class="mt-em-1 sd-12">
@@ -122,21 +130,21 @@
             @endforeach
         </div>
         <div class="sd-12 pr-em-2 pl-em-2 shadow-xs b4 mt-em-3 mb-em-3 bc-light flex-between">
-            <p class="cc m-5">Сумма покупки:</p> 
+            <p class="cc m-5">Сумма покупки:</p>
             <h6 class="ct m-5">{!! $cart['cart_total'] !!}&nbsp;&#x20bd;</h6>
         </div>
+        <div class="sd-12 pr-em-2 pl-em-2 shadow-xs b4 mt-em-3 mb-em-3 bc-light flex-between">
+            <p class="cc m-5">Доставка:</p>
+            <p class="cc m-5">Варианты доставки будут представлены при оформлении заказа</p>
+        </div>
+        
 
         @endif
 
-        <div class="text-right">
-            <form action="#">
-                <input type="hidden">
-
-                <button class="back-main col-2 sd-6 b5 pt-1 pb-1 b-main shadow c-p">
-                    <img class="col-2 sd-2" src="{{ asset('img/icon/shopping-bag.svg') }}" alt="Запчасти для телевизоров, название товара + артикул">
-                </button>
-            </form>
-            
+        <div class="flex-center-end">
+            <a class="block text-center back-main col-2 sd-6 b5 pt-1 pb-1 b-main shadow c-p" href="{{ route('checkout') }}">
+                <img class="col-2 sd-2" src="{{ asset('img/icon/shopping-bag.svg') }}" alt="Запчасти для телевизоров, название товара + артикул">
+            </a>
         </div>
     </div>
 

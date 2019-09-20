@@ -33,7 +33,7 @@
 
                 <div class="b5 bc sd-12 col-4 mt-em-1">
                     <div class="form-label-group sd-12">
-                        <input type="text" id="name" name="name" class="form-control" placeholder="Введите ваше Имя и Фамилию">
+                        <input type="text" id="name" name="name" class="form-control" placeholder="Введите ваше Имя и Фамилию" required>
                         <label for="name">Введите ваше Имя и Фамилию</label>
 
                         @if ($errors->has('name'))
@@ -46,7 +46,7 @@
 
                 <div class="b5 bc sd-12 col-3 mt-em-1">
                     <div class="form-label-group sd-12">
-                        <input type="email" id="email" name="email" class="form-control" placeholder="Введите ваш email">
+                        <input type="email" id="email" name="email" class="form-control" placeholder="Введите ваш email" required>
                         <label for="email">Введите ваш email</label>
 
                         @if ($errors->has('email'))
@@ -73,7 +73,7 @@
             <div class="col-7 sd-12 b5 bc">
                 <div class="form-label-group sd-12">
 
-                    <textarea name="mes" id="mes" class="form-control area" placeholder="Введите сообщение"></textarea>
+                    <textarea name="mes" id="mes" class="form-control area" placeholder="Введите сообщение" required></textarea>
                     <label for="mes">Введите сообщение</label>
 
                     @if ($errors->has('mes'))

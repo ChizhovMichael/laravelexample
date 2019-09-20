@@ -64,6 +64,9 @@
 
 		@if ($agent->isDesktop())
 
+
+
+
 		<div class="rel col-5">
 			<div class="col-12 bc b5">
 				<form action="#" method="POST" class="flex-center">
@@ -74,19 +77,22 @@
 					<div class="dropdown col-5 arrow-bottom rel">
 						<div class="dropdown__list rel flex-center-center">
 							<img class="ml-em-1" src="{{ asset('img/icon/chevron-arrow-down.svg') }}" alt="Запчасти для телевизоров, продать телевизор +на запчасти, телевизор скупка, телезапчасти">
-							<span class="dropdown_placeholder col-9 cc c-p flex-center-center">
+							<span class="dropdown_placeholder col-9 cc c-p flex-center-center" data-link="">
 								Все категории
 							</span>
 							<ul class="dropdown__list__ul abs top-max-left shadow col-12 b5 back-back">
-								<li><a class="hover pt-2 pb-2 pr-5 pl-5 block" href="#">Все категории</a></li>
+								<li><a class="nav-link hover pt-2 pb-2 pr-5 pl-5 block" href="#" data-link="all">Все категории</a></li>
 								@foreach($navigations as $item)
-								<li><a class="hover bt-light pt-2 pb-2 pr-5 pl-5 block" href="#">{{ $item->name }}</a></li>
+								<li><a class="nav-link hover bt-light pt-2 pb-2 pr-5 pl-5 block" href="#" data-link="{{ $item->slug }}">{{ $item->name }}</a></li>
 								@endforeach
 							</ul>
 						</div>
 					</div>
 				</form>
 			</div>
+
+
+
 			
 			<div class="result__search abs col-12 shadow">
 				<div class="result__wrapp col-12 b5 hide">
@@ -190,7 +196,7 @@
 	s-17-7.626-17-17S14.61,6,23.984,6z" /></svg>
 		</a>
 	
-		<a href="{{ route('catalog') }}"  class="p-em-1 @if(Request::is('catalog') || Request::is('catalog/*') || Request::is('cart') || Request::is('product/*')) active @endif">
+		<a href="{{ route('catalog') }}"  class="p-em-1 @if(Request::is('catalog') || Request::is('catalog/*') || Request::is('cart') || Request::is('product/*') || Request::is('checkout')) active @endif">
 			<svg viewBox="0 0 489 489" width="20" style="enable-background:new 0 0 489 489;" xml:space="preserve">
 				<path d="M440.1,422.7l-28-315.3c-0.6-7-6.5-12.3-13.4-12.3h-57.6C340.3,42.5,297.3,0,244.5,0s-95.8,42.5-96.6,95.1H90.3
 		c-7,0-12.8,5.3-13.4,12.3l-28,315.3c0,0.4-0.1,0.8-0.1,1.2c0,35.9,32.9,65.1,73.4,65.1h244.6c40.5,0,73.4-29.2,73.4-65.1
@@ -211,7 +217,7 @@
 			</svg>
 		</a>
 	
-		<a href="#" class="p-em-1">
+		<a href="{{ route('login') }}" class="p-em-1">
 			<svg viewBox="0 0 474 508" width="20" enable-background="new 0 0 474 508" xml:space="preserve">
 				<path fill-rule="evenodd" clip-rule="evenodd" d="M1,501c0-9,0-18,0-27c0.453-1.9,0.992-3.786,1.346-5.705
 	c1.78-9.65,2.784-19.511,5.376-28.936c21.819-79.323,71.232-133.904,147.89-163.767c6.097-2.376,12.373-4.292,17.61-6.094

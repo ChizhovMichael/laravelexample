@@ -14,7 +14,7 @@
 
     @include('includes.head')
 
-    <link rel="stylesheet" href="{{ URL::asset('css/flickity/flickity.css') }}">
+    
     <script src="{{ URL::asset('js/flickity/flickity.js') }}"></script>
 
 </head>

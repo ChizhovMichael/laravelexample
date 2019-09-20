@@ -26,10 +26,17 @@ class CartController extends Controller
     {
         Cart::remove($cart_id);
 
-        return response()->json([
-            'count' => Cart::count(),
-            'total' => Cart::total(),
-            'content' => Cart::content(),
+        return redirect()->route('cart');
+    }
+
+    public function checkout()
+    {
+        
+        return view('page/checkout', [
+            'navigations'       =>  $this->navigation(),
+            'cart'              =>  $this->getCartCount(),
+            'cartContent'       =>  Cart::content(),
         ]);
+
     }
 }

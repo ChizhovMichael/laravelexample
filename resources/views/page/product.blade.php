@@ -117,7 +117,7 @@
                             <div class="toggle__sorting">
                                 @foreach($partsAdditional->all() as $item)
                                 <li class="m-em-1 pr-em-2 pl-em-2 pt-em-1 pb-em-1 bc-light shadow-xs b3">
-                                    <div class="form-check ">
+                                    <div class="form-check">
                                         
                                     <a class="cart-link flex-center-center rel top-left col-2 sd-2 back-main b5 mr-em-1 shadow-xs" href="{{ route('addproduct', [ 'id' => $item->id, 'type' => $item->parttype_type, 'company' => $item->company_id, 'tv' => $item->tv_id, 'img' => $item->part_img_main->part_img_name , 'name' => $item->part_model, 'qty' => 1,  'price' => $item->part_cost ]) }}">
                                             <img class="p-12 col-8" src="{{ asset('img/icon/shopping-bag.svg') }}" alt="Купить">

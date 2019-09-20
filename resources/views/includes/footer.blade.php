@@ -15,7 +15,7 @@
 				</div>
 			</div>
 			<h5 class="ct mt-em-2 mb-em-2">Есть вопросы? Звоните нам 24/7</h5>
-			<a href="tel:8921418-39-59" class="phone cm mt-em-1">+7 (921) 418-39-59</a>
+			<a href="tel:8921418-39-59" class="phone cm mt-em-1 bold hover">+7 921 418-39-59</a>
 		</div>
 	</div>
 	<div class="col-3 sd-12 pr-5">

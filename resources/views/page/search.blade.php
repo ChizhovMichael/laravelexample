@@ -30,13 +30,13 @@
 					<div class="dropdown col-5 arrow-bottom rel">
 						<div class="dropdown__list rel flex-center-center">
 							<img class="ml-em-1" src="{{ asset('img/icon/chevron-arrow-down.svg') }}" alt="Запчасти для телевизоров, продать телевизор +на запчасти, телевизор скупка, телезапчасти">
-							<span class="dropdown_placeholder col-9 cc c-p flex-center-center">
+							<span class="dropdown_placeholder col-9 cc c-p flex-center-center" data-link="">
 								Все категории
 							</span>
 							<ul class="dropdown__list__ul abs top-max-left shadow col-12 b5 back-back">
-								<li><a class="hover pt-2 pb-2 pr-5 pl-5 block" href="#">Все категории</a></li>
+								<li><a class="hover pt-2 pb-2 pr-5 pl-5 block" href="#" data-link="all">Все категории</a></li>
 								@foreach($navigations as $item)
-								<li><a class="hover bt-light pt-2 pb-2 pr-5 pl-5 block" href="#">{{ $item->name }}</a></li>
+								<li><a class="hover bt-light pt-2 pb-2 pr-5 pl-5 block" href="#" data-link="{{ $item->slug }}>{{ $item->name }}</a></li>
 								@endforeach
 							</ul>
 						</div>

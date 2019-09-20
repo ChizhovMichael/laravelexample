@@ -6903,6 +6903,7 @@ function listChange(node) {
     var element = elems[i];
     element.childNodes[0].addEventListener('click', function (e) {
       if (!this.classList.contains('sort-link')) e.preventDefault();
+      if (this.classList.contains('nav-link')) cont.setAttribute('data-link', this.getAttribute('data-link'));
       cont.innerText = this.innerText;
       elem.classList.toggle('active');
     });
@@ -7084,43 +7085,10 @@ function searchArticle() {
   function getContent() {
     var searchValue = search.value;
     var categoryName = container.innerText;
-    var categoryValue;
+    var categoryValue = container.getAttribute('data-link');
 
-    switch (categoryName) {
-      case 'Все категории':
-        categoryValue = 'all';
-        break;
-
-      case 'Материнские платы':
-        categoryValue = 'main-board';
-        break;
-
-      case 'Блоки питания':
-        categoryValue = 'power-board';
-        break;
-
-      case 'T-CON':
-        categoryValue = 't-con';
-        break;
-
-      case 'Инверторы / LED драйверы':
-        categoryValue = 'inverters_and_drivers';
-        break;
-
-      case 'Подсветка':
-        categoryValue = 'backlight';
-        break;
-
-      case 'Блоки для плазмы':
-        categoryValue = 'plasmy';
-        break;
-
-      case 'Другое':
-        categoryValue = 'other';
-        break;
-
-      default:
-        categoryValue = null;
+    if (categoryValue == '' || categoryValue == null) {
+      categoryValue = 'all';
     }
 
     var xhr = new XMLHttpRequest();
@@ -7249,6 +7217,9 @@ function addCart() {
     while (target != document) {
       if (target instanceof HTMLAnchorElement) {
         if (target.classList.contains('cart-link')) {
+          var cart;
+          var myImage;
+
           var _ret = function () {
             event.preventDefault();
 
@@ -7276,6 +7247,16 @@ function addCart() {
             };
 
             xhr.send();
+            cart = document.createElement('a');
+            cart.href = '/cart';
+            cart.className = 'abs bottom-right bbr5 gotocart flex-center-center';
+            myImage = new Image(30, 30);
+            myImage.src = '/img/icon/cart_yes_white.png';
+            setTimeout(function () {
+              cart.classList.add('animate');
+              cart.appendChild(myImage);
+            }, 500);
+            target.insertAdjacentElement("beforebegin", cart);
             return "break";
           }();
 
@@ -7292,6 +7273,23 @@ function addCart() {
       target = target.parentNode;
     }
   }, true);
+}
+
+if (!Element.prototype.matches) {
+  Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
+}
+
+if (!Element.prototype.closest) {
+  Element.prototype.closest = function (s) {
+    var el = this;
+
+    do {
+      if (el.matches(s)) return el;
+      el = el.parentElement || el.parentNode;
+    } while (el !== null && el.nodeType === 1);
+
+    return null;
+  };
 }
 
 function navigationScroll() {
@@ -7370,24 +7368,6 @@ function closePopup(el) {
     }
 
     if (target == this) return;
-
-    if (!Element.prototype.matches) {
-      Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
-    }
-
-    if (!Element.prototype.closest) {
-      Element.prototype.closest = function (s) {
-        var el = this;
-
-        do {
-          if (el.matches(s)) return el;
-          el = el.parentElement || el.parentNode;
-        } while (el !== null && el.nodeType === 1);
-
-        return null;
-      };
-    }
-
     var parent = target.closest('.modal');
 
     Element.prototype.remove = function () {
