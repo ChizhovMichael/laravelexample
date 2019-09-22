@@ -11,7 +11,7 @@
 					<div class="mr-em-1">
 						<img src="{{ asset('img/icon/phone.png')}}" alt="Запчасти для телевизоров, продать телевизор +на запчасти, телевизор скупка, телезапчасти">
 					</div>
-					<p class="m-0 ct">+7 812 000 00 00</p>
+					<p class="m-0 ct">{{ $contacts->get('phoneMain')->value }}</p>
 				</div>
 			</div>
 
@@ -20,7 +20,7 @@
 					<div class="mr-em-1">
 						<img src="{{ asset('img/icon/mail.png')}}" alt="Запчасти для телевизоров, продать телевизор +на запчасти, телевизор скупка, телезапчасти">
 					</div>
-					<a href="mailto:" class="ct">info@telezapchasti.ru</a>
+					<a href="mailto:{{ $contacts->get('phoneMain')->value }}" class="ct">{{ $contacts->get('mailMain')->value }}</a>
 				</div>
 			</div>
 

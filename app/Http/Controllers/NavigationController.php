@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Navigation;
 use App\Product;
+use App\Contact;
 use Cart;
 
 /***************
  * Навигационный раздел
  * 1. Навигация
  * 2. Вывод всех брендов в зависимости от количества товаров
+ * 3. Получаем список контактов
  ***********/
 
 trait NavigationController
@@ -67,5 +69,28 @@ trait NavigationController
         $companies = $companies->get();
 
         return $companies;
+    }
+
+
+    /**
+     * Get Contacts
+     * Получаем контакты для футера и для головы
+     */
+    public function contacts()
+    {
+        $contacts = Contact::get();
+        $phone = $contacts->where('name', 'phone');
+        $phoneMain = $phone->where('status', 1)->first();
+        $address = $contacts->where('name', 'address');
+        $mail = $contacts->where('name', 'mail');
+        $mailMain = $mail->where('status', 1)->first();
+
+        return [
+            'phone'     => $phone,
+            'phoneMain' => $phoneMain,
+            'address'   => $address,
+            'mail'      => $mail,
+            'mailMain'  => $mailMain
+        ];
     }
 }

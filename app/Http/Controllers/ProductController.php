@@ -52,7 +52,6 @@ class ProductController extends Controller
      ***************/
     public function index()
     {
-        // Cart::destroy();
 
         return view('welcome', [
             'products_main'     =>  $this->getProduct([3]),
@@ -61,7 +60,8 @@ class ProductController extends Controller
             'products_new'      =>  $this->getStockProduct('new'),
             'products_discount' =>  $this->getStockProduct('discount'),
             'navigations'       =>  $this->navigation(),
-            'cart'              =>  $this->getCartCount(),
+            'contacts'          =>  collect($this->contacts()),
+            'cart'              =>  $this->getCartCount()
         ]);
     }
 
@@ -163,6 +163,7 @@ class ProductController extends Controller
                 'to'        => $to,
             ]),
             'navigations'   => $this->navigation(),
+            'contacts'      => collect($this->contacts()),
             'brand'         => $this->getAllBrand(NULL),
             'sort'          => $request->sort,
             'value'         => $sorting['value'],
@@ -181,7 +182,7 @@ class ProductController extends Controller
             'model'         => NULL,
             'productsCount' => $productsCount,
             'newCount'      => $newCount,
-            'saleCount'     => $saleCount,
+            'saleCount'     => $saleCount
         ]);
     }
 
@@ -254,6 +255,7 @@ class ProductController extends Controller
                 'to'        => $to,
             ]),
             'navigations'   => $this->navigation(),
+            'contacts'      => collect($this->contacts()),
             'brand'         => $this->getAllBrand($categories),
             'sort'          => $request->sort,
             'value'         => $sorting['value'],
@@ -272,7 +274,7 @@ class ProductController extends Controller
             'model'         => NULL,
             'productsCount' => $productsCount,
             'newCount'      => $newCount,
-            'saleCount'     => $saleCount,
+            'saleCount'     => $saleCount
         ]);
     }
 
@@ -370,6 +372,7 @@ class ProductController extends Controller
             'partsSame'         => $productsSame,
             'partsSet'          => $productsSet,
             'navigations'       => $this->navigation(),
+            'contacts'          => collect($this->contacts()),
             'cart'              => $this->getCartCount(),
             'category'          => $category,
             'qty'               => 1,
@@ -471,6 +474,7 @@ class ProductController extends Controller
                 'to'        => $to,
             ]),
             'navigations'   => $this->navigation(),
+            'contacts'      => collect($this->contacts()),
             'brand'         => $this->getAllBrand($search),
             'sort'          => $request->sort,
             'value'         => $sorting['value'],
@@ -559,6 +563,7 @@ class ProductController extends Controller
                 'to'        => $to,
             ]),
             'navigations'   => $this->navigation(),
+            'contacts'      => collect($this->contacts()),
             'brand'         => collect([$company]),
             'sort'          => $request->sort,
             'value'         => $sorting['value'],
@@ -602,6 +607,7 @@ class ProductController extends Controller
 
         return view('page/set',[
             'navigations'   => $this->navigation(),
+            'contacts'      => collect($this->contacts()),
             'set'           => $products,
             'setInfo'       => $productsInfo,
             'cart'          => $this->getCartCount(),

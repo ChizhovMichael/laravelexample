@@ -15,6 +15,7 @@ class AboutController extends Controller
 
         return view('page/about', [
             'navigations'       =>  $this->navigation(),
+            'contacts'          => collect($this->contacts()),
             'cart'              =>  $this->getCartCount(),
         ]);
     }

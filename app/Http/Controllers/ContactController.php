@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests;
 use App\Http\Controllers\NavigationController;
 
 /*************
@@ -30,6 +31,7 @@ class ContactController extends Controller
 
         return view('page/contacts', [
             'navigations'       =>  $this->navigation(),
+            'contacts'          => collect($this->contacts()),
             'cart'              =>  $this->getCartCount(),
         ]);
     }
@@ -42,6 +44,7 @@ class ContactController extends Controller
 
         return view('page/delivery', [
             'navigations'       =>  $this->navigation(),
+            'contacts'          => collect($this->contacts()),
             'cart'              =>  $this->getCartCount(),
         ]);
     }
@@ -55,6 +58,7 @@ class ContactController extends Controller
 
         return view('page/private', [
             'navigations'       =>  $this->navigation(),
+            'contacts'          => collect($this->contacts()),
             'cart'              =>  $this->getCartCount(),
         ]);
     }
@@ -69,7 +73,30 @@ class ContactController extends Controller
 
         return view('page/regulations', [
             'navigations'       =>  $this->navigation(),
+            'contacts'          => collect($this->contacts()),
             'cart'              =>  $this->getCartCount(),
         ]);
+    }
+
+
+    /**
+     * Push form from contacts page
+     * Отправка формы со страницы контакты
+     */
+    public function mailpost( Request $request )
+    {
+
+        $contact['name'] = $request->name;
+        $contact['email'] = $request->email;
+        $contact['tel'] = $request->tel;
+        $contact['message'] = $request->message;
+
+        // Mail delivery logic goes here
+        Mail::to(config('mail.support.address'))->send(new ContactEmail($contact));
+
+        flash('Your message has been sent!')->success();
+
+        return redirect()->route('contact.create');
+
     }
 }

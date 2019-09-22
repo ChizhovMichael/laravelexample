@@ -42,6 +42,8 @@ Route::get('/checkout', 'CartController@checkout')->name('checkout');
  */
 Route::get('/about', 'AboutController@index')->name('about');
 Route::get('/contacts', 'ContactController@getPageContact')->name('contacts');
+Route::post('/contacts', 'ContactController@mailpost')->name('contacts.mail');
+
 Route::get('/delivery', 'ContactController@getPageDelivery')->name('delivery');
 Route::get('/private', 'ContactController@getPagePrivate')->name('private');
 Route::get('/regulations', 'ContactController@getPageRegulations')->name('regulations');

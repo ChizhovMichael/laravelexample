@@ -16,6 +16,7 @@ class CartController extends Controller
     {
         return view('page/cart', [
             'navigations'       =>  $this->navigation(),
+            'contacts'          => collect($this->contacts()),
             'cart'              =>  $this->getCartCount(),
             'cartContent'       =>  Cart::content(),
         ]);
@@ -34,6 +35,7 @@ class CartController extends Controller
         
         return view('page/checkout', [
             'navigations'       =>  $this->navigation(),
+            'contacts'          => collect($this->contacts()),
             'cart'              =>  $this->getCartCount(),
             'cartContent'       =>  Cart::content(),
         ]);

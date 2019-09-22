@@ -123,6 +123,7 @@ class SearchController extends Controller
 
             return view('page/search', [
                 'navigations'       =>  $this->navigation(),
+                'contacts'          => collect($this->contacts()),
                 'cart'              =>  $this->getCartCount(),
             ]);
 
