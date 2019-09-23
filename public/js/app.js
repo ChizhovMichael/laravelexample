@@ -6904,6 +6904,7 @@ function listChange(node) {
     element.childNodes[0].addEventListener('click', function (e) {
       if (!this.classList.contains('sort-link')) e.preventDefault();
       if (this.classList.contains('nav-link')) cont.setAttribute('data-link', this.getAttribute('data-link'));
+      if (this.classList.contains('form-link')) cont.previousElementSibling.setAttribute('value', this.getAttribute('data-link'));
       cont.innerText = this.innerText;
       elem.classList.toggle('active');
     });

@@ -29,7 +29,7 @@
                                 type="text"
                                 id="name"
                                 name="name"
-                                class="form-control"
+                                class="form-control @error('name') is-invalid @enderror"
                                 placeholder="Введите ваше Имя и Фамилию"
                                 required
                             />
@@ -49,7 +49,7 @@
                                 type="email"
                                 id="email"
                                 name="email"
-                                class="form-control"
+                                class="form-control @error('email') is-invalid @enderror"
                                 placeholder="Введите ваш email"
                                 required
                             />
@@ -68,7 +68,7 @@
                                 type="number"
                                 id="tel"
                                 name="tel"
-                                class="form-control"
+                                class="form-control @error('tel') is-invalid @enderror"
                                 placeholder="Введите ваш телефон"
                             />
                             <label for="tel">Введите ваш телефон</label>
@@ -86,15 +86,15 @@
                         <textarea
                             name="message"
                             id="message"
-                            class="form-control area"
+                            class="form-control area @error('message') is-invalid @enderror"
                             placeholder="Введите сообщение"
                             required
                         ></textarea>
                         <label for="message">Введите сообщение</label>
 
-                        @if ($errors->has(''))
+                        @if ($errors->has('message'))
                         <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('') }}</strong>
+                            <strong>{{ $errors->first('message') }}</strong>
                         </span>
                         @endif
                     </div>

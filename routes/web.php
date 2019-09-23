@@ -35,6 +35,7 @@ Route::get('/set/{slug}', 'ProductController@getItemSet')->name('set.show');
 Route::get('/cart', 'CartController@getPage')->name('cart');
 Route::get('/cart/destroy/{cart_id}', 'CartController@destroyProduct')->name('cart.destroy');
 Route::get('/checkout', 'CartController@checkout')->name('checkout');
+Route::post('/checkout', 'CartController@checkoutPost')->name('checkout.post');
 
 
 /**

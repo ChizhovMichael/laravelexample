@@ -27,7 +27,7 @@ class ContactFormRequest extends FormRequest
             //
             'name'      => 'required',
             'email'     => 'required|email',
-            'tel'       => 'numeric|regex:/(01)[0-9]{9}',
+            'tel'       => 'numeric',
             'message'   => 'required'
         ];
     }
