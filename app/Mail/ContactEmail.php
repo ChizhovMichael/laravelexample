@@ -33,7 +33,7 @@ class ContactEmail extends Mailable
     public function build()
     {
         return $this->to(config('mail.from.address'))
-                    ->subject('HackerPair Inquiry')
+                    ->subject('Форма обратной связи со страницы Контакты Telezapchati')
                     ->view('emails.contact');
     }
 }

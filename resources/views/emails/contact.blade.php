@@ -8,4 +8,4 @@ E-mail: {{ $contact['email'] }}
 
 Phone: {{ $contact['tel'] }}
 
-Message: {{ $contact['mmessage'] }}
+Message: {{ $contact['message'] }}

@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\Controller;
+use App\Mail\ContactEmail;
 use App\Http\Controllers\NavigationController;
+
 
 /*************
  * | Контролер продукта/ таблицы products
@@ -92,11 +95,9 @@ class ContactController extends Controller
         $contact['message'] = $request->message;
 
         // Mail delivery logic goes here
-        Mail::to(config('mail.support.address'))->send(new ContactEmail($contact));
+        Mail::to('foo@example.com')->send(new ContactEmail($contact));
 
-        flash('Your message has been sent!')->success();
-
-        return redirect()->route('contact.create');
+        return redirect()->back()->with('success', 'Спасибо за ваше сообщение!');
 
     }
 }
