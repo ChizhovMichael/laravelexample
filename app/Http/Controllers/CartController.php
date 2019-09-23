@@ -83,6 +83,7 @@ class CartController extends Controller
         $contact['order_phone'] = $request->tel;
         $contact['order_comment'] = $request->message;
 
+        // незабыть про поле оплаты
 
         return $contact;
     }
