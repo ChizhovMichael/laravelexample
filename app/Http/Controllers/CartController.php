@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderEmail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\NavigationController;
-use App\Product;
+use App\Orderlist;
 use Cart;
+use Illuminate\Support\Facades\Redirect;
+
 
 class CartController extends Controller
 {
@@ -51,17 +55,17 @@ class CartController extends Controller
             'addname'   => 'required|max:255',
             'delivery'  => 'numeric',
             'country'    => 'numeric',
-            'zipcode'   => 'numeric|max:7',
             'region'    => 'max:32',
             'autoregion' => 'max:32',
             'district' => 'max:32',
             'city' => 'max:30',
             'address' => 'required',
-            'tel' => 'numeric',
-            'email' => 'required|email',
+            'email' => 'required|email'
         ]);
     
-        
+        if ( !$request->paymethod )
+            return Redirect::back()->withInput($request->input())
+                                ->with('paymethod', 'Выберете способ оплаты');
 
 
         $contact['order_status'] = 0;
@@ -82,8 +86,43 @@ class CartController extends Controller
         $contact['order_email'] = $request->email;
         $contact['order_phone'] = $request->tel;
         $contact['order_comment'] = $request->message;
+        $contact['paymethod'] = $request->paymethod;
+        
 
-        // незабыть про поле оплаты
+        // Sending Mail
+        Mail::to('foo@example.com')->send(new OrderEmail($contact));
+
+        
+
+        Orderlist::create([
+            'order_status' => $contact['order_status'],
+            'order_return' => $contact['order_return'],
+            'order_payment' => $contact['order_payment'],
+            'order_lname' => $contact['order_lname'],
+            'order_tracking' => $contact['order_tracking'],
+            'order_fname' => $contact['order_fname'],
+            'order_mname' => $contact['order_mname'],
+            'order_country' => $contact['order_country'],
+            'order_delivery' => $contact['order_delivery'],
+            'order_region' => $contact['order_region'],
+            'order_autonomous' => $contact['order_autonomous'],
+            'order_district' => $contact['order_district'],
+            'order_city' => $contact['order_city'],
+            'order_address' => $contact['order_address'],
+            'order_index' => $contact['order_index'],
+            'order_email' => $contact['order_email'],
+            'order_phone' => $contact['order_phone'],
+            'order_comment' => $contact['order_comment'],
+            'paymethod' => $contact['paymethod']
+        ]);
+
+
+
+        // Добавление товара в базу
+        // Шаблон страницы сообщения
+        // Валидация в OrderformRequest
+        // Вывод сообщения об удачной отправке
+        // Отправка сообщения клиенту с реквизитами
 
         return $contact;
     }

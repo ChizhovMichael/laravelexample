@@ -33,7 +33,7 @@
                 <div class="flex-between">
                     <div class="b5 bc sd-12 col-5 mt-em-1">
                         <div class="form-label-group sd-12">
-                            <input type="text" id="firstname" name="firstname" class="form-control @error('name') is-invalid @enderror" placeholder="Введите ваше Имя" required value="{{ old('name') }}">
+                            <input type="text" id="firstname" name="firstname" class="form-control @error('name') is-invalid @enderror" placeholder="Введите ваше Имя" required value="{{ old('firstname') }}">
                             <label for="firstname">Введите ваше Имя</label>
 
                             @if ($errors->has('name'))
@@ -83,7 +83,7 @@
                                 <img class="ml-em-1" src="{{ asset('img/icon/chevron-arrow-down.svg') }}" alt="Запчасти для телевизоров, продать телевизор +на запчасти, телевизор скупка, телезапчасти">
                                 <input type="hidden" name="delivery" value="0">
                                 <span class="dropdown_placeholder col-10 cc c-p">
-                                    Cпособы доставки                                    
+                                    Cпособы доставки
                                 </span>
                                 <ul class="dropdown__list__ul abs top-max-left shadow col-12 b5 back-back" id="sortingProduct">
 
@@ -102,8 +102,8 @@
                                 <img class="ml-em-1" src="{{ asset('img/icon/chevron-arrow-down.svg') }}" alt="Запчасти для телевизоров, продать телевизор +на запчасти, телевизор скупка, телезапчасти">
                                 <input type="hidden" name="country" value="0">
                                 <span class="dropdown_placeholder col-10 cc c-p">
-                                    Выберете страну                                    
-                                </span>                                
+                                    Выберете страну
+                                </span>
                                 <ul class="dropdown__list__ul abs top-max-left shadow col-12 b5 back-back" id="sortingProduct">
 
                                     <li class="flex-center-between rel bt-light pt-2 pb-2 pr-5 pl-5"><span class="sort-link hover pt-2 pb-2 pr-5 pl-5 block c-p form-link" data-link="1">Россия</span></li>
@@ -278,10 +278,10 @@
                         <div>
                             @foreach ($cartContent as $item)
                             <div class="flex-between bb-light">
-                                <div class="col-8 br-light flex-center sd-7">
+                                <div class="col-8 br-light flex-center sd-7 pb-2">
                                     <p class="cc mb-0">{{ $item->options->type }} {{ $item->name }} x {{ $item->qty }}</p>
                                 </div>
-                                <div class="col-3 flex-center sd-4">
+                                <div class="col-3 flex-center sd-4 pb-2">
                                     <p class="cc mb-0">{{ $item->subtotal }}&nbsp;&#x20bd</p>
                                 </div>
                             </div>
@@ -293,7 +293,7 @@
                                 <h6 class="ct">Доставка</h6>
                             </div>
                             <div class="col-3 sd-4">
-                                <p class="ct">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat veniam architecto quidem qui tempore tenetur in</p>
+                                <p class="ct">Стоимость доставки уточняйте у сотрудника</p>
                             </div>
                         </div>
 
@@ -310,10 +310,13 @@
                 </div>
 
                 <div>
-                    <h5>Способ оплаты</h5>
+                    <h5 class="@if(session('paymethod')) ca @endif">Способ оплаты</h5>
 
-                    <div class="col-12 sd-12">
-                        <div class="m-em-1 pr-em-2 pl-em-2 pt-em-2 pb-em-2 bc-light shadow-xs b3">
+                    <div class="col-12 sd-12 paymethod">
+
+                        <input type="hidden" name="paymethod" value="">
+
+                        <div class="m-em-1 pr-em-2 pl-em-2 pt-em-2 pb-em-2 bc-light shadow-xs b3 @if(session('paymethod')) b-error @else b-main @endif">
                             <div class="form-check">
 
                                 <input class="form-check-input" data-form="brands-check" type="checkbox" id="sberbank">
@@ -326,9 +329,13 @@
 
                             </div>
                         </div>
-
-
                     </div>
+
+                    @if(session('paymethod'))
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{session('paymethod')}}</strong>
+                    </span>
+                    @endif
                 </div>
                 <div class="mt-em-2 back-back p-5 col-12 sd-12">
                     <p class="cc">Ваши личные данные будут использованы для обработки вашего заказа, поддержки вашего опыта на этом сайте, а также для других целей, описанных в <a href="{{ route('private') }}" class="cm hover">политика конфиденциальности</a></p>
@@ -347,7 +354,7 @@
                     </div>
                 </div>
 
-                <button class="block text-center back-main col-4 sd-6 b5 pt-1 pb-1 b-main shadow c-p mt-em-1" @if(session('success')) disabled @endif>
+                <button class="block text-center back-main col-4 sd-6 b5 pt-1 pb-1 b-main shadow c-p mt-em-3" @if(session('success')) disabled @endif>
                     <img class="col-2 sd-2" src="{{ asset('img/icon/shopping-bag.svg') }}" alt="Запчасти для телевизоров, название товара + артикул">
                 </button>
 

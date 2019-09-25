@@ -3114,6 +3114,14 @@ https://flickity.metafizzy.co
   box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
 }
 
+.b-error {
+  border: 2px solid #fe4e4e;
+}
+
+.b-main {
+  border: 2px solid #2684fe;
+}
+
 /***********
 // text
 ***********/
@@ -3162,6 +3170,10 @@ https://flickity.metafizzy.co
 
 .line-through {
   text-decoration: line-through;
+}
+
+.invalid-feedback {
+  color: #fe4e4e;
 }
 
 /***********

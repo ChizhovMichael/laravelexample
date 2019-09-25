@@ -6857,6 +6857,7 @@ document.addEventListener("DOMContentLoaded", function () {
   closePopup('close');
   navigationItemShow('navigation__trigger');
   quantityOfGoods('product_quantity');
+  paymethodCollection('paymethod', 'form-check-input');
 });
 
 function toggleMenu(el) {
@@ -7450,6 +7451,31 @@ function quantityOfGoods(el) {
 
     xhr.send();
   };
+}
+
+function paymethodCollection(el, child) {
+  var selectedInput;
+  var elem = document.querySelector('.' + el);
+
+  if (!elem) {
+    return;
+  }
+
+  elem.addEventListener('click', function (event) {
+    var target = event.target;
+    if (!target.classList.contains(child)) return;
+    highlight(target);
+    elem.firstElementChild.value = target.id;
+  });
+
+  function highlight(node) {
+    if (selectedInput) {
+      selectedInput.checked = false;
+    }
+
+    selectedInput = node;
+    selectedInput.checked = true;
+  }
 }
 
 /***/ }),

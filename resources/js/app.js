@@ -54,6 +54,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     quantityOfGoods('product_quantity');
 
+    paymethodCollection('paymethod', 'form-check-input');
+
 });
 
 
@@ -116,8 +118,8 @@ function listChange(node) {
 
             if (this.classList.contains('form-link'))
                 cont.previousElementSibling.setAttribute('value', this.getAttribute('data-link'))
-                
-                
+
+
 
             cont.innerText = this.innerText;
             elem.classList.toggle('active');
@@ -505,11 +507,11 @@ function addCart() {
                     myImage.src = '/img/icon/cart_yes_white.png';
 
                     setTimeout(
-                        function() {
+                        function () {
                             cart.classList.add('animate');
                             cart.appendChild(myImage);
                         }, 500
-                    );                    
+                    );
 
                     target.insertAdjacentElement("beforebegin", cart);
 
@@ -706,7 +708,7 @@ function quantityOfGoods(el) {
     })
 
 
-    var sendQuantity = ( value, product ) => {
+    var sendQuantity = (value, product) => {
         const xhr = new XMLHttpRequest();
         xhr.open('POST', '/' + path + '?qty=' + value + '&product=' + product, true);
         xhr.setRequestHeader(
@@ -724,4 +726,34 @@ function quantityOfGoods(el) {
         xhr.send()
     }
 
+}
+
+function paymethodCollection(el, child) {
+
+    let selectedInput;
+
+    var elem = document.querySelector('.' + el);
+
+    if (!elem) {
+        return;
+    }
+    
+    elem.addEventListener('click', function (event) {
+        let target = event.target;
+
+        if (!target.classList.contains(child)) return;
+
+        highlight(target);
+
+        elem.firstElementChild.value = target.id;
+    })
+
+    function highlight(node) {
+        if (selectedInput) {
+            selectedInput.checked = false;
+        }
+        selectedInput = node;
+        selectedInput.checked = true;
+
+    }
 }
