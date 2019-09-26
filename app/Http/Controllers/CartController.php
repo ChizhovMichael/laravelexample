@@ -9,6 +9,9 @@ use App\Http\Controllers\NavigationController;
 use App\Orderlist;
 use Cart;
 use Illuminate\Support\Facades\Redirect;
+use Carbon\Carbon;
+use App\OrderPart;
+
 
 
 class CartController extends Controller
@@ -67,12 +70,10 @@ class CartController extends Controller
             return Redirect::back()->withInput($request->input())
                                 ->with('paymethod', 'Выберете способ оплаты');
 
+        $checkout = Cart::content();
 
-        $contact['order_status'] = 0;
-        $contact['order_return'] = 0;
-        $contact['order_payment'] = 0;
+
         $contact['order_lname'] = $request->secondname;
-        $contact['order_tracking'] = '';
         $contact['order_fname'] = $request->firstname;
         $contact['order_mname'] = $request->addname;
         $contact['order_country'] = $request->country;
@@ -93,37 +94,58 @@ class CartController extends Controller
         Mail::to('foo@example.com')->send(new OrderEmail($contact));
 
         
+        $order = new Orderlist();
 
-        Orderlist::create([
-            'order_status' => $contact['order_status'],
-            'order_return' => $contact['order_return'],
-            'order_payment' => $contact['order_payment'],
-            'order_lname' => $contact['order_lname'],
-            'order_tracking' => $contact['order_tracking'],
-            'order_fname' => $contact['order_fname'],
-            'order_mname' => $contact['order_mname'],
-            'order_country' => $contact['order_country'],
-            'order_delivery' => $contact['order_delivery'],
-            'order_region' => $contact['order_region'],
-            'order_autonomous' => $contact['order_autonomous'],
-            'order_district' => $contact['order_district'],
-            'order_city' => $contact['order_city'],
-            'order_address' => $contact['order_address'],
-            'order_index' => $contact['order_index'],
-            'order_email' => $contact['order_email'],
-            'order_phone' => $contact['order_phone'],
-            'order_comment' => $contact['order_comment'],
-            'paymethod' => $contact['paymethod']
-        ]);
+        $order->order_status = 0;
+        $order->order_return = 0;
+        $order->order_payment = 0;
+        $order->order_lname = $contact['order_lname'];
+        $order->order_tracking = '';
+        $order->order_fname = $contact['order_fname'];
+        $order->order_mname = $contact['order_mname'];
+        $order->order_country = $contact['order_country'];
+        $order->order_delivery = $contact['order_delivery'];
+        $order->order_region = $contact['order_region'];
+        $order->order_autonomous = $contact['order_autonomous'];
+        $order->order_district = $contact['order_district'];
+        $order->order_city = $contact['order_city'];
+        $order->order_address = $contact['order_address'];
+        $order->order_index = $contact['order_index'];
+        $order->order_email = $contact['order_email'];
+        $order->order_phone = $contact['order_phone'];
+        $order->order_comment = $contact['order_comment'];
+        $order->order_timestamp = strtotime(Carbon::now());
+        $order->paymethod = $contact['paymethod'];
+
+        $order->save(); 
+        
+
+        $orderPart = new OrderPart();
+
+        
+        foreach ($checkout as $item) {
+
+            $orderPart = new OrderPart();
+            $orderPart->part_id = $item->id;
+            $orderPart->order_status = $order->order_status;
+            $orderPart->part_return = $order->order_return;
+            $orderPart->part_cancel = 0;
+            $orderPart->order_count = $item->qty;
+            $orderPart->payment_status = 0;
+            $orderPart->order_id = $order->id;
+            $orderPart->time = strtotime(Carbon::now());
+            $orderPart->save();
+
+        }
 
 
 
-        // Добавление товара в базу
-        // Шаблон страницы сообщения
-        // Валидация в OrderformRequest
+
+
         // Вывод сообщения об удачной отправке
         // Отправка сообщения клиенту с реквизитами
+        // Очистка корзины после отправки
 
-        return $contact;
+        return redirect()->back()->with('success', '<script>alert("Hello")</script>');
     }
 }

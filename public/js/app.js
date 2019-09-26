@@ -7332,30 +7332,7 @@ function popup(el) {
     }
 
     if (target == this) return;
-    var container = document.createElement("DIV");
-    var window = document.createElement("DIV");
-    var close = document.createElement("DIV");
-    container.classList.add('modal');
-    window.className = "modal__wrapp col-6 sd-12 shadow-xs back-body b8";
-    close.className = "close c-p";
-    var myImage = new Image(30, 30);
-    myImage.src = '/img/icon/cancel.svg';
-    document.body.appendChild(container);
-    container.appendChild(window);
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/saleform', true);
-    xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
-
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState == 4 && xhr.status == 200) {
-        // console.log(xhr.responseText);
-        window.innerHTML += xhr.responseText;
-        window.appendChild(close);
-        close.appendChild(myImage);
-      }
-    };
-
-    xhr.send();
+    createMessage('saleform');
   }, true);
 }
 
@@ -7478,6 +7455,33 @@ function paymethodCollection(el, child) {
   }
 }
 
+function createMessage(param) {
+  var container = document.createElement("DIV");
+  var window = document.createElement("DIV");
+  var close = document.createElement("DIV");
+  container.classList.add('modal');
+  window.className = "modal__wrapp col-6 sd-12 shadow-xs back-body b8";
+  close.className = "close c-p";
+  var myImage = new Image(30, 30);
+  myImage.src = '/img/icon/cancel.svg';
+  document.body.appendChild(container);
+  container.appendChild(window);
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/' + param, true);
+  xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      // console.log(xhr.responseText);
+      window.innerHTML += xhr.responseText;
+      window.appendChild(close);
+      close.appendChild(myImage);
+    }
+  };
+
+  xhr.send();
+}
+
 /***/ }),
 
 /***/ "./resources/sass/app.scss":
@@ -7509,9 +7513,9 @@ function paymethodCollection(el, child) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! E:\laravelexample\resources\js\app.js */"./resources/js/app.js");
-__webpack_require__(/*! E:\laravelexample\resources\sass\mobile.scss */"./resources/sass/mobile.scss");
-module.exports = __webpack_require__(/*! E:\laravelexample\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/michael/Рабочий стол/laravelexample/resources/js/app.js */"./resources/js/app.js");
+__webpack_require__(/*! /home/michael/Рабочий стол/laravelexample/resources/sass/mobile.scss */"./resources/sass/mobile.scss");
+module.exports = __webpack_require__(/*! /home/michael/Рабочий стол/laravelexample/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

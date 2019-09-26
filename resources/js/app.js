@@ -585,39 +585,7 @@ function popup(el) {
 
         if (target == this) return;
 
-        var container = document.createElement("DIV");
-        var window = document.createElement("DIV");
-        var close = document.createElement("DIV");
-
-
-        container.classList.add('modal');
-        window.className = "modal__wrapp col-6 sd-12 shadow-xs back-body b8";
-        close.className = "close c-p";
-
-        var myImage = new Image(30, 30);
-        myImage.src = '/img/icon/cancel.svg';
-
-
-        document.body.appendChild(container);
-        container.appendChild(window);
-
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', '/saleform', true);
-        xhr.setRequestHeader(
-            'X-CSRF-TOKEN',
-            document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        );
-        xhr.onreadystatechange = function () {
-
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                // console.log(xhr.responseText);
-                window.innerHTML += xhr.responseText;
-                window.appendChild(close);
-                close.appendChild(myImage);
-            }
-        }
-        xhr.send()
-
+        createMessage('saleform');
 
     }, true)
 }
@@ -737,7 +705,7 @@ function paymethodCollection(el, child) {
     if (!elem) {
         return;
     }
-    
+
     elem.addEventListener('click', function (event) {
         let target = event.target;
 
@@ -756,4 +724,39 @@ function paymethodCollection(el, child) {
         selectedInput.checked = true;
 
     }
+}
+
+function createMessage(param) {
+
+    var container = document.createElement("DIV");
+    var window = document.createElement("DIV");
+    var close = document.createElement("DIV");
+
+    container.classList.add('modal');
+    window.className = "modal__wrapp col-6 sd-12 shadow-xs back-body b8";
+    close.className = "close c-p";
+
+    var myImage = new Image(30, 30);
+    myImage.src = '/img/icon/cancel.svg';
+
+
+    document.body.appendChild(container);
+    container.appendChild(window);
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '/' + param, true);
+    xhr.setRequestHeader(
+        'X-CSRF-TOKEN',
+        document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+    );
+    xhr.onreadystatechange = function () {
+
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            // console.log(xhr.responseText);
+            window.innerHTML += xhr.responseText;
+            window.appendChild(close);
+            close.appendChild(myImage);
+        }
+    }
+    xhr.send()
 }

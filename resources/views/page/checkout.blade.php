@@ -363,7 +363,9 @@
             </div>
         </div>
     </form>
-
+    @if(session('success'))
+        {!! session('success') !!}
+    @endif
     @include('includes.footer')
 
 </body>

@@ -25,6 +25,17 @@ class OrderFormRequest extends FormRequest
     {
         return [
             //
+            'firstname' => 'required|max:255',
+            'secondname' => 'required|max:255',
+            'addname'   => 'required|max:255',
+            'delivery'  => 'numeric',
+            'country'    => 'numeric',
+            'region'    => 'max:32',
+            'autoregion' => 'max:32',
+            'district' => 'max:32',
+            'city' => 'max:30',
+            'address' => 'required',
+            'email' => 'required|email'
         ];
     }
 }
