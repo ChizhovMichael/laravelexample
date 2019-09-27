@@ -66,6 +66,7 @@ Route::get('/find','SearchController@getMobilePage')->name('search.mobile');
 Route::post('/saleform', function() {
     return view('includes/saleform');
 });
+Route::post('/saleform/push', 'CartController@saleFormPush')->name('saleform.push');
 
 /**
  * Quantity From

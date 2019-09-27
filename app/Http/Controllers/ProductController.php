@@ -668,7 +668,6 @@ class ProductController extends Controller
         $link = route('addset', [ 'id' => $request->product, 'qty' => $request->qty ]);
         return $link;
 
-
-        // Подключить формы в том числе и в модальном окне
     }
+
 }

@@ -6,10 +6,12 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Http\Controllers\NavigationController;
 
 class OrderEmail extends Mailable
 {
     use Queueable, SerializesModels;
+    use NavigationController;
 
     public $contact;
 
@@ -31,7 +33,9 @@ class OrderEmail extends Mailable
      */
     public function build()
     {
-        return $this->to(config('mail.from.address'))
+        $contacts = collect($this->contacts());
+        
+        return $this->from($contacts->get('mailMain')->value, 'Telezapchasti.ru')
                     ->subject('Форма заказа Telezapchati')
                     ->view('emails.order');
     }

@@ -185,7 +185,7 @@ return [
          * Shopping Cart
          * gloudemans/shoppingcart
          */
-        El3zahaby\Shoppingcart\ShoppingcartServiceProvider::class
+        El3zahaby\Shoppingcart\ShoppingcartServiceProvider::class,
 
     ],
 

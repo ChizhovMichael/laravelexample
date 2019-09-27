@@ -15,6 +15,10 @@
         <p>Телефон: {{ $contact['order_phone'] }}</p>
         <p>Комментарий к доставке: {{ $contact['order_comment'] }}</p>
         <p>Способ оплаты: {{ $contact['paymethod'] }}</p>
+        <h4>Информация о заказе:</h4>
+        @foreach ($contact['items'] as $item )
+            <p>{{ $item }}</p>
+        @endforeach
 
     </div>
 </body>

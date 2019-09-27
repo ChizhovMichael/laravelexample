@@ -56,8 +56,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     paymethodCollection('paymethod', 'form-check-input');
 
+    pushform();
 });
-
 
 
 
@@ -459,7 +459,12 @@ function changeSetting(el) {
 
 }
 
-
+/**
+ * Добавляем товар в корзину по клику
+ * Асинхронное добавление
+ * el class=cart-link
+ * 
+ */
 function addCart() {
     document.addEventListener('click', function (event) {
         event = event || window.event;
@@ -759,4 +764,31 @@ function createMessage(param) {
         }
     }
     xhr.send()
+}
+
+function pushform() {
+
+    document.addEventListener('submit', function (event) {
+        event = event || window.event;
+        var target = event.target || event.srcElement;
+
+        while (target != document) {
+
+            if (target instanceof HTMLFormElement) {
+                if (target.tagName.toLowerCase() === "form") {
+
+                    var button = target.querySelector('button');
+
+
+                    button.innerHTML = '<span class="load open"></span>';
+                    button.disabled = true;
+
+
+                    break;
+                }
+            }
+
+            target = target.parentNode;
+        }
+    }, true);
 }

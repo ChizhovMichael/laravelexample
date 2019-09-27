@@ -234,6 +234,9 @@
             </div>
         </div>
     </div>
+    @if(session('success'))
+        {!! session('success') !!}
+    @endif
 
     @include('includes.footer')
 

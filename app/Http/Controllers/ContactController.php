@@ -94,8 +94,10 @@ class ContactController extends Controller
         $contact['tel'] = $request->tel;
         $contact['message'] = $request->message;
 
+        $contacts = collect($this->contacts());
+
         // Mail delivery logic goes here
-        Mail::to('foo@example.com')->send(new ContactEmail($contact));
+        Mail::to($contacts->get('mailMain')->value)->send(new ContactEmail($contact));
 
         return redirect()->back()->with('success', 'Спасибо за ваше сообщение!');
 

@@ -3955,6 +3955,50 @@ input[type=range]::-webkit-slider-thumb:active {
   font-size: 1em;
 }
 
+.load {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 5px solid #fafafa;
+  border-radius: 100%;
+}
+
+.open {
+  border-top: 5px solid transparent;
+  -webkit-animation: load-animate infinite linear 1s;
+  animation: load-animate infinite linear 1s;
+}
+
+@-webkit-keyframes load-animate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(180deg);
+    opacity: 0.35;
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes load-animate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(180deg);
+    opacity: 0.35;
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 /***********
 // Product
 ***********/
@@ -4266,6 +4310,18 @@ input[type=range]::-webkit-slider-thumb:active {
   position: absolute;
   top: 50%;
   left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.modal__background {
+  height: 20em;
+  background: #f5f6fa;
+}
+
+.modal__background img {
+  top: 50%;
+  left: 50%;
+  width: 100%;
   transform: translate(-50%, -50%);
 }
 

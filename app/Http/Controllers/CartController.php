@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Mail\OrderEmail;
+use App\Mail\PriceEmail;
+use App\Mail\ClientEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\NavigationController;
@@ -11,14 +13,32 @@ use Cart;
 use Illuminate\Support\Facades\Redirect;
 use Carbon\Carbon;
 use App\OrderPart;
+use App\PriceRequest;
+use App\Product;
 
+/*************
+ * | Контролер корзины и отправки информации о покупке
+ * | fillable для проверки заполняемых полей. Не забывать редактировать если 
+ * | название полей в таблице изменяется
+ * | 
+ * | 1. Get Page Cart (Получение страницы корзины)
+ * | 2. Dеlete product from cart (Удаление продукта с временной таблицы корзины)
+ * | 3. Checout Page (Получение страницы оформление заказа)
+ * | 4. Checkout Post (Отправление информации о покупке на почту клиента и на почту администратора)
+ * | 5. Sale Form Post (Отправка формы 'Нашли дешевле' на почту и в базу)
 
+ **************/
 
 class CartController extends Controller
 {
     //
     use NavigationController;
 
+
+    /**
+     * | Get Page Cart
+     * | Получение страницы корзины
+     */
     public function getPage()
     {
         return view('page/cart', [
@@ -29,7 +49,10 @@ class CartController extends Controller
         ]);
     }
 
-
+    /**
+     * | Dеlete product from cart
+     * | Удаление продукта с временной таблицы корзины
+     */
     public function destroyProduct( $cart_id )
     {
         Cart::remove($cart_id);
@@ -37,6 +60,10 @@ class CartController extends Controller
         return redirect()->route('cart');
     }
 
+    /**
+     * | Checout Page
+     * | Получение страницы оформление заказа
+     */
     public function checkout()
     {
         
@@ -49,9 +76,20 @@ class CartController extends Controller
 
     }
 
+    /**
+     * | Checkout Post
+     * | Отправление информации о покупке на почту клиента и на почту администратора
+     */
     public function checkoutPost(Request $request)
     {
 
+        //
+        $checkout = Cart::content();
+        $contacts = collect($this->contacts());
+        $order = new Orderlist();
+        
+
+        // Проверим контактные данные
         $request->validate([
             'firstname' => 'required|max:255',
             'secondname' => 'required|max:255',
@@ -65,14 +103,15 @@ class CartController extends Controller
             'address' => 'required',
             'email' => 'required|email'
         ]);
-    
+
+        // Если метод оплаты не выбран вернемся чтобы напомнить
         if ( !$request->paymethod )
             return Redirect::back()->withInput($request->input())
                                 ->with('paymethod', 'Выберете способ оплаты');
 
-        $checkout = Cart::content();
+        
 
-
+        // Занесем данные в $contact для отправки по почтам
         $contact['order_lname'] = $request->secondname;
         $contact['order_fname'] = $request->firstname;
         $contact['order_mname'] = $request->addname;
@@ -88,14 +127,15 @@ class CartController extends Controller
         $contact['order_phone'] = $request->tel;
         $contact['order_comment'] = $request->message;
         $contact['paymethod'] = $request->paymethod;
+
+        // Содержимое заказа
+        $contact['items'] = [];
+        foreach ($checkout as $item) {
+            array_push($contact['items'], $item->options->type . ' ' . $item->name  . ' x'. $item->qty . ' ' . $item->subtotal . 'руб');
+        }
         
-
-        // Sending Mail
-        Mail::to('foo@example.com')->send(new OrderEmail($contact));
-
         
-        $order = new Orderlist();
-
+        // Занесем заказ в таблицу
         $order->order_status = 0;
         $order->order_return = 0;
         $order->order_payment = 0;
@@ -116,15 +156,13 @@ class CartController extends Controller
         $order->order_comment = $contact['order_comment'];
         $order->order_timestamp = strtotime(Carbon::now());
         $order->paymethod = $contact['paymethod'];
-
         $order->save(); 
-        
 
-        $orderPart = new OrderPart();
-
+        // получим id заказа
+        $contact['id'] = $order->id;
         
         foreach ($checkout as $item) {
-
+            // Занесем содержимое заказа в таблицу
             $orderPart = new OrderPart();
             $orderPart->part_id = $item->id;
             $orderPart->order_status = $order->order_status;
@@ -138,14 +176,86 @@ class CartController extends Controller
 
         }
 
+        // Sending Mail
+        Mail::to($contacts->get('mailMain')->value)->send(new OrderEmail($contact));
+        Mail::to($contact['order_email'])->send(new ClientEmail($contact));
 
+        // Cart::destroy();
 
+        return redirect()->back()->with('success', '
+        <div class="modal">
+            <div class="modal__wrapp col-6 sd-12 shadow-xs back-body b8 hide">
+                <div class="modal__background rel top-left col-12 sd-12 hide">
+                    <img src="'. asset('/img/favicon/twitter.png') .'" alt="congratulations" class="abs">
+                </div>                
+                <h5 class="text-center">Поздравляем!</h5>
+                <div class="pl-em-3 pr-em-3 pb-em-3">
+                    <p class="cc">Ваша покупка удачно оформлена. В скором времени с вами свяжется наш менеджер. А пока проверьте свою почту. Детали заказа уже там!</p>
+                    <p class="mt-em-3 cc"><i>С уважением, Telezapchasti</i></p>
+                    <div class="close c-p">
+                        <img width="30" height="30" src="/img/icon/cancel.svg">
+                    </div>
+                </div>
+            </div>
+        </div>
+        ');
 
-
-        // Вывод сообщения об удачной отправке
         // Отправка сообщения клиенту с реквизитами
-        // Очистка корзины после отправки
-
-        return redirect()->back()->with('success', '<script>alert("Hello")</script>');
+        // Проверка количества товара и disable button
     }
+
+
+    /**
+     * Sale Form Post
+     * Отправка формы 'Нашли дешевле' на почту и в базу
+     */
+    public function saleFormPush(Request $request) 
+    {
+        $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|email',
+            'url'   => 'required|url'
+        ]);
+
+        $contact['name'] = $request->name;
+        $contact['email'] = $request->email;
+        $contact['url'] = $request->url;
+
+        PriceRequest::create([
+            'name' => $contact['name'],
+            'email' => $contact['email'],
+            'url' => $contact['url']
+        ]);
+
+        $contacts = collect($this->contacts());
+
+        // Sending Mail
+        Mail::to($contacts->get('mailMain')->value)->send(new PriceEmail($contact));
+
+        return redirect()->back()->with('success', '
+        <div class="modal">
+            <div class="modal__wrapp col-6 sd-12 shadow-xs back-body b8 hide">
+                <div class="modal__background rel top-left col-12 sd-12 hide">
+                    <img src="'. asset('/img/favicon/twitter.png') .'" alt="congratulations" class="abs">
+                </div>                
+                <h5 class="text-center">Ок, мы посмотрим, что можно сделать!</h5>
+                <div class="pl-em-3 pr-em-3 pb-em-3">
+                    <p class="cc">Ваша заявка удачно оформлена. В скором времени с вами свяжется наш менеджер. Он уточнит цену или предложит альтернативы. Спасибо!</p>
+                    <p class="mt-em-3 cc"><i>С уважением, Telezapchasti</i></p>
+                    <div class="close c-p">
+                        <img width="30" height="30" src="/img/icon/cancel.svg">
+                    </div>
+                </div>
+            </div>
+        </div>
+        ');
+    }
+
+    // Проверка количества товара и disable button
+    // Посути нужно сделать функцию которая бы сравнивала количество товара 
+    // И корзину по id и возвращала сласс dissable для кнопки 
+    //   a.disabled {
+    //     pointer-events: none;
+    //     cursor: default;
+    //   }
 }

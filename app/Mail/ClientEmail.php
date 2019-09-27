@@ -8,11 +8,10 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Http\Controllers\NavigationController;
 
-class ContactEmail extends Mailable
+class ClientEmail extends Mailable
 {
     use Queueable, SerializesModels;
     use NavigationController;
-
 
     public $contact;
 
@@ -34,11 +33,10 @@ class ContactEmail extends Mailable
      */
     public function build()
     {
-
         $contacts = collect($this->contacts());
-
+        
         return $this->from($contacts->get('mailMain')->value, 'Telezapchasti.ru')
-                    ->subject('Форма обратной связи со страницы Контакты Telezapchati')
-                    ->view('emails.contact');
+                    ->subject('Ваш заказ на Telezapchati.ru')
+                    ->view('emails.client');
     }
 }

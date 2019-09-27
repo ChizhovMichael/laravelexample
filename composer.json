@@ -12,6 +12,7 @@
         "doctrine/dbal": "^2.9",
         "el3zahaby/laravel-shopping-cart": "^3.5",
         "fideloper/proxy": "^4.0",
+        "guzzlehttp/guzzle": "^6.3",
         "jenssegers/agent": "^2.6",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",

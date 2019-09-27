@@ -6858,6 +6858,7 @@ document.addEventListener("DOMContentLoaded", function () {
   navigationItemShow('navigation__trigger');
   quantityOfGoods('product_quantity');
   paymethodCollection('paymethod', 'form-check-input');
+  pushform();
 });
 
 function toggleMenu(el) {
@@ -7482,6 +7483,26 @@ function createMessage(param) {
   xhr.send();
 }
 
+function pushform() {
+  document.addEventListener('submit', function (event) {
+    event = event || window.event;
+    var target = event.target || event.srcElement;
+
+    while (target != document) {
+      if (target instanceof HTMLFormElement) {
+        if (target.tagName.toLowerCase() === "form") {
+          var button = target.querySelector('button');
+          button.innerHTML = '<span class="load open"></span>';
+          button.disabled = true;
+          break;
+        }
+      }
+
+      target = target.parentNode;
+    }
+  }, true);
+}
+
 /***/ }),
 
 /***/ "./resources/sass/app.scss":
@@ -7513,9 +7534,9 @@ function createMessage(param) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/michael/Рабочий стол/laravelexample/resources/js/app.js */"./resources/js/app.js");
-__webpack_require__(/*! /home/michael/Рабочий стол/laravelexample/resources/sass/mobile.scss */"./resources/sass/mobile.scss");
-module.exports = __webpack_require__(/*! /home/michael/Рабочий стол/laravelexample/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! E:\laravelexample\resources\js\app.js */"./resources/js/app.js");
+__webpack_require__(/*! E:\laravelexample\resources\sass\mobile.scss */"./resources/sass/mobile.scss");
+module.exports = __webpack_require__(/*! E:\laravelexample\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
