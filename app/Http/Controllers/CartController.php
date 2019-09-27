@@ -180,7 +180,7 @@ class CartController extends Controller
         Mail::to($contacts->get('mailMain')->value)->send(new OrderEmail($contact));
         Mail::to($contact['order_email'])->send(new ClientEmail($contact));
 
-        // Cart::destroy();
+        Cart::destroy();
 
         return redirect()->back()->with('success', '
         <div class="modal">
@@ -199,9 +199,6 @@ class CartController extends Controller
             </div>
         </div>
         ');
-
-        // Отправка сообщения клиенту с реквизитами
-        // Проверка количества товара и disable button
     }
 
 
