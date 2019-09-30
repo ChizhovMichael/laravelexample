@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Redirect;
 use Carbon\Carbon;
 use App\OrderPart;
 use App\PriceRequest;
-use App\Product;
+use Illuminate\Support\Facades\Auth;
+use App\PaymentDetailsUser;
 
 /*************
  * | Контролер корзины и отправки информации о покупке
@@ -46,6 +47,7 @@ class CartController extends Controller
             'contacts'          => collect($this->contacts()),
             'cart'              =>  $this->getCartCount(),
             'cartContent'       =>  Cart::content(),
+            'user'              =>  Auth::user(),
         ]);
     }
 
@@ -66,12 +68,22 @@ class CartController extends Controller
      */
     public function checkout()
     {
+        if(Auth::user()) {
+            $paymentDetail = PaymentDetailsUser::get();
+            $paymentDetail = $paymentDetail->where('user_id', Auth::user()->id)->first();
+        } else {
+            $paymentDetail = Null;
+        }
         
+
+
         return view('page/checkout', [
             'navigations'       =>  $this->navigation(),
             'contacts'          => collect($this->contacts()),
             'cart'              =>  $this->getCartCount(),
             'cartContent'       =>  Cart::content(),
+            'user'              =>  Auth::user(),
+            'paymentDetail'     =>  $paymentDetail,
         ]);
 
     }

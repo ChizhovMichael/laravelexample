@@ -7,6 +7,7 @@ use App\Http\Controllers\NavigationController;
 use App\Product;
 use App\Navigation;
 use Jenssegers\Agent\Agent;
+use Illuminate\Support\Facades\Auth;
 
 
 
@@ -125,6 +126,7 @@ class SearchController extends Controller
                 'navigations'       =>  $this->navigation(),
                 'contacts'          => collect($this->contacts()),
                 'cart'              =>  $this->getCartCount(),
+                'user'              =>  Auth::user(),
             ]);
 
         }

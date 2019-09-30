@@ -7211,6 +7211,13 @@ function changeSetting(el) {
     });
   });
 }
+/**
+ * Добавляем товар в корзину по клику
+ * Асинхронное добавление
+ * el class=cart-link
+ * 
+ */
+
 
 function addCart() {
   document.addEventListener('click', function (event) {

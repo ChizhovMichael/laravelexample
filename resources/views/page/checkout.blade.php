@@ -23,12 +23,19 @@
 
         @csrf
 
+
         <div class="flex-between pt-em-5 pb-em-5 pr-5 pl-5 col-12">
             <div class="col-6 sd-12 pr-5">
+
+
+
 
                 <div>
                     <h3>Детали оплаты</h3>
                 </div>
+
+                
+                @if($paymentDetail == NULL)
 
                 <div class="flex-between">
                     <div class="b5 bc sd-12 col-5 mt-em-1">
@@ -258,6 +265,139 @@
                     </div>
                 </div>
 
+                @else
+
+                <div>
+                    <div class="flex-between shadow-xs b4 mt-em-1 mb-em-1">
+                        <div class="pr-em-2 pl-em-2 col-6 sd-6">
+                            <p class="cc">Имя:</p>
+                        </div>
+                        <div class="pr-em-2 pl-em-2 col-6 sd-6">
+                            <p class="cm">{{ $paymentDetail->name }}</p>
+                            <input type="hidden" name="firstname" value="{{ $paymentDetail->name }}">
+                        </div>
+                    </div>
+                    <div class="flex-between shadow-xs b4 mt-em-1 mb-em-1">
+                        <div class="pr-em-2 pl-em-2 col-6 sd-6">
+                            <p class="cc">Фамилия:</p>
+                        </div>
+                        <div class="pr-em-2 pl-em-2 col-6 sd-6">
+                            <p class="cm">{{ $paymentDetail->secondname }}</p>
+                            <input type="hidden" name="secondname" value="{{ $paymentDetail->secondname }}">
+                        </div>
+                    </div>
+                    <div class="flex-between shadow-xs b4 mt-em-1 mb-em-1">
+                        <div class="pr-em-2 pl-em-2 col-6 sd-6">
+                            <p class="cc">Отчество:</p>
+                        </div>
+                        <div class="pr-em-2 pl-em-2 col-6 sd-6">
+                            <p class="cm">{{ $paymentDetail->addname }}</p>
+                            <input type="hidden" name="addname" value="{{ $paymentDetail->addname }}">
+                        </div>
+                    </div>
+                    <div class="flex-between shadow-xs b4 mt-em-1 mb-em-1">
+                        <div class="pr-em-2 pl-em-2 col-6 sd-6">
+                            <p class="cc">Способ доставки:</p>
+                        </div>
+                        <div class="pr-em-2 pl-em-2 col-6 sd-6">
+                            <p class="cm">@if($paymentDetail->delivery == 1) Почта России @elseif($paymentDetail->delivery == 2) Курьерская служба доставки СДЭК @elseif($paymentDetail->delivery == 3) Доставка курьером (только Санкт-Петербург) @else не выбран @endif</p>
+                            <input type="hidden" name="delivery" value="{{ $paymentDetail->delivery }}">
+                        </div>
+                    </div>
+                    <div class="flex-between shadow-xs b4 mt-em-1 mb-em-1">
+                        <div class="pr-em-2 pl-em-2 col-6 sd-6">
+                            <p class="cc">Страна:</p>
+                        </div>
+                        <div class="pr-em-2 pl-em-2 col-6 sd-6">
+                            <p class="cm">@if($paymentDetail->country == 1) Россия @elseif($paymentDetail->country == 2) Булоруссия @elseif($paymentDetail->country == 3) Украина @elseif($paymentDetail->country == 5) Казахстан @else  @endif</p>
+                            <input type="hidden" name="country" value="{{ $paymentDetail->country }}">
+                        </div>
+                    </div>
+                    <div class="flex-between shadow-xs b4 mt-em-1 mb-em-1">
+                        <div class="pr-em-2 pl-em-2 col-6 sd-6">
+                            <p class="cc">Индекс:</p>
+                        </div>
+                        <div class="pr-em-2 pl-em-2 col-6 sd-6">
+                            <p class="cm">{{ $paymentDetail->zipcode }}</p>
+                            <input type="hidden" name="zipcode" value="{{ $paymentDetail->zipcode }}">
+                        </div>
+                    </div>
+                    <div class="flex-between shadow-xs b4 mt-em-1 mb-em-1">
+                        <div class="pr-em-2 pl-em-2 col-6 sd-6">
+                            <p class="cc">Автономный округ:</p>
+                        </div>
+                        <div class="pr-em-2 pl-em-2 col-6 sd-6">
+                            <p class="cm">{{ $paymentDetail->autonomous }}</p>
+                            <input type="hidden" name="autoregion" value="{{ $paymentDetail->autonomous }}">
+                        </div>
+                    </div>
+                    <div class="flex-between shadow-xs b4 mt-em-1 mb-em-1">
+                        <div class="pr-em-2 pl-em-2 col-6 sd-6">
+                            <p class="cc">Регион:</p>
+                        </div>
+                        <div class="pr-em-2 pl-em-2 col-6 sd-6">
+                            <p class="cm">{{ $paymentDetail->region }}</p>
+                            <input type="hidden" name="region" value="{{ $paymentDetail->region }}">
+                        </div>
+                    </div>
+                    <div class="flex-between shadow-xs b4 mt-em-1 mb-em-1">
+                        <div class="pr-em-2 pl-em-2 col-6 sd-6">
+                            <p class="cc">Район:</p>
+                        </div>
+                        <div class="pr-em-2 pl-em-2 col-6 sd-6">
+                            <p class="cm">{{ $paymentDetail->district }}</p>
+                            <input type="hidden" name="district" value="{{ $paymentDetail->district }}">
+                        </div>
+                    </div>
+                    <div class="flex-between shadow-xs b4 mt-em-1 mb-em-1">
+                        <div class="pr-em-2 pl-em-2 col-6 sd-6">
+                            <p class="cc">Город:</p>
+                        </div>
+                        <div class="pr-em-2 pl-em-2 col-6 sd-6">
+                            <p class="cm">{{ $paymentDetail->city }}</p>
+                            <input type="hidden" name="city" value="{{ $paymentDetail->city }}">
+                        </div>
+                    </div>
+                    <div class="flex-between shadow-xs b4 mt-em-1 mb-em-1">
+                        <div class="pr-em-2 pl-em-2 col-6 sd-6">
+                            <p class="cc">Адрес:</p>
+                        </div>
+                        <div class="pr-em-2 pl-em-2 col-6 sd-6">
+                            <p class="cm">{{ $paymentDetail->address }}</p>
+                            <input type="hidden" name="address" value="{{ $paymentDetail->address }}">
+                        </div>
+                    </div>
+                    <div class="flex-between shadow-xs b4 mt-em-1 mb-em-1">
+                        <div class="pr-em-2 pl-em-2 col-6 sd-6">
+                            <p class="cc">Телефон получателя:</p>
+                        </div>
+                        <div class="pr-em-2 pl-em-2 col-6 sd-6">
+                            <p class="cm">{{ $paymentDetail->phone }}</p>
+                            <input type="hidden" name="tel" value="{{ $paymentDetail->phone }}">
+                        </div>
+                    </div>
+                    <div class="flex-between shadow-xs b4 mt-em-1 mb-em-1">
+                        <div class="pr-em-2 pl-em-2 col-6 sd-6">
+                            <p class="cc">Email получателя:</p>
+                        </div>
+                        <div class="pr-em-2 pl-em-2 col-6 sd-6">
+                            <p class="cm">{{ $paymentDetail->email }}</p>
+                            <input type="hidden" name="email" value="{{ $paymentDetail->email }}">
+                        </div>
+                    </div>
+                    <div class="flex-between shadow-xs b4 mt-em-1 mb-em-1">
+                        <div class="pr-em-2 pl-em-2 col-6 sd-6">
+                            <p class="cc">Комментарий к доставке:</p>
+                        </div>
+                        <div class="pr-em-2 pl-em-2 col-6 sd-6">
+                            <p class="cm">{{ $paymentDetail->comment }}</p>
+                            <input type="hidden" name="message" value="{{ $paymentDetail->comment }}">
+                        </div>
+                    </div>
+                </div>
+
+                @endif
+
 
 
             </div>
@@ -362,6 +502,7 @@
 
             </div>
         </div>
+
     </form>
     @if(session('success'))
         {!! session('success') !!}

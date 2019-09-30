@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
 use App\Mail\ContactEmail;
 use App\Http\Controllers\NavigationController;
+use Illuminate\Support\Facades\Auth;
 
 
 /*************
@@ -36,6 +37,7 @@ class ContactController extends Controller
             'navigations'       =>  $this->navigation(),
             'contacts'          => collect($this->contacts()),
             'cart'              =>  $this->getCartCount(),
+            'user'              =>  Auth::user(),
         ]);
     }
 
@@ -49,6 +51,7 @@ class ContactController extends Controller
             'navigations'       =>  $this->navigation(),
             'contacts'          => collect($this->contacts()),
             'cart'              =>  $this->getCartCount(),
+            'user'              =>  Auth::user(),
         ]);
     }
 
@@ -63,6 +66,7 @@ class ContactController extends Controller
             'navigations'       =>  $this->navigation(),
             'contacts'          => collect($this->contacts()),
             'cart'              =>  $this->getCartCount(),
+            'user'              =>  Auth::user(),
         ]);
     }
 
@@ -78,6 +82,7 @@ class ContactController extends Controller
             'navigations'       =>  $this->navigation(),
             'contacts'          => collect($this->contacts()),
             'cart'              =>  $this->getCartCount(),
+            'user'              =>  Auth::user(),
         ]);
     }
 

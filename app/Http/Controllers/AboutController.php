@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\NavigationController;
+use Illuminate\Support\Facades\Auth;
 
 
 class AboutController extends Controller
@@ -17,6 +18,7 @@ class AboutController extends Controller
             'navigations'       =>  $this->navigation(),
             'contacts'          => collect($this->contacts()),
             'cart'              =>  $this->getCartCount(),
+            'user'              =>  Auth::user(),
         ]);
     }
 }

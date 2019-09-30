@@ -12,6 +12,8 @@ use App\Company;
 use App\Tv;
 use App\NavigationAdditional;
 use App\Set;
+use Illuminate\Support\Facades\Auth;
+
 
 
 /*************
@@ -61,7 +63,8 @@ class ProductController extends Controller
             'products_discount' =>  $this->getStockProduct('discount'),
             'navigations'       =>  $this->navigation(),
             'contacts'          =>  collect($this->contacts()),
-            'cart'              =>  $this->getCartCount()
+            'cart'              =>  $this->getCartCount(),
+            'user'              =>  Auth::user()
         ]);
     }
 
@@ -182,7 +185,8 @@ class ProductController extends Controller
             'model'         => NULL,
             'productsCount' => $productsCount,
             'newCount'      => $newCount,
-            'saleCount'     => $saleCount
+            'saleCount'     => $saleCount,
+            'user'          => Auth::user(),
         ]);
     }
 
@@ -274,7 +278,8 @@ class ProductController extends Controller
             'model'         => NULL,
             'productsCount' => $productsCount,
             'newCount'      => $newCount,
-            'saleCount'     => $saleCount
+            'saleCount'     => $saleCount,
+            'user'          => Auth::user(),
         ]);
     }
 
@@ -376,6 +381,7 @@ class ProductController extends Controller
             'cart'              => $this->getCartCount(),
             'category'          => $category,
             'qty'               => 1,
+            'user'              => Auth::user(),
         ]);
     }
 
@@ -494,6 +500,7 @@ class ProductController extends Controller
             'productsCount' => $productsCount,
             'newCount'      => $newCount,
             'saleCount'     => $saleCount,
+            'user'          => Auth::user(),
         ]);
     }
 
@@ -583,6 +590,7 @@ class ProductController extends Controller
             'productsCount' => $productsCount,
             'newCount'      => $newCount,
             'saleCount'     => $saleCount,
+            'user'          => Auth::user(),
         ]);
 
     }
@@ -612,6 +620,7 @@ class ProductController extends Controller
             'setInfo'       => $productsInfo,
             'cart'          => $this->getCartCount(),
             'qty'           => 1,
+            'user'          => Auth::user(),
         ]);
 
     }

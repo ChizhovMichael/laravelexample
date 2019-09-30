@@ -11,10 +11,21 @@
 |
 */
 
+
+
 Route::get('/', 'ProductController@index')->name('main');
 Route::get('/запчасти_для_телевизоров', 'ProductController@index');
 
+
+/**
+ * Home page
+ */
 Route::get('/home', 'HomeController@index')->name('home');
+Route::post('/home', 'HomeController@PaymentDetailsUserPush')->name('home.push');
+Route::get('/home/delete', 'HomeController@PaymentDetailsUserDelete')->name('home.delete');
+
+
+Route::get('/admin', 'AdminController@admin')->middleware('is_admin')->name('admin');
 
 Auth::routes();
 
