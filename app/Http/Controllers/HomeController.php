@@ -40,6 +40,8 @@ class HomeController extends Controller
         $paymentDetail = PaymentDetailsUser::get();
         $paymentDetail = $paymentDetail->where('user_id', Auth::user()->id)->first();
 
+        if(Auth::user()->type == 'admin')
+            return redirect('admin');
         
 
         return view('home', [

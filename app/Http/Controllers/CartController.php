@@ -101,19 +101,22 @@ class CartController extends Controller
 
 
         // Проверим контактные данные
-        $request->validate([
-            'firstname' => 'required|max:255',
-            'secondname' => 'required|max:255',
-            'addname'   => 'required|max:255',
-            'delivery'  => 'numeric',
-            'country'    => 'numeric',
-            'region'    => 'max:32',
-            'autoregion' => 'max:32',
-            'district' => 'max:32',
-            'city' => 'max:30',
-            'address' => 'required',
-            'email' => 'required|email'
-        ]);
+        if(!Auth::user()) {
+            $request->validate([
+                'firstname' => 'required|max:255',
+                'secondname' => 'required|max:255',
+                'addname'   => 'required|max:255',
+                'delivery'  => 'numeric',
+                'country'    => 'numeric',
+                'region'    => 'max:32',
+                'autoregion' => 'max:32',
+                'district' => 'max:32',
+                'city' => 'max:30',
+                'address' => 'required',
+                'email' => 'required|email'
+            ]);
+        }
+        
 
         // Если метод оплаты не выбран вернемся чтобы напомнить
         if (!$request->paymethod)
