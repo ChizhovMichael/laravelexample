@@ -55,7 +55,7 @@ class CartController extends Controller
      * | Dеlete product from cart
      * | Удаление продукта с временной таблицы корзины
      */
-    public function destroyProduct( $cart_id )
+    public function destroyProduct($cart_id)
     {
         Cart::remove($cart_id);
 
@@ -68,13 +68,13 @@ class CartController extends Controller
      */
     public function checkout()
     {
-        if(Auth::user()) {
+        if (Auth::user()) {
             $paymentDetail = PaymentDetailsUser::get();
             $paymentDetail = $paymentDetail->where('user_id', Auth::user()->id)->first();
         } else {
             $paymentDetail = Null;
         }
-        
+
 
 
         return view('page/checkout', [
@@ -85,7 +85,6 @@ class CartController extends Controller
             'user'              =>  Auth::user(),
             'paymentDetail'     =>  $paymentDetail,
         ]);
-
     }
 
     /**
@@ -99,7 +98,7 @@ class CartController extends Controller
         $checkout = Cart::content();
         $contacts = collect($this->contacts());
         $order = new Orderlist();
-        
+
 
         // Проверим контактные данные
         $request->validate([
@@ -117,11 +116,11 @@ class CartController extends Controller
         ]);
 
         // Если метод оплаты не выбран вернемся чтобы напомнить
-        if ( !$request->paymethod )
+        if (!$request->paymethod)
             return Redirect::back()->withInput($request->input())
-                                ->with('paymethod', 'Выберете способ оплаты');
+                ->with('paymethod', 'Выберете способ оплаты');
 
-        
+
 
         // Занесем данные в $contact для отправки по почтам
         $contact['order_lname'] = $request->secondname;
@@ -143,10 +142,10 @@ class CartController extends Controller
         // Содержимое заказа
         $contact['items'] = [];
         foreach ($checkout as $item) {
-            array_push($contact['items'], $item->options->type . ' ' . $item->name  . ' x'. $item->qty . ' ' . $item->subtotal . 'руб');
+            array_push($contact['items'], $item->options->type . ' ' . $item->name  . ' x' . $item->qty . ' ' . $item->subtotal . 'руб');
         }
-        
-        
+
+
         // Занесем заказ в таблицу
         $order->order_status = 0;
         $order->order_return = 0;
@@ -168,11 +167,11 @@ class CartController extends Controller
         $order->order_comment = $contact['order_comment'];
         $order->order_timestamp = strtotime(Carbon::now());
         $order->paymethod = $contact['paymethod'];
-        $order->save(); 
+        $order->save();
 
         // получим id заказа
         $contact['id'] = $order->id;
-        
+
         foreach ($checkout as $item) {
             // Занесем содержимое заказа в таблицу
             $orderPart = new OrderPart();
@@ -185,7 +184,6 @@ class CartController extends Controller
             $orderPart->order_id = $order->id;
             $orderPart->time = strtotime(Carbon::now());
             $orderPart->save();
-
         }
 
         // Sending Mail
@@ -194,23 +192,8 @@ class CartController extends Controller
 
         Cart::destroy();
 
-        return redirect()->back()->with('success', '
-        <div class="modal">
-            <div class="modal__wrapp col-6 sd-12 shadow-xs back-body b8 hide">
-                <div class="modal__background rel top-left col-12 sd-12 hide">
-                    <img src="'. asset('/img/favicon/twitter.png') .'" alt="congratulations" class="abs">
-                </div>                
-                <h5 class="text-center">Поздравляем!</h5>
-                <div class="pl-em-3 pr-em-3 pb-em-3">
-                    <p class="cc">Ваша покупка удачно оформлена. В скором времени с вами свяжется наш менеджер. А пока проверьте свою почту. Детали заказа уже там!</p>
-                    <p class="mt-em-3 cc"><i>С уважением, Telezapchasti</i></p>
-                    <div class="close c-p">
-                        <img width="30" height="30" src="/img/icon/cancel.svg">
-                    </div>
-                </div>
-            </div>
-        </div>
-        ');
+        return redirect()->back()->with('success', 'Поздравляем!')
+            ->with('message', 'Ваша покупка удачно оформлена. В скором времени с вами свяжется наш менеджер. А пока проверьте свою почту. Детали заказа уже там!');
     }
 
 
@@ -218,7 +201,7 @@ class CartController extends Controller
      * Sale Form Post
      * Отправка формы 'Нашли дешевле' на почту и в базу
      */
-    public function saleFormPush(Request $request) 
+    public function saleFormPush(Request $request)
     {
         $request->validate([
             'name' => 'required|max:255',
@@ -241,23 +224,10 @@ class CartController extends Controller
         // Sending Mail
         Mail::to($contacts->get('mailMain')->value)->send(new PriceEmail($contact));
 
-        return redirect()->back()->with('success', '
-        <div class="modal">
-            <div class="modal__wrapp col-6 sd-12 shadow-xs back-body b8 hide">
-                <div class="modal__background rel top-left col-12 sd-12 hide">
-                    <img src="'. asset('/img/favicon/twitter.png') .'" alt="congratulations" class="abs">
-                </div>                
-                <h5 class="text-center">Ок, мы посмотрим, что можно сделать!</h5>
-                <div class="pl-em-3 pr-em-3 pb-em-3">
-                    <p class="cc">Ваша заявка удачно оформлена. В скором времени с вами свяжется наш менеджер. Он уточнит цену или предложит альтернативы. Спасибо!</p>
-                    <p class="mt-em-3 cc"><i>С уважением, Telezapchasti</i></p>
-                    <div class="close c-p">
-                        <img width="30" height="30" src="/img/icon/cancel.svg">
-                    </div>
-                </div>
-            </div>
-        </div>
-        ');
+        return redirect()->back()->with('success', 'Ок, мы посмотрим, что можно сделать!')
+            ->with('message', 'Ваша заявка удачно оформлена. В скором времени с вами свяжется наш менеджер. Он уточнит цену или предложит альтернативы. Спасибо!');
+
+        // Ваша заявка удачно оформлена. В скором времени с вами свяжется наш менеджер. Он уточнит цену или предложит альтернативы. Спасибо!
     }
 
     // Проверка количества товара и disable button

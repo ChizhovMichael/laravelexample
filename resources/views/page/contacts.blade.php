@@ -103,12 +103,6 @@
                     <div class="col-3 sd-12">
                         <button type="submit" class="button__trigger" @if(session('success')) disabled @endif>Написать</button>
                     </div>
-
-                    <div class="col-9 sd-12">
-                        @if(session('success'))
-                        <p class="cm">{{session('success')}}</p>
-                        @endif
-                    </div>
                 </div>
                 
             </form>
@@ -123,6 +117,17 @@
                 allowfullscreen
             ></iframe>
         </div>
+
+        @if(session('success'))
+            @component('components.message')
+                @slot('title')
+                    {!! session('success') !!}
+                @endslot
+
+                {!! session('message') !!}
+
+            @endcomponent
+        @endif
 
         @include('includes.footer')
     </body>

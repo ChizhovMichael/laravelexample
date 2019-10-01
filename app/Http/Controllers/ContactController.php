@@ -104,7 +104,8 @@ class ContactController extends Controller
         // Mail delivery logic goes here
         Mail::to($contacts->get('mailMain')->value)->send(new ContactEmail($contact));
 
-        return redirect()->back()->with('success', 'Спасибо за ваше сообщение!');
+        return redirect()->back()->with('success', 'Спасибо за ваше сообщение!')
+        ->with('message', 'Спасибо за вашу обратную связь. Надеемся, что наш сервис вас полностью удовлетворяет. Ваше письмо не останется без внимания.');
 
     }
 }

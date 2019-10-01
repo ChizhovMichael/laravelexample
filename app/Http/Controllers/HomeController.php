@@ -98,23 +98,8 @@ class HomeController extends Controller
             );
 
 
-        return redirect()->back()->with('success', '
-        <div class="modal">
-            <div class="modal__wrapp col-6 sd-12 shadow-xs back-body b8 hide">
-                <div class="modal__background rel top-left col-12 sd-12 hide">
-                    <img src="'. asset('/img/favicon/twitter.png') .'" alt="congratulations" class="abs">
-                </div>                
-                <h5 class="text-center">Ваши данные обновлены!</h5>
-                <div class="pl-em-3 pr-em-3 pb-em-3">
-                    <p class="cc">Спасибо, что используете сервис нашего интернет-магазина. Теперь ваши данные будут автоматически высвечивается в разделе оформления заказа.</p>
-                    <p class="mt-em-3 cc"><i>С уважением, Telezapchasti</i></p>
-                    <div class="close c-p">
-                        <img width="30" height="30" src="/img/icon/cancel.svg">
-                    </div>
-                </div>
-            </div>
-        </div>
-        ');
+        return redirect()->back()->with('success', 'Ваши данные обновлены!')
+            ->with('message', 'Спасибо, что используете сервис нашего интернет-магазина. Теперь ваши данные будут автоматически высвечивается в разделе оформления заказа.');
 
 
 
@@ -130,22 +115,7 @@ class HomeController extends Controller
         PaymentDetailsUser::where('user_id', Auth::user()->id)->delete();
 
 
-        return redirect()->back()->with('success', '
-        <div class="modal">
-            <div class="modal__wrapp col-6 sd-12 shadow-xs back-body b8 hide">
-                <div class="modal__background rel top-left col-12 sd-12 hide">
-                    <img src="'. asset('/img/favicon/twitter.png') .'" alt="congratulations" class="abs">
-                </div>                
-                <h5 class="text-center">Ваши данные удалены!</h5>
-                <div class="pl-em-3 pr-em-3 pb-em-3">
-                    <p class="cc">Теперь вы не сможете использовать автоматическую подстановку данных при покупке товара.</p>
-                    <p class="mt-em-3 cc"><i>С уважением, Telezapchasti</i></p>
-                    <div class="close c-p">
-                        <img width="30" height="30" src="/img/icon/cancel.svg">
-                    </div>
-                </div>
-            </div>
-        </div>
-        ');
+        return redirect()->back()->with('success', 'Ваши данные удалены!')
+            ->with('message', 'Теперь вы не сможете использовать автоматическую подстановку данных при покупке товара.');
     }
 }
