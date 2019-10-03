@@ -27,6 +27,9 @@ use Illuminate\Database\Eloquent\Model;
  * | 11. GetImgMain (Получаем главное изображение для каталога продукции)
  * | 12. TV images (Получаем изображения телевизора)
  * | 13. Matrix (Получаем матрицу телевизора)
+ * | 14. SelectStockInfo (Получаем информацию по стоковости продукта)
+ * | 15. SelectStockTable (Получаем все соответсвующие таблицы для продукта в которых содержится дополнительная информация)
+ * | 16. Отключаем добавление даты в таблицу
  **************/
 
 
@@ -244,8 +247,45 @@ class Product extends Model
         return $this->belongsTo('App\Matrix', 'matrix_id');
      }
 
-     
+     /**
+     * | SelectStockInfo
+     * | Получаем информацию по стоковости продукта
+     */
+     public function scopeSelectStockInfo($query)
+     {
+        return $query->select([
+            'products.id',
+            'products.part_cost',
+            'products.part_model',
+            'products.part_comment',
+            'products.part_comment_for_client',
+            'products.part_link',
+            'products.parttype_id',
+            'products.part_count',
+            'products.part_status',
+            'products.part_return',
+            'part_types.parttype_type',
+            'stocks.stock',
+            'stocks.percent',
+            'stocks.price'
+        ]);
+    }
+
+    /**
+     * | SelectStockTable
+     * | Получаем все соответсвующие таблицы для продукта в которых содержится дополнительная информация
+     */
+
+    public function scopeSelectStockTable($query)
+    {
+        return $query->join('part_types', 'part_types.id', '=', 'products.parttype_id')
+            ->leftJoin('stocks', 'stocks.product_id', '=', 'products.id');
+    }
 
 
+    /**
+     * Отключаем добавление даты в таблицу
+     */
+    public $timestamps = false;
 
 }

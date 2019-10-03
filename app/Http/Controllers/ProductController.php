@@ -64,7 +64,8 @@ class ProductController extends Controller
             'navigations'       =>  $this->navigation(),
             'contacts'          =>  collect($this->contacts()),
             'cart'              =>  $this->getCartCount(),
-            'user'              =>  Auth::user()
+            'user'              =>  Auth::user(),
+            'adminDetect'       =>  $this->adminDetect(),
         ]);
     }
 
@@ -187,6 +188,7 @@ class ProductController extends Controller
             'newCount'      => $newCount,
             'saleCount'     => $saleCount,
             'user'          => Auth::user(),
+            'adminDetect'   => $this->adminDetect(),
         ]);
     }
 
@@ -280,6 +282,7 @@ class ProductController extends Controller
             'newCount'      => $newCount,
             'saleCount'     => $saleCount,
             'user'          => Auth::user(),
+            'adminDetect'   => $this->adminDetect(),
         ]);
     }
 
@@ -382,6 +385,7 @@ class ProductController extends Controller
             'category'          => $category,
             'qty'               => 1,
             'user'              => Auth::user(),
+            'adminDetect'       => $this->adminDetect(),
         ]);
     }
 
@@ -501,6 +505,7 @@ class ProductController extends Controller
             'newCount'      => $newCount,
             'saleCount'     => $saleCount,
             'user'          => Auth::user(),
+            'adminDetect'   => $this->adminDetect(),
         ]);
     }
 
@@ -591,6 +596,7 @@ class ProductController extends Controller
             'newCount'      => $newCount,
             'saleCount'     => $saleCount,
             'user'          => Auth::user(),
+            'adminDetect'   => $this->adminDetect(),
         ]);
 
     }
@@ -621,6 +627,7 @@ class ProductController extends Controller
             'cart'          => $this->getCartCount(),
             'qty'           => 1,
             'user'          => Auth::user(),
+            'adminDetect'   => $this->adminDetect(),
         ]);
 
     }

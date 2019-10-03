@@ -118,17 +118,6 @@
             ></iframe>
         </div>
 
-        @if(session('success'))
-            @component('components.message')
-                @slot('title')
-                    {!! session('success') !!}
-                @endslot
-
-                {!! session('message') !!}
-
-            @endcomponent
-        @endif
-
         @include('includes.footer')
     </body>
 </html>

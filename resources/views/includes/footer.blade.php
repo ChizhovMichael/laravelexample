@@ -1,3 +1,13 @@
+@if(session('success'))
+	@component('components.message')
+		@slot('title')
+			{!! session('success') !!}
+		@endslot
+
+		{!! session('message') !!}
+
+	@endcomponent
+@endif
 <footer class="col-12 sd-12 flex-between pt-em-3 pb-em-3 pr-5 pl-5">
 	<div class="col-4 sd-12 pr-5">
 		<div>

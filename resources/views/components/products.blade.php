@@ -3,11 +3,23 @@
         <div class="product_image flex-center-center">
             <img class="block col-12 rel b5" src="/img/products/{{ $part->company_id }}/{{ $part->tv_id }}/m{{ $part->part_img_name }}" alt="Запчасти для телевизоров, {{ $part->parttype_type }} {{ $part->part_model }} c телевизора {{ $part->company }} {{ $part->tv_model }}">
         </div>
+        @if($adminDetect)
+
+            <div class="edit abs shadow-xs edit-popup" data-id="{{ $part->id }}">
+                <img src="{{ asset('img/icon/settings.svg') }}" alt="setting">
+            </div>
+
+        @endif
         <div class="product_content col-12">
             <div class="product_price mt-em-1">
                 <h6 class="ct mt-em-1 mb-em-1">
+                    @if($part->price == NULL)
                     {{ $part->part_cost }}&nbsp;&#x20bd;
                     <span class="cc ml-em-1">{{ $part->price }}</span>
+                    @else
+                    {{ $part->price }}&nbsp;&#x20bd;
+                    <span class="cc ml-em-1 line-through">{{ $part->part_cost }}&nbsp;&#x20bd;</span>
+                    @endif
                 </h6>
             </div>
             <div class="product_name">

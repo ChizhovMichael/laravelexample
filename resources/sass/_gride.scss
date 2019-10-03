@@ -74,6 +74,9 @@
 .hide {
     overflow: hidden;
 }
+.auto {
+    overflow: auto;
+}
 .top-left {
     top: 0;
     left: 0;
@@ -103,7 +106,10 @@
     right: 0;
 }
 .full-height {
-    height: 100vh;
+    min-height: 100vh;
+}
+.h100 {
+    height: 100%;
 }
 /***********
 // border and shadow
@@ -196,6 +202,9 @@
 }
 .invalid-feedback {
     color: $color-add;
+}
+select {
+    height: 3em;
 }
 /***********
 // background

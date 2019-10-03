@@ -108,7 +108,7 @@
                         <div class="m-em-1 pr-em-2 pl-em-2 pt-em-2 pb-em-2 bc-light shadow-xs b3 @if(session('paymethod')) b-error @else b-main @endif">
                             <div class="form-check">
 
-                                <input class="form-check-input" data-form="brands-check" type="checkbox" id="sberbank">
+                                <input class="form-check-input form-check-input-change" data-form="brands-check" type="checkbox" id="sberbank">
                                 <span class="form-check-span"></span>
                                 <label class="form-check-label ct" for="sberbank">
                                     Оплата Сбербанк Онлайн
@@ -134,7 +134,7 @@
                 <div class="pr-em-2 pl-em-2 pt-em-2 pb-em-2 bc-light shadow-xs b3">
                     <div class="form-check">
 
-                        <input class="form-check-input" data-form="brands-check" type="checkbox" id="regulations" required>
+                        <input class="form-check-input form-check-input-change" data-form="brands-check" type="checkbox" id="regulations" required>
                         <span class="form-check-span"></span>
                         <label class="form-check-label ct col-9 sd-9" for="regulations">
                             Я прочитал(а) и соглашаюсь с правилами сайта <a href="{{ route('regulations') }}" class="cm hover">правила и условия</a> *
@@ -153,16 +153,7 @@
         </div>
 
     </form>
-    @if(session('success'))
-        @component('components.message')
-            @slot('title')
-                {!! session('success') !!}
-            @endslot
-
-            {!! session('message') !!}
-
-        @endcomponent
-    @endif
+    
     @include('includes.footer')
 
 </body>

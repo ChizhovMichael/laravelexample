@@ -127,6 +127,7 @@ class SearchController extends Controller
                 'contacts'          => collect($this->contacts()),
                 'cart'              =>  $this->getCartCount(),
                 'user'              =>  Auth::user(),
+                'adminDetect'       => $this->adminDetect(),
             ]);
 
         }

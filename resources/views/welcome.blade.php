@@ -42,7 +42,7 @@
             <div id="main" role="tabpanel" class="tabs__panel js-tab-panel block pt-em-3 pb-em-3">
                 <div class="flex-start">
                     @foreach($products_main as $part)
-                        @component('components.productsmini', ['part' => $part])
+                        @component('components.productsmini', ['part' => $part, 'adminDetect' => $adminDetect])
                         @endcomponent
                     @endforeach
                 </div>
@@ -51,7 +51,7 @@
             <div id="power" role="tabpanel" class="tabs__panel js-tab-panel block pt-em-3 pb-em-3">
                 <div class="flex-start">
                     @foreach($products_power as $part)
-                        @component('components.productsmini', ['part' => $part])
+                        @component('components.productsmini', ['part' => $part, 'adminDetect' => $adminDetect])
                         @endcomponent
                     @endforeach
                 </div>
@@ -59,7 +59,7 @@
             <div id="led" role="tabpanel" class="tabs__panel js-tab-panel block pt-em-3 pb-em-3">
                 <div class="flex-start">
                     @foreach($products_led as $part)
-                        @component('components.productsmini', ['part' => $part])
+                        @component('components.productsmini', ['part' => $part, 'adminDetect' => $adminDetect])
                         @endcomponent
                     @endforeach
                 </div>
@@ -73,7 +73,7 @@
         </div>
         <div class="flex-between">
             @foreach($products_discount as $part)
-                @component('components.productsadditional', ['part' => $part])
+                @component('components.productsadditional', ['part' => $part, 'adminDetect' => $adminDetect])
                 @endcomponent
             @endforeach
         </div>
@@ -84,7 +84,7 @@
         </div>
         <div class="flex-between">
             @foreach($products_new as $part)
-                @component('components.productsadditional', ['part' => $part])
+                @component('components.productsadditional', ['part' => $part, 'adminDetect' => $adminDetect])
                 @endcomponent
             @endforeach
         </div>

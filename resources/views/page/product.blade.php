@@ -58,6 +58,13 @@
         <div class="col-4 sd-12">
             <span class="cc">{{ $part_types->parttype_type }}</span>
             <h1 class="ct wwbw">{{ $part_types->part_model }}</h1>
+            @if($adminDetect)
+
+                <div class="edit shadow-xs edit-popup" data-id="{{ $part_types->id }}">
+                    <img src="{{ asset('img/icon/settings.svg') }}" alt="setting">
+                </div>
+
+            @endif
             
             @if($part_types->part_comment_for_client)
             <p class="bb bt m-1 pt-em-1 pb-em-1 found not">{{ $part_types->part_comment_for_client }}</p>
@@ -98,7 +105,14 @@
                     <div class="mb-em-2 hide">
                         <ul class="hide">
                             @foreach($partsAdditional->splice(0, 3)->all() as $item)
-                                <li class="m-em-1 pr-em-2 pl-em-2 pt-em-1 pb-em-1 bc-light shadow-xs b3">
+                                <li class="m-em-1 pr-em-2 pl-em-2 pt-em-1 pb-em-1 bc-light shadow-xs b3 rel">
+                                    @if($adminDetect)
+
+                                    <div class="edit abs shadow-xs edit-popup" data-id="{{ $item->id }}">
+                                        <img src="{{ asset('img/icon/settings.svg') }}" alt="setting">
+                                    </div>
+
+                                    @endif
                                     <div class="form-check">
                                         
                                         <a class="cart-link flex-center-center rel top-left col-2 sd-2 back-main b5 mr-em-1 shadow-xs" href="{{ route('addproduct', [ 'id' => $item->id, 'type' => $item->parttype_type, 'company' => $item->company_id, 'tv' => $item->tv_id, 'img' => $item->part_img_main->part_img_name , 'name' => $item->part_model, 'qty' => 1,  'price' => $item->part_cost ]) }}">
@@ -116,10 +130,17 @@
                             @endforeach
                             <div class="toggle__sorting">
                                 @foreach($partsAdditional->all() as $item)
-                                <li class="m-em-1 pr-em-2 pl-em-2 pt-em-1 pb-em-1 bc-light shadow-xs b3">
+                                <li class="m-em-1 pr-em-2 pl-em-2 pt-em-1 pb-em-1 bc-light shadow-xs b3 rel">
+                                    @if($adminDetect)
+
+                                    <div class="edit abs shadow-xs edit-popup" data-id="{{ $item->id }}">
+                                        <img src="{{ asset('img/icon/settings.svg') }}" alt="setting">
+                                    </div>
+
+                                    @endif
                                     <div class="form-check">
                                         
-                                    <a class="cart-link flex-center-center rel top-left col-2 sd-2 back-main b5 mr-em-1 shadow-xs" href="{{ route('addproduct', [ 'id' => $item->id, 'type' => $item->parttype_type, 'company' => $item->company_id, 'tv' => $item->tv_id, 'img' => $item->part_img_main->part_img_name , 'name' => $item->part_model, 'qty' => 1,  'price' => $item->part_cost ]) }}">
+                                        <a class="cart-link flex-center-center rel top-left col-2 sd-2 back-main b5 mr-em-1 shadow-xs" href="{{ route('addproduct', [ 'id' => $item->id, 'type' => $item->parttype_type, 'company' => $item->company_id, 'tv' => $item->tv_id, 'img' => $item->part_img_main->part_img_name , 'name' => $item->part_model, 'qty' => 1,  'price' => $item->part_cost ]) }}">
                                             <img class="p-12 col-8" src="{{ asset('img/icon/shopping-bag.svg') }}" alt="Купить">
                                         </a>
                                         
@@ -130,7 +151,7 @@
                                         <img class="col-1" style="margin-left: auto;" src="{{ asset('img/icon/cart_yes.png') }}" alt="В наличие">
                                     
                                     </div>
-                                </li>
+                                </li>                                    
                                 @endforeach
                             </div>
                         </ul>
@@ -189,7 +210,7 @@
             </div>
             <div class="flex-between">
                 @foreach($partsSame as $part)
-                    @component('components.productsadditional', ['part' => $part])
+                    @component('components.productsadditional', ['part' => $part, 'adminDetect' => $adminDetect])
                     @endcomponent
                 @endforeach
             </div>
@@ -200,17 +221,6 @@
     @component('components.sliderfooter')
     @endcomponent
 
-
-    @if(session('success'))
-        @component('components.message')
-            @slot('title')
-                {!! session('success') !!}
-            @endslot
-
-            {!! session('message') !!}
-
-        @endcomponent
-    @endif
 
     @include('includes.footer')
 

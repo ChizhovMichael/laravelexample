@@ -1,4 +1,5 @@
-@extends('layouts.app') @section('content')
+@extends('layouts.app') 
+@section('content')
 <div class="sd-12 col-12 pr-10 pl-10 pt-5 pb-em-6">
     <h1 class="mb-0 cm">Мой аккаунт</h1>
     <h3 class="mt-0">Привет, {{ $user->name }}!</h3>

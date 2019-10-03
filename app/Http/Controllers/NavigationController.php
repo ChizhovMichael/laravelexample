@@ -7,12 +7,14 @@ use App\Navigation;
 use App\Product;
 use App\Contact;
 use Cart;
+use Illuminate\Support\Facades\Auth;
 
 /***************
  * Навигационный раздел
  * 1. Навигация
  * 2. Вывод всех брендов в зависимости от количества товаров
  * 3. Получаем список контактов
+ * 4. adminDetect (Определяем в системе администратора)
  ***********/
 
 trait NavigationController
@@ -82,7 +84,7 @@ trait NavigationController
         $phone = $contacts->where('name', 'phone');
         $phoneMain = $phone->where('status', 1)->first();
         $address = $contacts->where('name', 'address');
-        $mail = $contacts->where('name', 'mail');
+        $mail = $contacts->where('name', 'email');
         $mailMain = $mail->where('status', 1)->first();
 
         return [
@@ -92,5 +94,26 @@ trait NavigationController
             'mail'      => $mail,
             'mailMain'  => $mailMain
         ];
+    }
+
+    /**
+     * adminDetect
+     * Определяем в системе администратора
+     */
+    public function adminDetect()
+    {
+
+        if (Auth::user()) {
+
+            $user = Auth::user();
+        
+            if ($user->type == 'admin') {
+                $adminDetect = true;
+            } else {
+                $adminDetect = false;
+            }
+
+            return $adminDetect;
+        }
     }
 }

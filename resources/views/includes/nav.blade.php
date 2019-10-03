@@ -148,15 +148,17 @@
 						<a class="hover-main pr-em-1 pl-em-1 block sd-9 col-10" href="{{ route('category.show', ['part_types_id' => $item->slug ]) }}">
 							{{ $item->name }}
 						</a>
-						@if($item->navigation_items->count() > 1)
+						@if($item->navigation_items->count() > 1 && $item->show == 'on')
 						<img class="m-em-1" src="{{ asset('img/icon/chevron-arrow-left.svg') }}" alt="Запчасти для телевизоров, продать телевизор +на запчасти, телевизор скупка, телезапчасти" />
 						<ul class="dropdown__list__ul additional abs @if ($agent->isDesktop()) top-left-max @else top-left-middle @endif shadow col-12 back-back bbl5 bbr5">
 							@foreach($item->navigation_items as $add)
-							<li class="flex-center-between rel bt-light">
-								<a class="hover-main pr-em-1 pl-em-1 block" href="{{ route('category.show', ['part_types_id' => $add->additional_slug ]) }}">
-									{{ $add->additional_name }}
-								</a>
-							</li>
+								@if($add->show == 'on')
+								<li class="flex-center-between rel bt-light">
+									<a class="hover-main pr-em-1 pl-em-1 block" href="{{ route('category.show', ['part_types_id' => $add->additional_slug ]) }}">
+										{{ $add->additional_name }}
+									</a>
+								</li>
+								@endif
 							@endforeach
 						</ul>
 						@endif

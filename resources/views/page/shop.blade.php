@@ -125,8 +125,8 @@
                     @endif
                 </div>
                 <div class="sorting__item mt-em-2 mb-em-2 b8 shadow-xs hide">
-                    <input type="checkbox" id="price" checked />
-                    <label for="price" class="m-0 pt-3 pb-3 text-center flex-center-center c-p">
+                    <input type="checkbox" id="sorting_price" checked />
+                    <label for="sorting_price" class="m-0 pt-3 pb-3 text-center flex-center-center c-p">
                         Цена
                         <img class="ml-em-1" src="{{ asset('img/icon/chevron-arrow-down.svg') }}" alt="arrow">
                     </label>
@@ -206,7 +206,7 @@
             </div>
             <div class="flex-start" id="card">
                 @foreach($part_types as $part)
-                    @component('components.products', ['part' => $part])
+                    @component('components.products', ['part' => $part, 'adminDetect' => $adminDetect])
                     @endcomponent
                 @endforeach
             </div>

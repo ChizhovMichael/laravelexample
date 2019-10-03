@@ -47,14 +47,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     navigationScroll();
 
-    popup('popup');
+    popup('popup', 'saleform');
+    popup('edit-popup', 'productedit');
     closePopup('close');
 
     navigationItemShow('navigation__trigger');
 
     quantityOfGoods('product_quantity');
 
-    paymethodCollection('paymethod', 'form-check-input');
+    paymethodCollection('paymethod', 'form-check-input-change');
 
     pushform();
 });
@@ -576,7 +577,7 @@ function navigationScroll() {
 }
 
 
-function popup(el) {
+function popup(el, message) {
 
     document.addEventListener('click', function (event) {
 
@@ -590,7 +591,9 @@ function popup(el) {
 
         if (target == this) return;
 
-        createMessage('saleform');
+        var id = target.getAttribute('data-id');
+
+        createMessage(message, id);
 
     }, true)
 }
@@ -705,18 +708,14 @@ function paymethodCollection(el, child) {
 
     let selectedInput;
 
-    var elem = document.querySelector('.' + el);
-
-    if (!elem) {
-        return;
-    }
-
-    elem.addEventListener('click', function (event) {
+    document.addEventListener('click', function (event) {
         let target = event.target;
 
         if (!target.classList.contains(child)) return;
 
         highlight(target);
+
+        var elem = target.closest('.' + el);
 
         elem.firstElementChild.value = target.id;
     })
@@ -731,14 +730,14 @@ function paymethodCollection(el, child) {
     }
 }
 
-function createMessage(param) {
+function createMessage(param, id) {
 
     var container = document.createElement("DIV");
     var window = document.createElement("DIV");
     var close = document.createElement("DIV");
 
     container.classList.add('modal');
-    window.className = "modal__wrapp col-6 sd-12 shadow-xs back-body b8";
+    window.className = "modal__wrapp col-6 sd-12 shadow-xs back-body b8 hide";
     close.className = "close c-p";
 
     var myImage = new Image(30, 30);
@@ -749,7 +748,13 @@ function createMessage(param) {
     container.appendChild(window);
 
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', '/' + param, true);
+
+    if (id !== null) {
+        xhr.open('POST', '/' + param + '?id=' + id, true);
+    } else {
+        xhr.open('POST', '/' + param, true);
+    }
+        
     xhr.setRequestHeader(
         'X-CSRF-TOKEN',
         document.querySelector('meta[name="csrf-token"]').getAttribute('content')

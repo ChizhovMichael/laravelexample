@@ -25,7 +25,32 @@ Route::post('/home', 'HomeController@PaymentDetailsUserPush')->name('home.push')
 Route::get('/home/delete', 'HomeController@PaymentDetailsUserDelete')->name('home.delete');
 
 
+/**
+ * Admin Route
+ */
 Route::get('/admin', 'AdminController@admin')->middleware('is_admin')->name('admin');
+Route::post('/productedit', 'AdminController@productEditContent');
+Route::post('/productupdate', 'AdminController@productUpdateContent')->name('product.update');
+// Navigation
+Route::get('/admin/navigation', 'AdminController@navigationEdit')->name('admin.navigation');
+// Navigation Create
+Route::post('/admin/navigation/add/section', 'AdminController@navigationEditAddSection')->name('admin.navigation.add.section');
+Route::post('/admin/navigation/add/subsection', 'AdminController@navigationEditAddSubsection')->name('admin.navigation.add.subsection');
+// Navigation Update
+Route::post('/admin/navigation/save/section', 'AdminController@navigationEditSaveSection')->name('admin.navigation.save.section');
+Route::post('/admin/navigation/save/subsection', 'AdminController@navigationEditSaveSubsection')->name('admin.navigation.save.subsection');
+// Navigation Delete
+Route::get('/admin/navigation/delete/section', 'AdminController@navigationEditDeleteSection')->name('admin.navigation.delete.section');
+Route::get('/admin/navigation/delete/subsection', 'AdminController@navigationEditDeleteSubsection')->name('admin.navigation.delete.subsection');
+
+// Contact
+Route::get('/admin/contact', 'AdminController@contactEdit')->name('admin.contact');
+// Contact Create
+Route::post('/admin/contact/add', 'AdminController@contactEditAdd')->name('admin.contact.add');
+// Contact Update
+Route::post('/admin/contact/update', 'AdminController@contactEditUpdate')->name('admin.contact.update');
+// Contact Delete
+Route::get('/admin/contact/delete', 'AdminController@contactEditDelete')->name('admin.contact.delete');
 
 Auth::routes();
 
