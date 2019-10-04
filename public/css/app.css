@@ -1103,6 +1103,7 @@ https://flickity.metafizzy.co
 // mixin + %
 ***********/
 
+.flex-column,
 .flex-start,
 .flex,
 .flex-between,
@@ -2987,11 +2988,22 @@ https://flickity.metafizzy.co
   border-radius: 15px;
 }
 
+.m-v-auto {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.m-h-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /***********
 // flex
 ***********/
 
-.block {
+.block,
+.hover-shadow:hover {
   display: block;
 }
 
@@ -3009,6 +3021,10 @@ https://flickity.metafizzy.co
 
 .align-start {
   align-items: flex-start;
+}
+
+.flex-column {
+  flex-direction: column;
 }
 
 .fix {
@@ -3122,7 +3138,8 @@ https://flickity.metafizzy.co
   box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.1);
 }
 
-.shadow-xs {
+.shadow-xs,
+.hover-shadow:hover {
   box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -3144,6 +3161,10 @@ https://flickity.metafizzy.co
 
 .text-right {
   text-align: right;
+}
+
+.hover-shadow {
+  transition: 0.3s;
 }
 
 .cc {
@@ -3190,6 +3211,10 @@ https://flickity.metafizzy.co
 
 select {
   height: 3em;
+}
+
+.ci {
+  color: initial;
 }
 
 /***********
@@ -3304,6 +3329,10 @@ label a {
 ul {
   list-style: none;
   padding: 0;
+}
+
+p span {
+  font-size: 1em;
 }
 
 a p {

@@ -60,6 +60,10 @@
 .align-start {
     @include align-items(flex-start);
 }
+.flex-column {
+    @extend %flex;
+    @include flex-direction(column);
+}
 
 .fix {
     position: fixed;
@@ -171,6 +175,13 @@
 .hover-main {
     @extend %hover-main;
 }
+.hover-shadow {
+    @include transition(0.3s);
+    &:hover {
+        @extend .block;
+        @extend .shadow-xs;
+    }
+}
 .cc {
     color: $color-content;
 }
@@ -205,6 +216,9 @@
 }
 select {
     height: 3em;
+}
+.ci {
+    color: initial;
 }
 /***********
 // background

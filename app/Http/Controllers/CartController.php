@@ -150,9 +150,9 @@ class CartController extends Controller
 
 
         // Занесем заказ в таблицу
-        $order->order_status = 0;
+        $order->order_status = 1; // верно
         $order->order_return = 0;
-        $order->order_payment = 0;
+        $order->order_payment = 0; // верно 1 - оплачен, 2 - наложенный
         $order->order_lname = $contact['order_lname'];
         $order->order_tracking = '';
         $order->order_fname = $contact['order_fname'];

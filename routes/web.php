@@ -52,6 +52,14 @@ Route::post('/admin/contact/update', 'AdminController@contactEditUpdate')->name(
 // Contact Delete
 Route::get('/admin/contact/delete', 'AdminController@contactEditDelete')->name('admin.contact.delete');
 
+// Order
+Route::get('/admin/order', 'AdminController@orderEdit')->name('admin.order');
+Route::get('/admin/order/all', 'AdminController@orderEditAll')->name('admin.order.all');
+// Order Detail
+Route::get('/admin/order/{id}', 'AdminController@orderEditDetail')->name('admin.order.detail');
+
+
+
 Auth::routes();
 
 

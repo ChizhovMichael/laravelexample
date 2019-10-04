@@ -19,12 +19,13 @@
 <body>
 
 
-    <div class="flex-between p-5 full-height">
-        <div class="col-3 sd-12">
+    <div class="flex-between pr-5 pl-3 pt-5 pb-5 full-height">
+        <div class="col-2 sd-12">
             <a href="{{ route('admin.navigation') }}" class="button__trigger @if(Request::is('admin/navigation') || Request::is('admin/navigation/*')) active @endif">Навигация</a>
             <a href="{{ route('admin.contact') }}" class="button__trigger @if(Request::is('admin/contact') || Request::is('admin/contact/*')) active @endif">Контакты</a>
+            <a href="{{ route('admin.order') }}" class="button__trigger @if(Request::is('admin/order') || Request::is('admin/order/*')) active @endif">Заказы</a>
         </div>
-        <div class="col-8 sd-12 @if($agent->isDesktop()) pl-5 @endif ">
+        <div class="col-10 sd-12 @if($agent->isDesktop()) pl-5 @endif ">
             @include('admin.'. $page)
         </div>
     </div>

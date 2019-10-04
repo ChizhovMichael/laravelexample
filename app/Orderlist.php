@@ -4,6 +4,21 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/*************
+ * | Модель продукта/ таблицы products
+ * | fillable для проверки заполняемых полей. Не забывать редактировать если 
+ * | название полей в таблице изменяется
+ * | hasManyThrough (Конечная таблица, промежуточная таблица, внешн ключ промежуточной таблицы, внешн ключ в конечной таблице, ключ в данной таблице, ключ в промеж табл)
+ * | 
+ * | Регулировка подключения дополнительных таблиц к products
+ * | belongsTo('App\Company', 'company_id'), где 1 - Модель (присоединяемая таблица) id, 2 - столбец из Product
+ * | hasMany('App\Company', 'company_id'), где 1 - Модель (присоединяемая таблица), 2 - столбец из этой модели с id Product
+ * | 1. Order Parts (Присоединяем таблицу order_parts и получаем значения по ключу id-prder_id)
+ * | 2. Part Box (Определяем в какой коробце находится продукт)
+ * | 3. Part Image (Получаем главное изображение продукта)
+
+ **************/
+
 class Orderlist extends Model
 {
     //
@@ -31,4 +46,33 @@ class Orderlist extends Model
     ];
 
     public $timestamps = false;
+
+
+    /**
+     * | Order Parts
+     * | Присоединяем таблицу order_parts и получаем значения по ключу id-prder_id
+     */
+    public function order_parts()
+    {
+        return $this->hasManyThrough('App\Product', 'App\OrderPart', 'order_id', 'id', 'id', 'part_id');
+    }
+
+
+    /** 
+     * | Part Box
+     * | Определяем в какой коробце находится продукт
+     */
+    public function part_box()
+    {
+        return $this->hasManyThrough('App\BoxPart', 'App\OrderPart', 'order_id', 'part_id', 'id', 'part_id');
+    }
+
+    /**
+     * | Part Image
+     * | Получаем главное изображение продукта
+     */
+    public function part_img()
+    {
+        return $this->hasManyThrough('App\PartImg', 'App\OrderPart', 'order_id', 'product_id', 'id', 'part_id')->where('part_img_main', 1);
+    }
 }

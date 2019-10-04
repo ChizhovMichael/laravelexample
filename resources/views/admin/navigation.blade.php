@@ -129,7 +129,7 @@
                                             @endforeach
                                         </select>
 
-                                        <div class="form-check">
+                                        <div class="form-check mt-em-1 mb-em-1">
 
                                             <input class="form-check-input" data-form="brands-check" type="checkbox" name="show" id="show_add_{{ $navigation->slug }}" checked>
                                             <span class="form-check-span"></span>

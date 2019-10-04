@@ -289,3 +289,12 @@ $total-indent: 15;
 @for $i from 0 through $total-indent {  
 	.b#{$i} { border-radius: column-indent-px($i) }; 
 }
+
+.m-v-auto {
+	margin-top: auto;
+	margin-bottom: auto;
+}
+.m-h-auto {
+	margin-left: auto;
+	margin-right: auto;
+}

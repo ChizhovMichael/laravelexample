@@ -9,7 +9,9 @@ use App\Product;
 use App\Stock;
 use App\Navigation;
 use App\NavigationAdditional;
+use App\Orderlist;
 use App\PartType;
+use Carbon\Carbon;
 
 /***************
  * Административный раздел
@@ -27,6 +29,9 @@ use App\PartType;
  * 12. contactEditAdd (Добавление контактов в административной панеле)
  * 13. contactEditUpdate (Обновление контактов в административной панеле)
  * 14. contactEditDelete (Удаление контактов в административной панеле)
+ * 15. orderEdit (Редактирование заказов в административной панеле)
+ * 16. orderEditAll (Редактирование всех заказов в административной панеле)
+ * 17. orderEditDeatil (Редактирование отдельного заказов в административной панеле)
  ***********/
 
 class AdminController extends Controller
@@ -87,8 +92,8 @@ class AdminController extends Controller
 
         $part_status = $request->part_status == "on" ? 1 : 0;
         $part_return = $request->part_return == "on" ? 1 : 0;
-        
-        
+
+
         $percent = (1 - intval($request->price) / intval($request->part_cost)) * 100;
 
         Product::where('id', $request->id)
@@ -107,7 +112,7 @@ class AdminController extends Controller
 
             Stock::updateOrCreate([
                 'product_id' => $request->id
-            ],[
+            ], [
                 'stock' => $request->stock,
                 'percent' => round($percent),
                 'price' => $request->price
@@ -116,7 +121,7 @@ class AdminController extends Controller
             Stock::where('product_id', $request->id)->delete();
         }
 
-        
+
 
         return redirect()->back()->with('success', 'Ок, товар обновлен')
             ->with('message', 'Главное помни: ты красавчик!');
@@ -136,7 +141,6 @@ class AdminController extends Controller
             'navigations'    =>  $this->navigation(),
             'parttype'       =>  $parttype,
         ]);
-
     }
 
     /**
@@ -159,7 +163,6 @@ class AdminController extends Controller
 
         NavigationAdditional::where('id', $request->id)->delete();
         return redirect()->back();
-
     }
 
     /**
@@ -173,7 +176,7 @@ class AdminController extends Controller
 
         $request->validate([
             'name' => 'required|max:255',
-            'slug' => 'required|alpha_dash|unique:navigations,slug,' .$navigations->id
+            'slug' => 'required|alpha_dash|unique:navigations,slug,' . $navigations->id
         ]);
 
 
@@ -195,10 +198,10 @@ class AdminController extends Controller
 
         $request->validate([
             'additional_name' => 'required|max:255',
-            'parttype' => 'required|numeric'
+            'additional_id' => 'required|numeric'
         ]);
 
-        $parttype = PartType::find($request->parttype);
+        $parttype = PartType::find($request->additional_id);
         $parttype_link = $parttype->parttype_link;
 
         NavigationAdditional::where('id', $request->id)->update([
@@ -210,9 +213,8 @@ class AdminController extends Controller
         ]);
 
 
-        
+
         return redirect()->back();
-        
     }
 
     /**
@@ -225,7 +227,7 @@ class AdminController extends Controller
         $request->validate([
             'name' => 'required|max:255',
             'slug' => 'required|alpha_dash|unique:navigations'
-        ]);        
+        ]);
 
         $navigations = new Navigation();
         $navigations->name = $request->name;
@@ -246,7 +248,7 @@ class AdminController extends Controller
             'additional_id' => 'required|alpha_dash|unique:navigation_additionals'
         ]);
 
-        $parttype = PartType::find($request->parttype);
+        $parttype = PartType::find($request->additional_id);
         $parttype_link = $parttype->parttype_link;
 
 
@@ -259,8 +261,6 @@ class AdminController extends Controller
         $navigations_additional->save();
 
         return redirect()->back();
-
-        
     }
 
 
@@ -308,8 +308,8 @@ class AdminController extends Controller
      * contactEditUpdate
      * Обновление контактов в административной панеле
      */
-     public function contactEditUpdate(Request $request)
-     {
+    public function contactEditUpdate(Request $request)
+    {
 
         $name = $request->name;
 
@@ -319,10 +319,10 @@ class AdminController extends Controller
         ]);
 
         return redirect()->back();
-     }
+    }
 
 
-     /**
+    /**
      * contactEditDelete
      * Удаление контактов в административной панеле
      */
@@ -330,15 +330,62 @@ class AdminController extends Controller
     {
         Contact::find($request->id)->delete();
         return redirect()->back();
-
     }
 
-    
+    /**
+     * orderEdit
+     * Редактирование заказов в административной панеле
+     */
+    public function orderEdit()
+    {
+        $orderlist = Orderlist::latest('id');
+        $orderlist = $orderlist->with('order_parts');
+        $orderlist = $orderlist->with('part_box');
+        $orderlist = $orderlist->get();
+        $orderlist = $orderlist->paginate(50);
+
+        return view('admin', [
+            'page'           => 'order',
+            'orderlist'      => $orderlist,
+        ]);
+    }
+
+    /**
+     * orderEditAll
+     * Редактирование всех заказов в административной панеле
+     */
+    public function orderEditAll()
+    {
+        $orderlist = Orderlist::latest('id');
+        $orderlist = $orderlist->with('order_parts');
+        $orderlist = $orderlist->with('part_box');
+        $orderlist = $orderlist->get();
+
+
+        return view('admin', [
+            'page'           => 'order',
+            'orderlist'      => $orderlist,
+        ]);
+    }
+
+    /**
+     * orderEditDetail
+     * Редактирование отдельного заказов в административной панеле
+     */
+    public function orderEditDetail($id)
+    {
+        $orderlist = Orderlist::with('order_parts');
+        $orderlist = $orderlist->with('part_box');
+        $orderlist = $orderlist->with('part_img');
+        $orderlist = $orderlist->find($id);
+
+        
 
 
 
-
-
-
-
+        return view('admin', [
+            'page'           => 'orderdetail',
+            'order'          => $orderlist,
+        ]);
+    }
 }
