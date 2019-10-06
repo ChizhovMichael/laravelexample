@@ -235,6 +235,9 @@ select {
  .back-back-add {
      background: $color-background-add;
  }
+ .back-through {
+    background: repeating-linear-gradient(-60deg, #555 0, #555 1px, transparent 1px, transparent 5px);
+ }
 
 /*********
 // line and arrow

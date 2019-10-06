@@ -12,6 +12,7 @@ use App\NavigationAdditional;
 use App\Orderlist;
 use App\PartType;
 use Carbon\Carbon;
+use App\OrderPart;
 
 /***************
  * Административный раздел
@@ -374,18 +375,44 @@ class AdminController extends Controller
      */
     public function orderEditDetail($id)
     {
-        $orderlist = Orderlist::with('order_parts');
-        $orderlist = $orderlist->with('part_box');
-        $orderlist = $orderlist->with('part_img');
-        $orderlist = $orderlist->find($id);
+        $orderlist = Orderlist::find($id);
 
-        
+        $orderparts = OrderPart::where('order_id', $orderlist->id);
+        $orderparts = $orderparts->selectPartInfo();
+        $orderparts = $orderparts->getProductInfo();
+        $orderparts = $orderparts->getBox();
+        $orderparts = $orderparts->getImgMain();
+        $orderparts = $orderparts->get();
+
+        $sum = 0;
+        foreach($orderparts as $item) {
+            $sum+= $item->order_count*$item->part_cost;
+        }
 
 
 
         return view('admin', [
             'page'           => 'orderdetail',
             'order'          => $orderlist,
+            'products'       => $orderparts,
+            'sum'            => $sum
         ]);
+    }
+    /**
+     * Delete Part from Order
+     * Удаление товара из таблицы заказа
+     */
+    public function orderEditDetailDeletePart(Request $request)
+    {
+
+        $id = $request->id;
+
+        $orderpart = OrderPart::find($id);
+        $orderpart->update([
+            'part_cancel'      => 1,
+        ]);
+
+        return redirect()->back(); 
+
     }
 }

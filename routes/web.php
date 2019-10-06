@@ -57,6 +57,7 @@ Route::get('/admin/order', 'AdminController@orderEdit')->name('admin.order');
 Route::get('/admin/order/all', 'AdminController@orderEditAll')->name('admin.order.all');
 // Order Detail
 Route::get('/admin/order/{id}', 'AdminController@orderEditDetail')->name('admin.order.detail');
+Route::get('/adin/order/delete/part', 'AdminController@orderEditDetailDeletePart')->name('admin.order.detail.delete.part');
 
 
 

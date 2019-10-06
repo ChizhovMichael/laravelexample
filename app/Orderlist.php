@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * | 1. Order Parts (Присоединяем таблицу order_parts и получаем значения по ключу id-prder_id)
  * | 2. Part Box (Определяем в какой коробце находится продукт)
  * | 3. Part Image (Получаем главное изображение продукта)
+ * | 4. GetOrderParts (Получаем таблицу проданных продуктов)
 
  **************/
 
@@ -75,4 +76,17 @@ class Orderlist extends Model
     {
         return $this->hasManyThrough('App\PartImg', 'App\OrderPart', 'order_id', 'product_id', 'id', 'part_id')->where('part_img_main', 1);
     }
+
+    /**
+     * | GetOrderParts
+     * | Получаем таблицу проданных продуктов
+     */
+    public function scopeGetOrderParts($query)
+    {
+        return $query->join('order_parts', 'order_parts.order_id', '=', 'orderlists.id');
+    }
+
+    
+
+    
 }

@@ -17,9 +17,13 @@
                 <div class="form-label-group col-6 sd-12 bc b5 rel">
                     <input type="email" id="{{ $item->id }}" name="email" class="form-control" placeholder="Почта @if($item->status == 1) (основная) @endif" required value="{{ $item->value }}" />
                     <label for="{{ $item->id }}">Почта @if($item->status == 1) (основная) @endif</label>
+
+                    @if(!$item->status == 1)
                     <a href="{{ route('admin.contact.delete', [ 'id' => $item->id ]) }}" class="edit abs shadow">
                         <img src="{{ asset('img/icon/delete.png') }}" alt="delete" class="sd-12 col-12">
                     </a>
+                    @endif
+
                 </div>
 
                 <div class="flex-between col-6 sd-12">
@@ -77,9 +81,12 @@
                 <div class="form-label-group col-6 sd-12 bc b5 rel">
                     <input type="text" id="{{ $item->id }}" name="address" class="form-control" placeholder="Адрес @if($item->status == 1) (основная) @endif" required value="{{ $item->value }}" />
                     <label for="{{ $item->id }}">Адрес @if($item->status == 1) (основной) @endif</label>
+
+                    @if(!$item->status == 1)
                     <a href="{{ route('admin.contact.delete', [ 'id' => $item->id ]) }}" class="edit abs shadow">
                         <img src="{{ asset('img/icon/delete.png') }}" alt="delete" class="sd-12 col-12">
                     </a>
+                    @endif
                 </div>
 
                 <div class="flex-between col-6 sd-12">
@@ -147,9 +154,12 @@
                 <div class="form-label-group col-6 sd-12 bc b5 rel">
                     <input type="text" id="{{ $item->id }}" name="phone" class="form-control" placeholder="Телефон @if($item->status == 1) (основная) @endif" required value="{{ $item->value }}" />
                     <label for="{{ $item->id }}">Телефон @if($item->status == 1) (основной) @endif</label>
+
+                    @if(!$item->status == 1)
                     <a href="{{ route('admin.contact.delete', [ 'id' => $item->id ]) }}" class="edit abs shadow">
                         <img src="{{ asset('img/icon/delete.png') }}" alt="delete" class="sd-12 col-12">
                     </a>
+                    @endif
                 </div>
 
                 <div class="flex-between col-6 sd-12">

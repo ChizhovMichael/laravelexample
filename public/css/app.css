@@ -3237,6 +3237,10 @@ select {
   background: #eff6fa;
 }
 
+.back-through {
+  background: repeating-linear-gradient(-60deg, #555 0, #555 1px, transparent 1px, transparent 5px);
+}
+
 /*********
 // line and arrow
 **************/
