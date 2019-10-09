@@ -708,14 +708,15 @@ function paymethodCollection(el, child) {
 
     let selectedInput;
 
-    document.addEventListener('click', function (event) {
+    var elem = document.querySelector('.' + el);
+    if (!elem) return;
+
+    elem.addEventListener('click', function (event) {
         let target = event.target;
 
         if (!target.classList.contains(child)) return;
 
         highlight(target);
-
-        var elem = target.closest('.' + el);
 
         elem.firstElementChild.value = target.id;
     })

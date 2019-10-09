@@ -91,4 +91,9 @@ class OrderPart extends Model
         return $query->leftJoin('box_parts', 'box_parts.part_id', '=', 'order_parts.part_id');
 
     }
+
+    public function get_product() 
+    {
+        return $this->belongsTo('App\Product', 'part_id');
+    }
 }

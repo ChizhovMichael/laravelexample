@@ -86,7 +86,8 @@ class Orderlist extends Model
         return $query->join('order_parts', 'order_parts.order_id', '=', 'orderlists.id');
     }
 
-    
-
-    
+    public function get_part()
+    {
+        return $this->hasOne('App\OrderPart', 'order_id');
+    }
 }

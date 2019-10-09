@@ -13,6 +13,7 @@ use App\Tv;
 use App\NavigationAdditional;
 use App\Set;
 use Illuminate\Support\Facades\Auth;
+use App\Stock;
 
 
 
@@ -403,11 +404,24 @@ class ProductController extends Controller
         $products = $products->first();
 
 
+
+        $productsSale = Stock::where('product_id', $id)->first();
+        if ($productsSale !== NULL) {
+            if ($productsSale->stock == 'new') {
+                $price = $products->part_cost;
+            } else {
+                $price = $productsSale->price;
+            }            
+        } else {
+            $price = $products->part_cost;
+        }
+
+
         Cart::add([
             'id' => $id,
             'name' => $products->part_model,
             'qty' => $qty,
-            'price' => $products->part_cost,
+            'price' => $price,
             'options' => [
                 'type'      => $products->parttype_type,
                 'company'   => $products->company_id,

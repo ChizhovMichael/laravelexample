@@ -7442,11 +7442,12 @@ function quantityOfGoods(el) {
 
 function paymethodCollection(el, child) {
   var selectedInput;
-  document.addEventListener('click', function (event) {
+  var elem = document.querySelector('.' + el);
+  if (!elem) return;
+  elem.addEventListener('click', function (event) {
     var target = event.target;
     if (!target.classList.contains(child)) return;
     highlight(target);
-    var elem = target.closest('.' + el);
     elem.firstElementChild.value = target.id;
   });
 
@@ -7544,9 +7545,9 @@ function pushform() {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /media/michael/flash/laravelexample/resources/js/app.js */"./resources/js/app.js");
-__webpack_require__(/*! /media/michael/flash/laravelexample/resources/sass/mobile.scss */"./resources/sass/mobile.scss");
-module.exports = __webpack_require__(/*! /media/michael/flash/laravelexample/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! F:\laravelexample\resources\js\app.js */"./resources/js/app.js");
+__webpack_require__(/*! F:\laravelexample\resources\sass\mobile.scss */"./resources/sass/mobile.scss");
+module.exports = __webpack_require__(/*! F:\laravelexample\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

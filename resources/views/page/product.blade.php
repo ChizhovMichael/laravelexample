@@ -176,10 +176,10 @@
                     </div>
 
                     @endif
-                    <div class="mt-em-2">
+                    <div class="mt-em-2 rel col-6 sd-6">
 
                         @if($part_types->part_status == 0)
-                            <a class="cart-link block text-center back-main col-6 sd-6 b5 pt-1 pb-1 b-main shadow c-p" href="{{ route('addproduct', [ 'id' => $part_types->id, 'qty' => $qty ]) }}">
+                            <a class="cart-link block text-center back-main b5 pt-1 pb-1 b-main shadow c-p" href="{{ route('addproduct', [ 'id' => $part_types->id, 'qty' => $qty ]) }}">
                                 <img class="col-2 sd-2" src="{{ asset('img/icon/shopping-bag.svg') }}" alt="Запчасти для телевизоров, название товара + артикул">
                             </a>
                         @endif

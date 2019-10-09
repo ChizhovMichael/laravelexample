@@ -79,14 +79,12 @@
 
         <h5>Маркировка</h5>
 
-        <div class="sd-12 col-10 paymethod">
+        <div class="sd-12 col-10">
 
-            <input type="hidden" name="stock" value="{{ $product->stock }}">
-
-            <div class="mt-em-1 pr-em-2 pl-em-2 pt-em-2 pb-em-2 bc-light shadow-xs b3 @if($product->stock == 'new') b-main @endif">
+            <div class="mt-em-1 pr-em-2 pl-em-2 pt-em-2 pb-em-2 bc-light shadow-xs b3">
                 <div class="form-check">
 
-                    <input class="form-check-input form-check-input-change" data-form="brands-check" type="checkbox" id="new">
+                    <input class="form-check-input" type="radio" id="new" value="new" name="marker" @if($product->stock == 'new') checked @endif>
                     <span class="form-check-span"></span>
                     <label class="form-check-label ct" for="new">
                         Новый товар
@@ -95,10 +93,10 @@
                 </div>
             </div>
 
-            <div class="mt-em-1 pr-em-2 pl-em-2 pt-em-2 pb-em-2 bc-light shadow-xs b3 @if($product->stock == 'discount') b-main @endif">
+            <div class="mt-em-1 pr-em-2 pl-em-2 pt-em-2 pb-em-2 bc-light shadow-xs b3">
                 <div class="form-check">
 
-                    <input class="form-check-input form-check-input-change" data-form="brands-check" type="checkbox" id="discount">
+                    <input class="form-check-input" type="radio" id="discount" value="discount" name="marker" @if($product->stock == 'discount') checked @endif>
                     <span class="form-check-span"></span>
                     <label class="form-check-label ct" for="discount">
                         Акционный товар
@@ -113,10 +111,10 @@
 
                 </div>
             </div>
-            <div class="mt-em-1 pr-em-2 pl-em-2 pt-em-2 pb-em-2 bc-light shadow-xs b3 @if($product->stock == '') b-main @endif">
+            <div class="mt-em-1 pr-em-2 pl-em-2 pt-em-2 pb-em-2 bc-light shadow-xs b3">
                 <div class="form-check">
 
-                    <input class="form-check-input form-check-input-change" data-form="brands-check" type="checkbox" id="without">
+                    <input class="form-check-input" type="radio" id="without" value="without" name="marker" @if($product->stock == '') checked @endif>
                     <span class="form-check-span"></span>
                     <label class="form-check-label ct" for="without">
                         Без маркировки

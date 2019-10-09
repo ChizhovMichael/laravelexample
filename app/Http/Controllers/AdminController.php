@@ -13,6 +13,10 @@ use App\Orderlist;
 use App\PartType;
 use Carbon\Carbon;
 use App\OrderPart;
+use App\Sale;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CheckedEmail;
+use App\Mail\DeleteOrderEmail;
 
 /***************
  * Административный раздел
@@ -109,16 +113,27 @@ class AdminController extends Controller
                 'part_return' => $part_return
             ]);
 
-        if ($request->stock !== 'without') {
-
+        if ($request->marker == 'new') {
             Stock::updateOrCreate([
                 'product_id' => $request->id
             ], [
-                'stock' => $request->stock,
+                'stock' => 'new',
                 'percent' => round($percent),
                 'price' => $request->price
             ]);
-        } else {
+        }
+
+        if ($request->marker == 'discount') {
+            Stock::updateOrCreate([
+                'product_id' => $request->id
+            ], [
+                'stock' => 'discount',
+                'percent' => round($percent),
+                'price' => $request->price
+            ]);
+        }
+
+        if ($request->marker == 'without') {
             Stock::where('product_id', $request->id)->delete();
         }
 
@@ -339,11 +354,23 @@ class AdminController extends Controller
      */
     public function orderEdit()
     {
-        $orderlist = Orderlist::latest('id');
-        $orderlist = $orderlist->with('order_parts');
-        $orderlist = $orderlist->with('part_box');
-        $orderlist = $orderlist->get();
-        $orderlist = $orderlist->paginate(50);
+
+        // $orderpart = OrderPart::with('get_product');
+        // $orderpart = $orderpart->first();
+
+        // return $orderpart;
+
+
+        // $orderlist = Orderlist::latest('id');
+        // $orderlist = $orderlist->with('order_parts.get_product');
+        // $orderlist = $orderlist->get();
+        // $orderlist = $orderlist->paginate(1);
+
+        $orderlist = Orderlist::with('get_part.get_product')->first();
+
+        // Сделать таким образом!!!!!!!!!!!!!!!!!
+
+        return $orderlist;
 
         return view('admin', [
             'page'           => 'order',
@@ -385,8 +412,8 @@ class AdminController extends Controller
         $orderparts = $orderparts->get();
 
         $sum = 0;
-        foreach($orderparts as $item) {
-            $sum+= $item->order_count*$item->part_cost;
+        foreach ($orderparts as $item) {
+            $sum += $item->order_count * $item->part_cost;
         }
 
 
@@ -412,7 +439,139 @@ class AdminController extends Controller
             'part_cancel'      => 1,
         ]);
 
-        return redirect()->back(); 
+        return redirect()->back();
+    }
+
+
+    /**
+     * | Checked Payment Order
+     * | Подтверждение оплаты товара
+     */
+    public function orderEditChecked(Request $request)
+    {
+        $id = $request->id;
+        $payment = $request->order_payment;
+
+
+        $orderlist = Orderlist::find($id);
+        $orderlist->update([
+            'order_payment' => $payment,
+            'order_status'  => 2
+        ]);
+
+        $orderparts = OrderPart::where('order_id', $orderlist->id);
+        $orderparts->update([
+            'payment_status' => $payment,
+            'order_status'  => 2
+        ]);
+
+        // Убираем товар из таблицы продуктов
+        foreach ($orderparts->get() as $item) {
+            $product = Product::find($item->part_id);
+            $product->part_count = $product->part_count - $item->order_count;
+            if ($product->part_count == 0) {
+                $product->part_status = 1;
+            }
+            $product->save();
+        }
+
+
+        $contact['id'] = $request->id;
+        $contact['order_email'] = $orderlist->order_email;
+        $contact['order_lname'] = $orderlist->order_lname;
+        $contact['order_fname'] = $orderlist->order_fname;
+        $contact['order_mname'] = $orderlist->order_mname;
+
+
+        // Добавить сумму заказа в таблицу sales
+        $sale = Sale::where('sales_year', Carbon::now()->format('Y'))
+            ->where('sales_month', Carbon::now()->format('m'))
+            ->first();
+
+        if ($sale == NULL) {
+
+            $saleNew = new Sale();
+            $saleNew->sales_year = Carbon::now()->format('Y');
+            $saleNew->sales_month = Carbon::now()->format('m');
+            $saleNew->sales_turnover = $request->sum;
+            $saleNew->sales_orders = 1;
+            $saleNew->save();
+            
+        } else {
+
+            $sale->sales_turnover = $sale->sales_turnover + $request->sum;
+            $sale->sales_orders = $sale->sales_orders + 1;
+            $sale->save();
+            
+        }
+
+        //Mail to client
+        if (!$request->mailstatus == 'on')
+            Mail::to($contact['order_email'])->send(new CheckedEmail($contact));
+
+        return redirect()->back();
+    }
+
+    /**
+     * | Tracking Order
+     * | Перевод заявки в статус отправлено и присвоение трекинг номера
+     */
+    public function orderEditTracking(Request $request)
+    {
+        $orderlist = Orderlist::find($request->id);
+        $orderlist->order_tracking = $request->order_tracking;
+        $orderlist->order_status = 3;
+        $orderlist->save();
+
+        $orderparts = OrderPart::where('order_id', $orderlist->id);
+        $orderparts->update([
+            'order_status'  => 3
+        ]);
+
+        $contact['id'] = $request->id;
+        $contact['order_email'] = $orderlist->order_email;
+        $contact['order_lname'] = $orderlist->order_lname;
+        $contact['order_fname'] = $orderlist->order_fname;
+        $contact['order_mname'] = $orderlist->order_mname;
+        $contact['order_city'] = $orderlist->order_city;
+        $contact['order_address'] = $orderlist->order_address;
+        $contact['order_tracking'] = $orderlist->order_tracking;
+
+
+        //Mail to client
+        if (!$request->mailstatus == 'on')
+            Mail::to($contact['order_email'])->send(new CheckedEmail($contact));
+
+        return redirect()->back();
+
+    }
+
+    /**
+     * | Delete Payment Order
+     * | Удаление заявки
+     */
+    public function orderEditDelete(Request $request)
+    {
+        // $id = $request->id;
+        // $orderlist = Orderlist::find($id);
+
+        // $orderpart = OrderPart::where('order_id', $orderlist->id);
+        // $orderpart->update([
+        //     'part_cancel' => 1,
+        //     'order_status'  => 0
+        // ]);
+
+        // $contact['id'] = $request->id;
+        // $contact['order_email'] = $orderlist->order_email;
+        // $contact['order_lname'] = $orderlist->order_lname;
+        // $contact['order_fname'] = $orderlist->order_fname;
+        // $contact['order_mname'] = $orderlist->order_mname;
+
+        // //Mail to client
+        // if (!$request->mailstatus == 'on')
+        //     Mail::to($contact['order_email'])->send(new DeleteOrderEmail($contact));
+
+        // return redirect()->back();
 
     }
 }

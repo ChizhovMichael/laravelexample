@@ -57,8 +57,13 @@ Route::get('/admin/order', 'AdminController@orderEdit')->name('admin.order');
 Route::get('/admin/order/all', 'AdminController@orderEditAll')->name('admin.order.all');
 // Order Detail
 Route::get('/admin/order/{id}', 'AdminController@orderEditDetail')->name('admin.order.detail');
-Route::get('/adin/order/delete/part', 'AdminController@orderEditDetailDeletePart')->name('admin.order.detail.delete.part');
-
+Route::get('/admin/order/delete/part', 'AdminController@orderEditDetailDeletePart')->name('admin.order.detail.delete.part');
+// Order Checked
+Route::post('/admin/order/checked', 'AdminController@orderEditChecked')->name('admin.order.checked');
+// Order Cancel Checked
+Route::post('/admin/order/delete', 'AdminController@orderEditDelete')->name('admin.order.delete');
+// Order Tracking
+Route::post('/admin/order/tracking', 'AdminController@orderEditTracking')->name('admin.order.tracking');
 
 
 Auth::routes();
