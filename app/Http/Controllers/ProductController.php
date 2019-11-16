@@ -397,13 +397,14 @@ class ProductController extends Controller
      ***************/
     public function addProductToCart($id, $qty)
     {
+        
         $products = Product::where('products.id', '=', $id);
         $products = $products->selectAllInfo();
         $products = $products->selectAllTable();
         $products = $products->getImgMain();
         $products = $products->first();
 
-
+        
 
         $productsSale = Stock::where('product_id', $id)->first();
         if ($productsSale !== NULL) {
@@ -416,26 +417,37 @@ class ProductController extends Controller
             $price = $products->part_cost;
         }
 
+        $cart_elem = Cart::content()->where('id', $id)->first();
 
-        Cart::add([
-            'id' => $id,
-            'name' => $products->part_model,
-            'qty' => $qty,
-            'price' => $price,
-            'options' => [
-                'type'      => $products->parttype_type,
-                'company'   => $products->company_id,
-                'tv'        => $products->tv_id,
-                'img'       => $products->part_img_name,
-                'part_link' => $products->part_link,
-            ],
-        ]);
+        if ($cart_elem !== NULL && $cart_elem->qty + $qty > $products->part_count) {
+            
+            return;
+            
+        } else {
 
-        return response()->json([
-            'count' => Cart::count(),
-            'total' => Cart::total(),
-            'content' => Cart::content(),
-        ]);
+            Cart::setGlobalTax(0);
+            Cart::add([
+                'id' => $id, 
+                'name' => $products->part_model, 
+                'qty' => $qty, 
+                'price' => $price, 
+                'weight' => $products->part_count,
+                'options' => [
+                    'type'      => $products->parttype_type,
+                    'company'   => $products->company_id,
+                    'tv'        => $products->tv_id,
+                    'img'       => $products->part_img_name,
+                    'part_link' => $products->part_link,
+                ],
+            ]);
+
+            return response()->json([
+                'count' => Cart::count(),
+                'total' => Cart::total(),
+                'content' => Cart::content(),
+            ]);
+        }
+        
     }
 
     /**
@@ -655,12 +667,13 @@ class ProductController extends Controller
         $products = Set::where('sets.id', '=', $id);
         $products = $products->first();
 
-
+        Cart::setGlobalTax(0);
         Cart::add([
             'id' => $id,
             'name' => $products->set_name,
             'qty' => $qty,
             'price' => $products->set_cost,
+            'weight' => 0, 
             'options' => [
                 'img' => $products->set_img,
                 'part_link' => $products->set_slug,

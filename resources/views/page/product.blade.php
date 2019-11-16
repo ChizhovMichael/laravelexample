@@ -115,7 +115,7 @@
                                     @endif
                                     <div class="form-check">
                                         
-                                        <a class="cart-link flex-center-center rel top-left col-2 sd-2 back-main b5 mr-em-1 shadow-xs" href="{{ route('addproduct', [ 'id' => $item->id, 'type' => $item->parttype_type, 'company' => $item->company_id, 'tv' => $item->tv_id, 'img' => $item->part_img_main->part_img_name , 'name' => $item->part_model, 'qty' => 1,  'price' => $item->part_cost ]) }}">
+                                        <a class="cart-link flex-center-center rel top-left col-2 sd-2 back-main b5 mr-em-1 shadow-xs" href="{{ route('addproduct', [ 'id' => $item->id, 'type' => $item->parttype_type, 'company' => $item->company_id, 'tv' => $item->tv_id, 'img' => $item->part_img_main ?  $item->part_img_main->part_img_name  : '/img/products/no-photo-available.png', 'name' => $item->part_model, 'qty' => 1,  'price' => $item->part_cost ]) }}">
                                             <img class="p-12 col-8" src="{{ asset('img/icon/shopping-bag.svg') }}" alt="Купить">
                                         </a>
                                         
@@ -176,10 +176,10 @@
                     </div>
 
                     @endif
-                    <div class="mt-em-2 rel col-6 sd-6">
+                    <div class="mt-em-2 rel col-6 sd-6 h-3-em back-main b5 shadow flex-center-center no-gutters">
 
                         @if($part_types->part_status == 0)
-                            <a class="cart-link block text-center back-main b5 pt-1 pb-1 b-main shadow c-p" href="{{ route('addproduct', [ 'id' => $part_types->id, 'qty' => $qty ]) }}">
+                            <a class="cart-link block text-center back-main b5 pt-1 pb-1 b-main shadow c-p col-12 sd-12" href="{{ route('addproduct', [ 'id' => $part_types->id, 'qty' => $qty ]) }}">
                                 <img class="col-2 sd-2" src="{{ asset('img/icon/shopping-bag.svg') }}" alt="Запчасти для телевизоров, название товара + артикул">
                             </a>
                         @endif

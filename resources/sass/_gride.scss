@@ -115,6 +115,15 @@
 .h100 {
     height: 100%;
 }
+.h-3-em {
+    height: 3em;
+}
+.no-gutters {
+    & > * {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}
 /***********
 // border and shadow
 ***********/
@@ -219,6 +228,9 @@ select {
 }
 .ci {
     color: initial;
+}
+.disable-link {
+    pointer-events: none;
 }
 /***********
 // background

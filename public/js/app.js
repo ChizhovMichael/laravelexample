@@ -7228,8 +7228,7 @@ function addCart() {
     while (target != document) {
       if (target instanceof HTMLAnchorElement) {
         if (target.classList.contains('cart-link')) {
-          var cart;
-          var myImage;
+          var btnLink;
 
           var _ret = function () {
             event.preventDefault();
@@ -7240,6 +7239,7 @@ function addCart() {
               };
             }
 
+            btnLink = target;
             var xhr = new XMLHttpRequest();
             xhr.open('POST', target.getAttribute('href'), true);
             xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
@@ -7247,27 +7247,29 @@ function addCart() {
             xhr.onreadystatechange = function () {
               if (xhr.readyState == 4 && xhr.status == 200) {
                 // console.log(xhr.responseText);
-                var obj = JSON.parse(xhr.responseText);
-                countProducts.innerHTML = obj.count;
-                totalPrice.innerHTML = obj.total;
-                countProducts.classList.add('active');
-                setTimeout(function () {
-                  countProducts.classList.remove('active');
-                }, 1300);
+                if (xhr.responseText == null || xhr.responseText == '') {
+                  var span = document.createElement('span');
+                  span.className = 'cart-link flex-center-center rel top-left col-12 back-main mt-em-1 bbl5 bbr5 cb';
+                  span.innerHTML = 'Нет в наличии';
+                  btnLink.before(span);
+                  btnLink.remove();
+                } else {
+                  var obj = JSON.parse(xhr.responseText);
+                  countProducts.innerHTML = obj.count;
+                  totalPrice.innerHTML = obj.total;
+                  countProducts.classList.add('active');
+                  setTimeout(function () {
+                    countProducts.classList.remove('active');
+                  }, 1300);
+                  console.log(btnLink);
+                  var img = btnLink.querySelector('img');
+                  img.src = '/img/icon/cart_yes_white.png';
+                  btnLink.classList.add('disable-link');
+                }
               }
             };
 
             xhr.send();
-            cart = document.createElement('a');
-            cart.href = '/cart';
-            cart.className = 'abs bottom-right bbr5 gotocart flex-center-center';
-            myImage = new Image(30, 30);
-            myImage.src = '/img/icon/cart_yes_white.png';
-            setTimeout(function () {
-              cart.classList.add('animate');
-              cart.appendChild(myImage);
-            }, 500);
-            target.insertAdjacentElement("beforebegin", cart);
             return "break";
           }();
 
@@ -7545,9 +7547,9 @@ function pushform() {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! F:\laravelexample\resources\js\app.js */"./resources/js/app.js");
-__webpack_require__(/*! F:\laravelexample\resources\sass\mobile.scss */"./resources/sass/mobile.scss");
-module.exports = __webpack_require__(/*! F:\laravelexample\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/michael/Рабочий стол/laravelexample/resources/js/app.js */"./resources/js/app.js");
+__webpack_require__(/*! /home/michael/Рабочий стол/laravelexample/resources/sass/mobile.scss */"./resources/sass/mobile.scss");
+module.exports = __webpack_require__(/*! /home/michael/Рабочий стол/laravelexample/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

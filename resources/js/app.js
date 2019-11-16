@@ -481,6 +481,9 @@ function addCart() {
                         return;
                     }
 
+                    var btnLink = target;
+
+
                     const xhr = new XMLHttpRequest();
                     xhr.open('POST', target.getAttribute('href'), true);
                     xhr.setRequestHeader(
@@ -491,35 +494,34 @@ function addCart() {
 
                         if (xhr.readyState == 4 && xhr.status == 200) {
                             // console.log(xhr.responseText);
-                            var obj = JSON.parse(xhr.responseText);
-                            countProducts.innerHTML = obj.count;
-                            totalPrice.innerHTML = obj.total;
-                            countProducts.classList.add('active');
-                            setTimeout(
-                                function () {
-                                    countProducts.classList.remove('active');
-                                }, 1300
-                            );
+                            if (xhr.responseText == null || xhr.responseText == '') {
+                                var span = document.createElement('span');
+                                span.className = 'cart-link flex-center-center rel top-left col-12 back-main mt-em-1 bbl5 bbr5 cb';
+                                span.innerHTML = 'Нет в наличии';
 
+                                btnLink.before(span);
+                                btnLink.remove();
+
+                            } else {
+                                var obj = JSON.parse(xhr.responseText);
+                                countProducts.innerHTML = obj.count;
+                                totalPrice.innerHTML = obj.total;
+                                countProducts.classList.add('active');
+                                setTimeout(
+                                    function () {
+                                        countProducts.classList.remove('active');
+                                    }, 1300
+                                );
+
+                                console.log(btnLink)
+
+                                var img = btnLink.querySelector('img');
+                                img.src = '/img/icon/cart_yes_white.png';
+                                btnLink.classList.add('disable-link');
+                            }
                         }
                     }
                     xhr.send()
-
-                    var cart = document.createElement('a');
-                    cart.href = '/cart';
-                    cart.className = 'abs bottom-right bbr5 gotocart flex-center-center';
-
-                    var myImage = new Image(30, 30);
-                    myImage.src = '/img/icon/cart_yes_white.png';
-
-                    setTimeout(
-                        function () {
-                            cart.classList.add('animate');
-                            cart.appendChild(myImage);
-                        }, 500
-                    );
-
-                    target.insertAdjacentElement("beforebegin", cart);
 
 
                     break;
@@ -755,7 +757,7 @@ function createMessage(param, id) {
     } else {
         xhr.open('POST', '/' + param, true);
     }
-        
+
     xhr.setRequestHeader(
         'X-CSRF-TOKEN',
         document.querySelector('meta[name="csrf-token"]').getAttribute('content')

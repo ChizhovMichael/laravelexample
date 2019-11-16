@@ -212,23 +212,23 @@ class AdminController extends Controller
     public function navigationEditSaveSubsection(Request $request)
     {
 
+        $navigations = NavigationAdditional::find($request->id);
+
         $request->validate([
             'additional_name' => 'required|max:255',
-            'additional_id' => 'required|numeric'
-        ]);
+            'additional_id' => 'required|alpha_dash|unique:navigation_additionals,additional_id,' . $navigations->id
+        ]);        
 
         $parttype = PartType::find($request->additional_id);
         $parttype_link = $parttype->parttype_link;
 
-        NavigationAdditional::where('id', $request->id)->update([
-            'navigation_id'     => $request->navigation,
-            'additional_id'     => $parttype->id,
-            'additional_name'   => $request->additional_name,
-            'additional_slug'   => $parttype_link,
-            'show'              => $request->show
-        ]);
+        // $navigations->navigation_id = $request->navigation_id;
+        $navigations->additional_id = $request->additional_id;
+        $navigations->additional_name = $request->additional_name;
+        $navigations->additional_slug = $parttype_link;
+        $navigations->show = $request->show;
 
-
+        $navigations->save();
 
         return redirect()->back();
     }

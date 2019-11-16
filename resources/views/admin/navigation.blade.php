@@ -63,7 +63,7 @@
                                 <div class="b5 sd-12 col-12 mt-em-1">
 
 
-                                    <form action="{{ route('admin.navigation.save.subsection', [ 'id' => $add->id, 'navigation' => $navigation->id ]) }}" method="POST">
+                                    <form action="{{ route('admin.navigation.save.subsection', [ 'id' => $add->id, 'navigation_id' => $navigation->id ]) }}" method="POST">
 
                                         @csrf
 
@@ -72,7 +72,7 @@
                                             <label for="{{ $add->additional_name }}">Название подраздела</label>
                                         </div>
                                         
-                                        <select name="parttype" class="cc pr-em-2 pl-em-2 flex-center-center back-body b4 mt-em-1" required>
+                                        <select name="additional_id" class="cc pr-em-2 pl-em-2 flex-center-center back-body b4 mt-em-1" required>
                                             @foreach($parttype as $item)
                                                 @if($add->additional_id == $item->id)
                                                 <option value="{{ $item->id }}" class="cc" selected>{{ $item->parttype_type }}</option>

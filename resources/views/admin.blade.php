@@ -24,6 +24,12 @@
             <a href="{{ route('admin.navigation') }}" class="button__trigger @if(Request::is('admin/navigation') || Request::is('admin/navigation/*')) active @endif">Навигация</a>
             <a href="{{ route('admin.contact') }}" class="button__trigger @if(Request::is('admin/contact') || Request::is('admin/contact/*')) active @endif">Контакты</a>
             <a href="{{ route('admin.order') }}" class="button__trigger @if(Request::is('admin/order') || Request::is('admin/order/*')) active @endif">Заказы</a>
+            <a href="{{ route('main') }}" class="button__trigger">На главную</a>
+            <a class="button__trigger"  href="{{ route('logout') }}" onclick="event.preventDefault();
+					document.getElementById('logout-form').submit();">Выход</a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
         </div>
         <div class="col-10 sd-12 @if($agent->isDesktop()) pl-5 @endif ">
             @include('admin.'. $page)

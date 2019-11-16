@@ -185,7 +185,7 @@ return [
          * Shopping Cart
          * gloudemans/shoppingcart
          */
-        El3zahaby\Shoppingcart\ShoppingcartServiceProvider::class,
+        Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
 
     ],
 
@@ -238,7 +238,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'Cart' => El3zahaby\Shoppingcart\Facades\Cart::class,
+        'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
 
     ],
 
