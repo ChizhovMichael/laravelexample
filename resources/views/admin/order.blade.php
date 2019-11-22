@@ -44,18 +44,13 @@
                     <p class="ct mt-2 mb-2 wwbw">{{ $order->order_email }}</p>
                     <p class="ct mt-2 mb-2">{{ date('Y-m-d H:i:s', $order->order_timestamp) }}</p>
 
-                    <div class="flex-between">
-                        <div class="col-10">
-                            @foreach($order->order_parts as $part)
-                            <p class="mt-2 mb-2 cm wwbw">{{ $part->part_model }}</p>
-                            @endforeach
-                        </div>
-                        <div class="col-2 flex-column">
-                            @foreach($order->part_box as $box)
-                            <p class="cm wwbw bold m-v-auto">[{{ $box->box_box }}]</p>
-                            @endforeach
-                        </div>
+
+                    @foreach($order->get_part as $part)
+                    <div class="flex-center-between">
+                        <p class="mt-2 mb-2 cm wwbw col-9">{{ $part->get_product->part_model }}</p>
+                        <p class="cm wwbw bold m-v-auto col-2">[{{ $part->get_product->get_box->box_box }}]</p>
                     </div>
+                    @endforeach
 
                 </div>
                 <div class="col-3 pl-1">

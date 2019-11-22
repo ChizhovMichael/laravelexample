@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\Model;
  * | 2. Part Box (Определяем в какой коробце находится продукт)
  * | 3. Part Image (Получаем главное изображение продукта)
  * | 4. GetOrderParts (Получаем таблицу проданных продуктов)
+ * | 5. get_part (Подключаем таблицу щквук_зфкеы и получаем соответствующие столбцы)
+ * | 6. SelectInfoListItem (ПОлучаем информацию таблиц для листа заказов)
 
  **************/
 
@@ -86,8 +88,48 @@ class Orderlist extends Model
         return $query->join('order_parts', 'order_parts.order_id', '=', 'orderlists.id');
     }
 
+
+    /**
+     * | get_part
+     * | Подключаем таблицу щквук_зфкеы и получаем соответствующие столбцы
+     */
     public function get_part()
     {
-        return $this->hasOne('App\OrderPart', 'order_id');
+        return $this->hasMany('App\OrderPart', 'order_id')->select([
+            'part_id', 
+            'order_status', 
+            'part_return',
+            'part_cancel', 
+            'order_id',
+            'payment_status'
+        ]);
+    }
+
+
+    /**
+     * | SelectInfoListItem
+     * | ПОлучаем информацию таблиц для листа заказов
+     */
+    public function scopeSelectInfoListItem($query)
+    {
+        return $query->select([
+            'orderlists.id',
+            'orderlists.order_status',
+            'orderlists.order_lname',
+            'orderlists.order_fname',
+            'orderlists.order_mname',
+            'orderlists.order_index',
+            'orderlists.order_country',
+            'orderlists.order_autonomous',
+            'orderlists.order_region',
+            'orderlists.order_city',
+            'orderlists.order_district',
+            'orderlists.order_address',
+            'orderlists.order_email',
+            'orderlists.order_timestamp',
+            'orderlists.paymethod',
+            'orderlists.order_delivery',
+            'orderlists.order_tracking'
+        ]);
     }
 }

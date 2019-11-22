@@ -30,6 +30,7 @@ use Illuminate\Database\Eloquent\Model;
  * | 14. SelectStockInfo (Получаем информацию по стоковости продукта)
  * | 15. SelectStockTable (Получаем все соответсвующие таблицы для продукта в которых содержится дополнительная информация)
  * | 16. Отключаем добавление даты в таблицу
+ * | 17. Get_box (Получаем номер коробки в которой находится деталь)
  **************/
 
 
@@ -287,5 +288,18 @@ class Product extends Model
      * Отключаем добавление даты в таблицу
      */
     public $timestamps = false;
+
+
+    /**
+     * Get_box
+     * Получаем номер коробки в которой находится деталь
+     */
+    public function get_box()
+    {
+        return $this->hasOne('App\BoxPart', 'part_id')->select([
+            'part_id',
+            'box_box'
+        ]);
+    }
 
 }

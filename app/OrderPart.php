@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\Model;
  * | hasMany('App\Company', 'company_id'), где 1 - Модель (присоединяемая таблица), 2 - столбец из этой модели с id Product
  * | 1. SelectPartInfo (Получаем вcю сопутствующую информацию по продукции)
  * | 2. GetImgMain (Получаем главное изображение для каталога продукции)
+ * | 3. GetBox (Получаем коробку в которой находится продукт)
+ * | 4. Get_product (Получаем список товаров по part_id)
  * 
  * 
 ***************/
@@ -92,8 +94,16 @@ class OrderPart extends Model
 
     }
 
+
+    /**
+     * Get_product
+     * Получаем список товаров по part_id
+     */
     public function get_product() 
     {
-        return $this->belongsTo('App\Product', 'part_id');
+        return $this->belongsTo('App\Product', 'part_id')->select([
+            'id',
+            'part_model'
+        ]);
     }
 }

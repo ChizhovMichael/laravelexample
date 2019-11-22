@@ -355,22 +355,10 @@ class AdminController extends Controller
     public function orderEdit()
     {
 
-        // $orderpart = OrderPart::with('get_product');
-        // $orderpart = $orderpart->first();
-
-        // return $orderpart;
-
-
-        // $orderlist = Orderlist::latest('id');
-        // $orderlist = $orderlist->with('order_parts.get_product');
-        // $orderlist = $orderlist->get();
-        // $orderlist = $orderlist->paginate(1);
-
-        $orderlist = Orderlist::with('get_part.get_product')->first();
-
-        // Сделать таким образом!!!!!!!!!!!!!!!!!
-
-        return $orderlist;
+        $orderlist = Orderlist::latest('id');
+        $orderlist = $orderlist->selectInfoListItem();
+        $orderlist = $orderlist->with('get_part.get_product.get_box');
+        $orderlist = $orderlist->paginate(50);
 
         return view('admin', [
             'page'           => 'order',
@@ -385,8 +373,8 @@ class AdminController extends Controller
     public function orderEditAll()
     {
         $orderlist = Orderlist::latest('id');
-        $orderlist = $orderlist->with('order_parts');
-        $orderlist = $orderlist->with('part_box');
+        $orderlist = $orderlist->selectInfoListItem();
+        $orderlist = $orderlist->with('get_part.get_product.get_box');
         $orderlist = $orderlist->get();
 
 
