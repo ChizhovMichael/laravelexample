@@ -20,7 +20,9 @@ class Navigation extends Model
 {
     //
     protected $fillable = [
-        'part_type_id',
+        'name',
+        'slug',
+        'show'
     ];
 
 
