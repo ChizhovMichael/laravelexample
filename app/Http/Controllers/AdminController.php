@@ -42,6 +42,7 @@ use App\Mail\DeleteOrderEmail;
  * 18. salesEdit (Получаем сумму продаж)
  * 19. getofferEdit (Получаем список запрашиваемых цен для предложения Нашли дешевле?)
  * 20. getofferEditChecked (Отмечаем о обработке поля Нашли дешевле)
+ * 21. boxEdit (Получаем список всех коробок и их содержимое)
  ***********/
 
 class AdminController extends Controller
