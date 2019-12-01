@@ -24,6 +24,9 @@
             <a href="{{ route('admin.navigation') }}" class="button__trigger @if(Request::is('admin/navigation') || Request::is('admin/navigation/*')) active @endif">Навигация</a>
             <a href="{{ route('admin.contact') }}" class="button__trigger @if(Request::is('admin/contact') || Request::is('admin/contact/*')) active @endif">Контакты</a>
             <a href="{{ route('admin.order') }}" class="button__trigger @if(Request::is('admin/order') || Request::is('admin/order/*')) active @endif">Заказы</a>
+            <a href="{{ route('admin.sales') }}" class="button__trigger @if(Request::is('admin/sales') || Request::is('admin/sales/*')) active @endif">Продажи</a>
+            <a href="{{ route('admin.getoffer') }}" class="button__trigger @if(Request::is('admin/getoffer') || Request::is('admin/getoffer/*')) active @endif">Нашли дешевле</a>
+            <a href="{{ route('admin.box') }}" class="button__trigger @if(Request::is('admin/box') || Request::is('admin/box/*')) active @endif">Коробки</a>
             <a href="{{ route('main') }}" class="button__trigger">На главную</a>
             <a class="button__trigger"  href="{{ route('logout') }}" onclick="event.preventDefault();
 					document.getElementById('logout-form').submit();">Выход</a>

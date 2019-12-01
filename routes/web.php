@@ -66,6 +66,18 @@ Route::post('/admin/order/delete', 'AdminController@orderEditDelete')->name('adm
 Route::post('/admin/order/tracking', 'AdminController@orderEditTracking')->name('admin.order.tracking');
 
 
+
+
+// Sales
+Route::get('/admin/sales', 'AdminController@salesEdit')->name('admin.sales');
+
+// Get Offer
+Route::get('/admin/getoffer', 'AdminController@getofferEdit')->name('admin.getoffer');
+Route::post('/admin/getoffer/checked', 'AdminController@getofferEditChecked')->name('admin.getoffer.checked');
+
+// Box
+Route::get('admin/box', 'AdminController@boxEdit')->name('admin.box');
+
 Auth::routes();
 
 

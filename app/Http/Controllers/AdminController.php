@@ -14,6 +14,8 @@ use App\PartType;
 use Carbon\Carbon;
 use App\OrderPart;
 use App\Sale;
+use App\PriceRequest;
+use App\BoxPart;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CheckedEmail;
 use App\Mail\DeleteOrderEmail;
@@ -37,6 +39,9 @@ use App\Mail\DeleteOrderEmail;
  * 15. orderEdit (Редактирование заказов в административной панеле)
  * 16. orderEditAll (Редактирование всех заказов в административной панеле)
  * 17. orderEditDeatil (Редактирование отдельного заказов в административной панеле)
+ * 18. salesEdit (Получаем сумму продаж)
+ * 19. getofferEdit (Получаем список запрашиваемых цен для предложения Нашли дешевле?)
+ * 20. getofferEditChecked (Отмечаем о обработке поля Нашли дешевле)
  ***********/
 
 class AdminController extends Controller
@@ -561,5 +566,89 @@ class AdminController extends Controller
 
         // return redirect()->back();
 
+    }
+
+
+
+    /**
+     * salesEdit
+     * Получаем сумму продаж
+     */
+    public function salesEdit()
+    {
+        $salelist = Sale::orderBy('sales_year', 'DESC')
+        ->orderBy('sales_month', 'DESC')
+        ->get();
+
+        $monthcollection = [
+            '1' => 'Январь', 
+            '2' => 'Февраль',
+            '3' => 'Март',
+            '4' => 'Апрель',
+            '5' => 'Май',
+            '6' => 'Июнь',
+            '7' => 'Июль',
+            '8' => 'Август',
+            '9' => 'Сентябрь',
+            '10' => 'Октябрь',
+            '11' => 'Ноябрь', 
+            '12' => 'Декабрь',
+        ];
+
+        $salelist = $salelist->groupBy(['sales_year', 'sales_month']);
+
+        return view('admin', [
+            'page'              => 'sales',
+            'salelist'          => $salelist,
+            'monthcollection'   => $monthcollection
+        ]); 
+    }
+
+    /**
+     * getofferEdit
+     * Получаем список запрашиваемых цен для предложения Нашли дешевле?
+     */
+    public function getofferEdit()
+    {
+        $pricerequest = PriceRequest::latest('id')->get();
+
+        return view('admin', [
+            'page'              => 'getoffer',
+            'pricerequest'      => $pricerequest
+        ]);
+    }
+
+    /**
+     * getofferEditChecked
+     * Отмечаем о обработке поля Нашли дешевле
+     */
+    public function getofferEditChecked( Request $request )
+    {
+        $pricerequest = PriceRequest::find($request->id);
+        $pricerequest->checked = $request->show;
+        $pricerequest->save();
+
+        return redirect()->back();
+    }
+
+    /**
+     * boxEdit
+     * Получаем список всех коробок и их содержимое
+     */
+    public function boxEdit()
+    {
+        
+        $box_parts = BoxPart::with('get_product');
+        $box_parts = $box_parts->orderBy('box_box', 'ASC');
+        // 0 коробка относитя к неотсортированным
+        // и выводится на странице неотсортированных
+        $box_parts = $box_parts->where('box_box', '>', 0);
+        $box_parts = $box_parts->get();
+        $box_parts = $box_parts->groupBy('box_box');
+
+        return view('admin', [
+            'page'              => 'box',
+            'box_parts'         => $box_parts
+        ]);
     }
 }
