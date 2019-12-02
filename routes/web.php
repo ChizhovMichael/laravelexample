@@ -77,6 +77,7 @@ Route::post('/admin/getoffer/checked', 'AdminController@getofferEditChecked')->n
 
 // Box
 Route::get('admin/box', 'AdminController@boxEdit')->name('admin.box');
+Route::get('admin/box/unsort', 'AdminController@boxEditUnsort')->name('admin.box.unsort');
 
 Auth::routes();
 

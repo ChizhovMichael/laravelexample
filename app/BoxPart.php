@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /*************
  * 1. Get Product (Получаем название запчасти, которая находится в короке)
+ * 2. Get Product Unsort (Получаем название запчасти, которая находится в короке 0 (несортированное))
  *************/
 class BoxPart extends Model
 {
@@ -27,6 +28,20 @@ class BoxPart extends Model
         return $this->hasOne('App\Product', 'id', 'part_id')->select([
             'id',
             'part_model'
+        ]);
+    }
+
+    /**
+     * Get Product Unsort
+     * Получаем название запчасти, которая находится в короке 0 (несортированное)
+     */
+    public function get_product_unsort()
+    {
+        return $this->hasOne('App\Product', 'id', 'part_id')->select([
+            'id',
+            'part_model',
+            'parttype_id',
+            'tv_id'
         ]);
     }
 }

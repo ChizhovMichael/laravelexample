@@ -43,6 +43,7 @@ use App\Mail\DeleteOrderEmail;
  * 19. getofferEdit (Получаем список запрашиваемых цен для предложения Нашли дешевле?)
  * 20. getofferEditChecked (Отмечаем о обработке поля Нашли дешевле)
  * 21. boxEdit (Получаем список всех коробок и их содержимое)
+ * 22. boxEditUnsort (Получаем список неотсортированных деталей)
  ***********/
 
 class AdminController extends Controller
@@ -649,6 +650,29 @@ class AdminController extends Controller
 
         return view('admin', [
             'page'              => 'box',
+            'box_parts'         => $box_parts
+        ]);
+    }
+
+    /**
+     * boxEditUnsort
+     * Получаем список неотсортированных деталей
+     */
+    public function boxEditUnsort()
+    {
+        $box_parts = BoxPart::with(['get_product_unsort.tv', 'get_product_unsort.part_type']);
+        $box_parts = $box_parts->orderBy('box_box', 'ASC');
+        // 0 коробка относитя к неотсортированным
+        // и выводится на странице неотсортированных
+        $box_parts = $box_parts->where('box_box', '=', 0);
+        $box_parts = $box_parts->get();
+        $box_parts = $box_parts->groupBy('get_product_unsort.tv.tv_model');
+
+        // + разобраться с коробкой №20
+        return $box_parts;
+
+        return view('admin', [
+            'page'              => 'boxunsort',
             'box_parts'         => $box_parts
         ]);
     }

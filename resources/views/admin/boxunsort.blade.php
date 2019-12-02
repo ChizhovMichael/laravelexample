@@ -12,29 +12,29 @@
             </div>
         </div>
         <div class="flex-between b5 shadow p-2">
-            <div class="col-1">
-                <p class="m-0 ct">№</p>
+            <div class="col-3">
+                <p class="m-0 ct">Телевизор</p>
             </div>
-            <div class="col-8">
+            <div class="col-6">
                 <p class="m-0 ct">Запчасти</p>
             </div>
             <div class="col-3"></div>
         </div>
 
-        @foreach ($box_parts as $box => $part)
-            @if ($box != 20)
-                <div class="flex-between p-2 bb-light">
-                    <div class="col-1">
-                        <p class="m-0 ct">{{ $box }}</p>
-                    </div>
-                    <div class="col-8">
-                        @foreach ($part as $item)
-                            <p class="m-0 ct">{{ $item->get_product ? '[' . $item->get_product->id . '] ' . $item->get_product->part_model : '' }}</p>
-                        @endforeach                    
-                    </div>
-                    <div class="col-3"></div>
+        @foreach ($box_parts as $tv => $box)            
+            <div class="flex-between p-2 bb-light">
+                <div class="col-3">
+                    <p class="m-0 ct">{{ $tv }}</p>
+                    <p class="m-0 ct">{{ $box->get_product_unsort->tv->tv_datetime }}</p>
                 </div>
-            @endif            
+                <div class="col-6">
+                    <p class="m-0 ct">{{ $box->get_product_unsort->part_type->parttype_type }}</p>
+                    <p class="m-0 ct">{{ $box->get_product_unsort->part_model }}</p>             
+                </div>
+                <div class="col-3">
+
+                </div>
+            </div>            
         @endforeach
 
         
