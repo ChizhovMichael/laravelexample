@@ -232,11 +232,4 @@ class CartController extends Controller
 
     }
 
-    // Проверка количества товара и disable button
-    // Посути нужно сделать функцию которая бы сравнивала количество товара 
-    // И корзину по id и возвращала сласс dissable для кнопки 
-    //   a.disabled {
-    //     pointer-events: none;
-    //     cursor: default;
-    //   }
 }

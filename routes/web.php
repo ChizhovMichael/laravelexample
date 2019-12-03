@@ -78,6 +78,11 @@ Route::post('/admin/getoffer/checked', 'AdminController@getofferEditChecked')->n
 // Box
 Route::get('admin/box', 'AdminController@boxEdit')->name('admin.box');
 Route::get('admin/box/unsort', 'AdminController@boxEditUnsort')->name('admin.box.unsort');
+Route::post('admin/box/unsort/add', 'AdminController@boxEditUnsortAdd')->name('admin.box.unsort.add');
+Route::get('admin/box/control', 'AdminController@boxEditControl')->name('admin.box.control');
+Route::get('admin/box/control/{id}', 'AdminController@boxEditControlDetail')->name('admin.box.control.detail');
+Route::post('admin/box/control/save', 'AdminController@boxEditControlDetailSave')->name('admin.box.control.detail.save');
+Route::post('admin/box/control/create', 'AdminController@boxEditControlDetailCreate')->name('admin.box.control.detail.create');
 
 Auth::routes();
 

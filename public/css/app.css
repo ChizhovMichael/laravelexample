@@ -352,13 +352,13 @@ template {
  * OverlayScrollbars
  * https://github.com/KingSora/OverlayScrollbars
  *
- * Version: 1.7.2
+ * Version: 1.10.0
  *
- * Copyright KingSora.
+ * Copyright KingSora | Rene Haas.
  * https://github.com/KingSora
  *
  * Released under the MIT license.
- * Date: 10.06.2019
+ * Date: 11.10.2019
  */
 
 /*
@@ -388,9 +388,12 @@ body.os-dragging * {
 .os-host-textarea {
     position: relative;
     overflow: visible !important;
-    flex-direction: column;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+            flex-direction: column;
     flex-wrap: nowrap;
-    justify-content: flex-start;
+    -webkit-box-pack: start;
+            justify-content: flex-start;
     align-content: flex-start;
     -webkit-box-align: start;
         -ms-flex-align: start;
@@ -399,20 +402,23 @@ body.os-dragging * {
 }
 .os-host-flexbox {
     overflow: hidden !important;
+    display: -webkit-box;
     display: flex;
 }
 .os-host-flexbox > .os-size-auto-observer {
     height: inherit !important;
 }
 .os-host-flexbox > .os-content-glue {
-    flex-grow: 1;
+    -webkit-box-flex: 1;
+            flex-grow: 1;
     flex-shrink: 0;
 }
 .os-host-flexbox > .os-size-auto-observer,
 .os-host-flexbox > .os-content-glue {
     min-height: 0;
     min-width: 0;
-    flex-grow: 0;
+    -webkit-box-flex: 0;
+            flex-grow: 0;
     flex-shrink: 1;
     flex-basis: auto;
 }
@@ -532,11 +538,13 @@ body.os-dragging * {
             filter: none !important;
     border: none !important;
     resize: none !important;
-    transform: none !important;
+    -webkit-transform: none !important;
+            transform: none !important;
     max-width: none !important;
     max-height: none !important;
     box-shadow: none !important;
-    perspective: none !important;
+    -webkit-perspective: none !important;
+            perspective: none !important;
     opacity: 1 !important;
     z-index: 1 !important;
     clip: auto !important;
@@ -625,7 +633,8 @@ object.os-resize-observer {
     padding: 0;
     margin: 0;
     pointer-events: none;
-    flex-grow: inherit;
+    -webkit-box-flex: inherit;
+            flex-grow: inherit;
     flex-shrink: 0;
     flex-basis: 0;
 }
@@ -645,13 +654,16 @@ object.os-resize-observer {
     z-index: -1;
     opacity: 0;
     direction: ltr !important;
+    -webkit-box-flex: 0 !important;
     flex: none !important;
 }
 .os-resize-observer-item-final {
     position: absolute;
     left: 0;
     top: 0;
+    -webkit-transition: none !important;
     transition: none !important;
+    -webkit-box-flex: 0 !important;
     flex: none !important;
 }
 .os-resize-observer {
@@ -667,6 +679,7 @@ CUSTOM SCROLLBARS AND CORNER CORE:
 
 .os-host-transition > .os-scrollbar,
 .os-host-transition > .os-scrollbar-corner {
+    -webkit-transition: opacity 0.3s, visibility 0.3s, top 0.3s, right 0.3s, bottom 0.3s, left 0.3s;
     transition: opacity 0.3s, visibility 0.3s, top 0.3s, right 0.3s, bottom 0.3s, left 0.3s;
 }
 html.os-html > .os-host > .os-scrollbar {
@@ -780,6 +793,7 @@ html.os-html > .os-host > .os-scrollbar {
     pointer-events: auto !important;
 }
 .os-host-rtl > .os-scrollbar-corner.os-scrollbar-corner-resize {
+    -webkit-transform: scale(-1, 1);
     transform: scale(-1, 1);
 }
 .os-host-overflow {
@@ -870,6 +884,7 @@ THEMES:
 }
 .os-theme-dark.os-host-transition > .os-scrollbar > .os-scrollbar-track > .os-scrollbar-handle,
 .os-theme-light.os-host-transition > .os-scrollbar > .os-scrollbar-track > .os-scrollbar-handle {
+    -webkit-transition: background-color 0.3s;
     transition: background-color 0.3s;
 }
 .os-theme-dark > .os-scrollbar > .os-scrollbar-track > .os-scrollbar-handle,
@@ -929,7 +944,7 @@ THEMES:
     right: -6px;
     left: -2px;
 }
-/*! Flickity v2.2.0
+/*! Flickity v2.2.1
 https://flickity.metafizzy.co
 ---------------------------------------------- */
 
@@ -955,7 +970,6 @@ https://flickity.metafizzy.co
 
 .flickity-enabled.is-draggable {
   -webkit-tap-highlight-color: transparent;
-          tap-highlight-color: transparent;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
@@ -1015,7 +1029,8 @@ https://flickity.metafizzy.co
   height: 44px;
   border-radius: 50%;
   /* vertically center */
-  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
 }
 
 .flickity-prev-next-button.previous { left: 10px; }
@@ -1116,44 +1131,58 @@ https://flickity.metafizzy.co
 .form-check,
 .flex-center {
   width: 100%;
+  display: -webkit-box;
   display: flex;
   display: -ms-flexbox;
-  flex-flow: row wrap;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+          flex-flow: row wrap;
 }
 
 .form-check,
 .flex-center {
-  align-items: center;
+  -webkit-box-align: center;
+          align-items: center;
 }
 
 .button__trigger,
 .flex-center-center {
-  align-items: center;
-  justify-content: center;
+  -webkit-box-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+          justify-content: center;
 }
 
 .price,
 .flex-center-between {
-  align-items: center;
-  justify-content: space-between;
+  -webkit-box-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+          justify-content: space-between;
 }
 
 .flex-center-start {
-  align-items: center;
-  justify-content: flex-start;
+  -webkit-box-align: center;
+          align-items: center;
+  -webkit-box-pack: start;
+          justify-content: flex-start;
 }
 
 .flex-center-end {
-  align-items: center;
-  justify-content: flex-end;
+  -webkit-box-align: center;
+          align-items: center;
+  -webkit-box-pack: end;
+          justify-content: flex-end;
 }
 
 .flex-between {
-  justify-content: space-between;
+  -webkit-box-pack: justify;
+          justify-content: space-between;
 }
 
 .hover {
   color: #a5a5a5;
+  -webkit-transition: 0.3s;
   transition: 0.3s;
   text-decoration: none;
 }
@@ -1165,6 +1194,7 @@ https://flickity.metafizzy.co
 .cart_text a,
 .hover-main {
   color: #151f24;
+  -webkit-transition: all 200ms ease;
   transition: all 200ms ease;
   text-decoration: none;
 }
@@ -3008,23 +3038,29 @@ https://flickity.metafizzy.co
 }
 
 .flex-start {
-  justify-content: flex-start;
+  -webkit-box-pack: start;
+          justify-content: flex-start;
 }
 
 .flexCont {
-  flex: 1 0 auto;
+  -webkit-box-flex: 1;
+          flex: 1 0 auto;
 }
 
 .flexFoot {
-  flex: 0 0 auto;
+  -webkit-box-flex: 0;
+          flex: 0 0 auto;
 }
 
 .align-start {
-  align-items: flex-start;
+  -webkit-box-align: start;
+          align-items: flex-start;
 }
 
 .flex-column {
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-direction: column;
 }
 
 .fix {
@@ -3173,6 +3209,7 @@ https://flickity.metafizzy.co
 }
 
 .hover-shadow {
+  -webkit-transition: 0.3s;
   transition: 0.3s;
 }
 
@@ -3262,6 +3299,7 @@ select {
   display: block;
   position: absolute;
   top: 50%;
+  -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
   right: -1em;
   width: 1px;
@@ -3274,6 +3312,7 @@ select {
   display: block;
   position: absolute;
   top: 50%;
+  -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
   left: 0;
   width: 1px;
@@ -3445,6 +3484,7 @@ a.standart-a {
   color: #fafafa;
   background-color: #2684fe;
   text-decoration: none;
+  -webkit-transition: 0.3s;
   transition: 0.3s;
 }
 
@@ -3556,6 +3596,7 @@ input[type=range] {
   margin: 0;
   border: 0;
   outline: none;
+  background: -webkit-gradient(linear, left top, left bottom, from(#2684fe), to(#2684fe)) no-repeat center;
   background: linear-gradient(#2684fe, #2684fe) no-repeat center;
   background-size: 100% 2px;
   -webkit-appearance: none;
@@ -3762,12 +3803,14 @@ input[type=range]::-webkit-slider-thumb:active {
 .dropdown .dropdown__list img {
   width: 1em;
   -ms-order: 2;
-  order: 2;
+  -webkit-box-ordinal-group: 3;
+          order: 2;
 }
 
 .dropdown .dropdown__list span {
   -ms-order: 1;
-  order: 1;
+  -webkit-box-ordinal-group: 2;
+          order: 1;
 }
 
 .dropdown .dropdown__list__ul {
@@ -3790,6 +3833,7 @@ input[type=range]::-webkit-slider-thumb:active {
   border: 1px solid #a5a5a5;
   color: #a5a5a5;
   text-align: center;
+  -webkit-transition: 0.3s;
   transition: 0.3s;
   cursor: pointer;
 }
@@ -3800,10 +3844,14 @@ input[type=range]::-webkit-slider-thumb:active {
 }
 
 .navigation__drop__wrapp {
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-direction: column;
+  display: -webkit-box;
   display: flex;
   display: -ms-flexbox;
   max-height: 0px;
+  -webkit-transition: 0.3s;
   transition: 0.3s;
   overflow: hidden;
 }
@@ -3905,6 +3953,7 @@ input[type=range]::-webkit-slider-thumb:active {
   cursor: text;
   /* Match the input under the label */
   border: 1px solid transparent;
+  -webkit-transition: all 0.1s ease-in-out;
   transition: all 0.1s ease-in-out;
 }
 
@@ -3925,6 +3974,22 @@ input[type=range]::-webkit-slider-thumb:active {
 
 .form-label-group input::-moz-placeholder,
 .form-label-group textarea::-moz-placeholder {
+  color: transparent;
+}
+
+.form-label-group input::-webkit-input-placeholder, .form-label-group textarea::-webkit-input-placeholder {
+  color: transparent;
+}
+
+.form-label-group input::-moz-placeholder, .form-label-group textarea::-moz-placeholder {
+  color: transparent;
+}
+
+.form-label-group input:-ms-input-placeholder, .form-label-group textarea:-ms-input-placeholder {
+  color: transparent;
+}
+
+.form-label-group input::-ms-input-placeholder, .form-label-group textarea::-ms-input-placeholder {
   color: transparent;
 }
 
@@ -3955,6 +4020,7 @@ input[type=range]::-webkit-slider-thumb:active {
   color: #2684fe;
   text-decoration: none;
   padding: 0.3em 0;
+  -webkit-transition: 0.3s;
   transition: 0.3s;
   margin: 1em;
   background: none;
@@ -3983,8 +4049,11 @@ input[type=range]::-webkit-slider-thumb:active {
 
 .toggle__sorting {
   margin: 0;
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-direction: column;
   max-height: 0px;
+  -webkit-transition: 0.3s;
   transition: 0.3s;
 }
 
@@ -3992,6 +4061,7 @@ input[type=range]::-webkit-slider-thumb:active {
   height: auto;
   width: 100%;
   max-height: 2000px;
+  -webkit-transition: max-height 1s ease-in;
   transition: max-height 1s ease-in;
   overflow: hidden;
 }
@@ -4003,6 +4073,7 @@ input[type=range]::-webkit-slider-thumb:active {
 .form-check .form-check-input ~ p,
 .form-check .form-check-input ~ div {
   max-height: 0;
+  -webkit-transition: 0.3s;
   transition: 0.3s;
   overflow: hidden;
   margin: 0;
@@ -4031,10 +4102,12 @@ input[type=range]::-webkit-slider-thumb:active {
   border: 1px solid #2684fe;
   background: none;
   margin-right: 1em;
+  -webkit-transition: 0.3s;
   transition: 0.3s;
 }
 
 .form-check .form-check-label {
+  -webkit-transition: 0.3s;
   transition: 0.3s;
   cursor: pointer;
   background: none !important;
@@ -4061,30 +4134,36 @@ input[type=range]::-webkit-slider-thumb:active {
 
 @-webkit-keyframes load-animate {
   0% {
+    -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
 
   50% {
+    -webkit-transform: rotate(180deg);
     transform: rotate(180deg);
     opacity: 0.35;
   }
 
   100% {
+    -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
   }
 }
 
 @keyframes load-animate {
   0% {
+    -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
 
   50% {
+    -webkit-transform: rotate(180deg);
     transform: rotate(180deg);
     opacity: 0.35;
   }
 
   100% {
+    -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
   }
 }
@@ -4108,8 +4187,11 @@ input[type=range]::-webkit-slider-thumb:active {
 .card__item .product__item {
   left: -10px;
   width: calc(100% + 20px);
+  -webkit-transition: all 200ms ease;
   transition: all 200ms ease;
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-direction: column;
 }
 
 .card__item .product__item.discount .product_content .product_price h6 {
@@ -4141,7 +4223,9 @@ input[type=range]::-webkit-slider-thumb:active {
 .card__item .product__item .product_image {
   width: 80%;
   height: auto;
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-direction: column;
 }
 
 .card__item .product__item .product_content .product_price h6 span {
@@ -4154,11 +4238,13 @@ input[type=range]::-webkit-slider-thumb:active {
 
 .card__item .product__item .product_content .product_extras {
   max-height: 0px;
+  -webkit-transition: max-height 200ms ease;
   transition: max-height 200ms ease;
 }
 
 .card__item .product__item .product_content .product_extras .cart-link {
   height: 3em;
+  -webkit-transition: all 200ms ease;
   transition: all 200ms ease;
 }
 
@@ -4185,6 +4271,7 @@ input[type=range]::-webkit-slider-thumb:active {
   z-index: 20;
   top: 20px;
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  -webkit-transition: all 200ms ease;
   transition: all 200ms ease;
 }
 
@@ -4203,7 +4290,9 @@ input[type=range]::-webkit-slider-thumb:active {
 }
 
 .card__item__np .np__content {
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-direction: column;
 }
 
 .card__item__np .np__content p {
@@ -4215,9 +4304,12 @@ input[type=range]::-webkit-slider-thumb:active {
 }
 
 .catalog .sorting {
+  display: -webkit-box;
   display: flex;
   display: -webkit-flex;
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-direction: column;
 }
 
 .catalog .sorting .sorting__item input[type=checkbox] {
@@ -4228,6 +4320,7 @@ input[type=range]::-webkit-slider-thumb:active {
   height: auto;
   width: 100%;
   max-height: 2500px;
+  -webkit-transition: max-height 1s ease-in;
   transition: max-height 1s ease-in;
   overflow: hidden;
   margin: 2em 0;
@@ -4242,10 +4335,14 @@ input[type=range]::-webkit-slider-thumb:active {
 }
 
 .catalog .sorting .sorting__item ul {
+  display: -webkit-box;
   display: flex;
   display: -webkit-flex;
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-direction: column;
   max-height: 0px;
+  -webkit-transition: 0.3s;
   transition: 0.3s;
 }
 
@@ -4308,9 +4405,13 @@ input[type=range]::-webkit-slider-thumb:active {
 
 .quantity_inc,
 .quantity_dec {
+  display: -webkit-box;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-direction: column;
+  -webkit-box-align: center;
+          align-items: center;
   width: 100%;
   height: 50%;
   cursor: pointer;
@@ -4323,13 +4424,15 @@ input[type=range]::-webkit-slider-thumb:active {
 
 .quantity_inc {
   padding-bottom: 2px;
-  justify-content: flex-end;
+  -webkit-box-pack: end;
+          justify-content: flex-end;
   border-top-right-radius: 5px;
 }
 
 .quantity_dec {
   padding-top: 2px;
-  justify-content: flex-start;
+  -webkit-box-pack: start;
+          justify-content: flex-start;
   border-bottom-right-radius: 5px;
 }
 
@@ -4367,6 +4470,7 @@ input[type=range]::-webkit-slider-thumb:active {
   top: 50%;
   right: -36px;
   border-radius: 50%;
+  -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
 }
 
@@ -4374,6 +4478,7 @@ input[type=range]::-webkit-slider-thumb:active {
   width: 0em;
   z-index: 10;
   height: 3em;
+  -webkit-transition: 0.3s;
   transition: 0.3s;
 }
 
@@ -4400,6 +4505,7 @@ input[type=range]::-webkit-slider-thumb:active {
   position: absolute;
   top: 50%;
   left: 50%;
+  -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   max-height: 80%;
   overflow: auto;
@@ -4414,6 +4520,7 @@ input[type=range]::-webkit-slider-thumb:active {
   top: 50%;
   left: 50%;
   width: 100%;
+  -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
 
@@ -4591,6 +4698,7 @@ h1 span {
 
 .image_list li {
   height: 12em;
+  -webkit-transition: all 200ms ease;
   transition: all 200ms ease;
 }
 

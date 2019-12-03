@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 /*************
  * 1. Get Product (Получаем название запчасти, которая находится в короке)
  * 2. Get Product Unsort (Получаем название запчасти, которая находится в короке 0 (несортированное))
+ * Get Product 20 (Получаем содержиоме 20 коробки)
  *************/
 class BoxPart extends Model
 {
@@ -42,6 +43,19 @@ class BoxPart extends Model
             'part_model',
             'parttype_id',
             'tv_id'
+        ]);
+    }
+
+    /**
+     * Get Product 20 
+     * Получаем содержиоме 20 коробки
+     */
+    public function get_product_20()
+    {
+        return $this->hasOne('App\Product', 'id', 'part_id')->select([
+            'id',
+            'part_model',
+            'company_id'
         ]);
     }
 }

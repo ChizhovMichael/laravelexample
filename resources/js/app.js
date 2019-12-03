@@ -572,8 +572,16 @@ function navigationScroll() {
 
         if (scrolled > elemHeight) {
             elemChild.classList.add('fixed')
+            elemChild.classList.remove('pb-em-2');
+            elemChild.classList.remove('pt-em-2');
+            elemChild.classList.add('pb-em-1');
+            elemChild.classList.add('pt-em-1');
         } else {
-            elemChild.classList.remove('fixed')
+            elemChild.classList.remove('fixed');
+            elemChild.classList.remove('pb-em-1');
+            elemChild.classList.remove('pt-em-1');
+            elemChild.classList.add('pb-em-2');
+            elemChild.classList.add('pt-em-2');
         }
     })
 }

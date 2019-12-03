@@ -16,6 +16,7 @@ use App\OrderPart;
 use App\Sale;
 use App\PriceRequest;
 use App\BoxPart;
+use App\Box;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CheckedEmail;
 use App\Mail\DeleteOrderEmail;
@@ -44,6 +45,11 @@ use App\Mail\DeleteOrderEmail;
  * 20. getofferEditChecked (Отмечаем о обработке поля Нашли дешевле)
  * 21. boxEdit (Получаем список всех коробок и их содержимое)
  * 22. boxEditUnsort (Получаем список неотсортированных деталей)
+ * 23. boxEditUnsortAdd (Отправляем запчасть в выбранную коробку)
+ * 24. boxEditControl (Управляем списком коробок)
+ * 25. boxEditControlDetail (Получаем детальное описание коробки)
+ * 26. boxEditControlDetailSave (Сохраняем детальное описание коробки)
+ * 27. boxEditControlDetailCreate ( Сохраняем детальное описание коробки)
  ***********/
 
 class AdminController extends Controller
@@ -645,12 +651,21 @@ class AdminController extends Controller
         // 0 коробка относитя к неотсортированным
         // и выводится на странице неотсортированных
         $box_parts = $box_parts->where('box_box', '>', 0);
+        $box_parts = $box_parts->where('box_box', '!=', 20);
         $box_parts = $box_parts->get();
         $box_parts = $box_parts->groupBy('box_box');
 
+        // 20 коробка для разбивки по 
+        // фирмам по скольку там вся мелочь
+        $box_parts_20 = BoxPart::with('get_product_20.company');
+        $box_parts_20 = $box_parts_20->where('box_box', 20);
+        $box_parts_20 = $box_parts_20->get();
+        $box_parts_20 = $box_parts_20->groupBy('get_product_20.company.company');
+
         return view('admin', [
             'page'              => 'box',
-            'box_parts'         => $box_parts
+            'box_parts'         => $box_parts,
+            'box_parts_20'      => $box_parts_20
         ]);
     }
 
@@ -666,14 +681,107 @@ class AdminController extends Controller
         // и выводится на странице неотсортированных
         $box_parts = $box_parts->where('box_box', '=', 0);
         $box_parts = $box_parts->get();
-        $box_parts = $box_parts->groupBy('get_product_unsort.tv.tv_model');
+        $box_parts = $box_parts->groupBy(['get_product_unsort.tv.tv_model', 'get_product_unsort.tv.tv_datetime']);
+
+        $boxes = Box::get();
 
         // + разобраться с коробкой №20
-        return $box_parts;
 
         return view('admin', [
             'page'              => 'boxunsort',
-            'box_parts'         => $box_parts
+            'box_parts'         => $box_parts,
+            'boxes'             => $boxes
         ]);
     }
+
+
+    /**
+     * boxEditUnsortAdd
+     * Отправляем запчасть в выбранную коробку
+     */
+    public function boxEditUnsortAdd(Request $request)
+    {
+
+        $request->validate([
+            'box_box' => 'required|numeric'
+        ]);
+
+        $box = BoxPart::find($request->id);
+
+        $box->box_box = $request->box_box;
+        $box->box_timestamp = Carbon::now()->timestamp;
+        $box->timestamps = false;
+        $box->save();
+
+        return redirect()->back();
+
+    }
+
+    /**
+     * boxEditControl
+     * Управляем списком коробок
+     */
+    public function boxEditControl()
+    {
+        $boxes = Box::get();
+
+        return view('admin', [
+            'page'              => 'boxcontrol',
+            'boxes'         => $boxes, 
+        ]);
+    }
+
+
+    /**
+     * boxEditControlDetail
+     * Получаем детальное описание коробки
+     */
+    public function boxEditControlDetail($boxes_number)
+    {
+        $boxDetail = Box::where('boxes_number', $boxes_number)->first();
+
+        if (!$boxDetail || !(int)$boxes_number)
+            return redirect()->route('admin.box.control');
+
+        return view('admin', [
+            'page'          => 'boxcontrol',
+            'boxDetail'         => $boxDetail,
+        ]);
+    }
+
+    /**
+     * boxEditControlDetailSave
+     * Сохраняем детальное описание коробки
+     */
+    public function boxEditControlDetailSave(Request $request)
+    {
+        $boxDetail = Box::find($request->id);
+
+        $boxDetail->boxes_name = $request->boxes_name;
+        $boxDetail->boxes_description = $request->boxes_description;
+        $boxDetail->save();
+
+        return redirect()->route('admin.box.control');
+    }
+
+
+    /**
+     * boxEditControlDetailCreate
+     * Сохраняем детальное описание коробки
+     */
+    public function boxEditControlDetailCreate(Request $request)
+    {
+        $request->validate([
+            'boxes_number' => 'required|alpha_dash|unique:boxes,boxes_number'
+        ]);
+        
+        $boxDetail = new Box();
+        $boxDetail->boxes_number = $request->boxes_number;
+        $boxDetail->boxes_name = $request->boxes_name;
+        $boxDetail->boxes_description = $request->boxes_description;
+        $boxDetail->save();
+
+        return redirect()->back();
+    }
+
 }
