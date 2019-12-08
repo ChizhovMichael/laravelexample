@@ -84,6 +84,9 @@ Route::get('admin/box/control/{id}', 'AdminController@boxEditControlDetail')->na
 Route::post('admin/box/control/save', 'AdminController@boxEditControlDetailSave')->name('admin.box.control.detail.save');
 Route::post('admin/box/control/create', 'AdminController@boxEditControlDetailCreate')->name('admin.box.control.detail.create');
 
+// Buying Up (Скупка)
+Route::get('admin/buyup', 'AdminController@buyupEdit')->name('admin.buyup');
+
 Auth::routes();
 
 

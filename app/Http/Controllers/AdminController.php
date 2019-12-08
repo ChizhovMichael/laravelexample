@@ -50,6 +50,7 @@ use App\Mail\DeleteOrderEmail;
  * 25. boxEditControlDetail (Получаем детальное описание коробки)
  * 26. boxEditControlDetailSave (Сохраняем детальное описание коробки)
  * 27. boxEditControlDetailCreate ( Сохраняем детальное описание коробки)
+ * 30. buyupEdit (вывод списка скупаемых товаров)
  ***********/
 
 class AdminController extends Controller
@@ -745,7 +746,7 @@ class AdminController extends Controller
 
         return view('admin', [
             'page'          => 'boxcontrol',
-            'boxDetail'         => $boxDetail,
+            'boxDetail'     => $boxDetail,
         ]);
     }
 
@@ -782,6 +783,17 @@ class AdminController extends Controller
         $boxDetail->save();
 
         return redirect()->back();
+    }
+
+    /**
+     * buyupEdit
+     * Вывод списка скупаемых товаров
+     */
+    public function buyupEdit()
+    {
+        return view('admin', [
+            'page'  => 'buyup'
+        ]);
     }
 
 }
