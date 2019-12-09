@@ -20,6 +20,7 @@ use App\Box;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CheckedEmail;
 use App\Mail\DeleteOrderEmail;
+use App\Skypka;
 
 /***************
  * Административный раздел
@@ -791,9 +792,44 @@ class AdminController extends Controller
      */
     public function buyupEdit()
     {
+        $skypka = Skypka::latest('id')->get();;
+
         return view('admin', [
-            'page'  => 'buyup'
+            'page'      => 'buyup',
+            'skypka'    => $skypka
         ]);
+    }
+
+    /**
+     * buyupEditDetail
+     * Вывод списка скупаемых товаров
+     */
+    public function buyupEditDetail($id)
+    {
+        $skypka = Skypka::find($id);
+
+        return view('admin', [
+            'page'      => 'buyupdetail',
+            'skypka'    => $skypka
+        ]);
+    }
+
+    /**
+     * buyupEditDetail
+     * Вывод списка скупаемых товаров
+     */
+    public function buyupEditDetailUpdate(Request $request)
+    {
+        $request->validate([
+            'skypka_self_cost' => 'numeric'
+        ]);
+
+        $skypka = Skypka::find($request->id);
+        $skypka->skypka_self_cost = $request->skypka_self_cost;
+        $skypka->skypka_status = $request->skypka_status;
+        $skypka->save();
+
+        return redirect()->route('admin.buyup');
     }
 
 }

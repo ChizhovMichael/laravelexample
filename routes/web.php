@@ -86,6 +86,9 @@ Route::post('admin/box/control/create', 'AdminController@boxEditControlDetailCre
 
 // Buying Up (Скупка)
 Route::get('admin/buyup', 'AdminController@buyupEdit')->name('admin.buyup');
+Route::get('admin/buyup/{id}', 'AdminController@buyupEditDetail')->name('admin.buyup.detail');
+Route::post('admin/buyup/update', 'AdminController@buyupEditDetailUpdate')->name('admin.buyup.detail.post');
+
 
 Auth::routes();
 
@@ -144,5 +147,11 @@ Route::post('/saleform/push', 'CartController@saleFormPush')->name('saleform.pus
  */
 Route::post('/addquantity', 'ProductController@addQuantity');
 Route::post('/addsetquantity', 'ProductController@addSetQuantity');
+
+/**
+ * Skypka
+ */
+Route::get('/skypkatv', 'CartController@getSkypkaPage')->name('skypka');
+Route::post('/skypkatv/post', 'CartController@skypkaAdd')->name('skypka.post');
 
 

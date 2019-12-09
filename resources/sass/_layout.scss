@@ -473,7 +473,10 @@ input[type=range]::-webkit-slider-thumb:active {
 		border-right: 3px solid $color-main;
 	}
 	&.is-invalid {
-		border-radius: 3px solid $color-add;
+		border-right: 3px solid $color-add;
+		&:required {
+			border-right: 3px solid $color-add;
+		}
 	}
 }
 
@@ -630,6 +633,12 @@ input[type=range]::-webkit-slider-thumb:active {
     }
 }
 
+.status-error {
+	border: 2px solid $color-add;
+}
+.status-success {
+	border: 2px solid $color-main;
+}
 
 .load {
 	display: inline-block;

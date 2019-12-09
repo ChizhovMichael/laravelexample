@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\NavigationController;
 use App\Orderlist;
 use Cart;
+use App\Skypka;
 use Illuminate\Support\Facades\Redirect;
 use Carbon\Carbon;
 use App\OrderPart;
@@ -27,6 +28,8 @@ use App\PaymentDetailsUser;
  * | 3. Checout Page (Получение страницы оформление заказа)
  * | 4. Checkout Post (Отправление информации о покупке на почту клиента и на почту администратора)
  * | 5. Sale Form Post (Отправка формы 'Нашли дешевле' на почту и в базу)
+ * | 6. getSkypkaPage (Страница + форма скупки товара)
+ * | 7. skypkaAdd (Добавляем о скупке запрос в базу)
 
  **************/
 
@@ -229,6 +232,51 @@ class CartController extends Controller
 
         return redirect()->back()->with('success', 'Ок, мы посмотрим, что можно сделать!')
             ->with('message', 'Ваша заявка удачно оформлена. В скором времени с вами свяжется наш менеджер. Он уточнит цену или предложит альтернативы. Спасибо!');
+
+    }
+
+    /**
+     * getSkypkaPage
+     * Страница + форма скупки товара
+     */
+    public function getSkypkaPage()
+    {
+
+        return view('page/skypka', [
+            'navigations'       =>  $this->navigation(),
+            'contacts'          =>  collect($this->contacts()),
+            'cart'              =>  $this->getCartCount(),
+            'user'              =>  Auth::user(),
+            'adminDetect'       =>  $this->adminDetect(),
+        ]);
+    }
+
+    /**
+     * skypkaAdd
+     * Добавляем о скупке запрос в базу
+     */
+    public function skypkaAdd(Request $request) 
+    {
+        $request->validate([
+            'skypka_tv_model' => 'required|max:64',
+            'skypka_defect' => 'required',
+            'skypka_cost' => 'numeric',
+            'skypka_email' => 'required|email|max:64',
+            'skypka_phone' => 'required|numeric|max:32',
+        ]);
+
+        $skypka = new Skypka();
+        $skypka->skypka_tv_model = $request->skypka_tv_model;
+        $skypka->skypka_defect = $request->skypka_defect;
+        $skypka->skypka_delivery_option = $request->skypka_delivery_option;
+        $skypka->skypka_user_adress = $request->skypka_user_adress;
+        $skypka->skypka_cost = $request->skypka_cost;
+        $skypka->skypka_email = $request->skypka_email;
+        $skypka->skypka_phone = $request->skypka_phone;
+        $skypka->save();
+
+        return redirect()->route('main')->with('success', 'Ок, мы постараемся дать этому красавцу новую жизнь!')
+            ->with('message', 'Ваша заявка удачно оформлена. В скором времени с вами свяжется наш менеджер. Он уточнит цену и согласует логистику. Спасибо!');
 
     }
 
