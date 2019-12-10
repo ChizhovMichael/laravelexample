@@ -271,8 +271,10 @@ class CartController extends Controller
         $skypka->skypka_delivery_option = $request->skypka_delivery_option;
         $skypka->skypka_user_adress = $request->skypka_user_adress;
         $skypka->skypka_cost = $request->skypka_cost;
+        $skypka->skypka_self_cost = 0;
         $skypka->skypka_email = $request->skypka_email;
         $skypka->skypka_phone = $request->skypka_phone;
+        $skypka->skypka_status = 0;
         $skypka->save();
 
         return redirect()->route('main')->with('success', 'Ок, мы постараемся дать этому красавцу новую жизнь!')
