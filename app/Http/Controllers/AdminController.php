@@ -52,6 +52,7 @@ use App\Skypka;
  * 26. boxEditControlDetailSave (Сохраняем детальное описание коробки)
  * 27. boxEditControlDetailCreate ( Сохраняем детальное описание коробки)
  * 30. buyupEdit (вывод списка скупаемых товаров)
+ * 31. repairEdit (Вывод списка реанимирующихся товаров)
  ***********/
 
 class AdminController extends Controller
@@ -830,6 +831,19 @@ class AdminController extends Controller
         $skypka->save();
 
         return redirect()->route('admin.buyup');
+    }
+
+
+    /**
+     * repairEdit
+     * Вывод списка реанимирующихся товаров
+     */
+    public function repairEdit()
+    {
+        
+        return view('admin', [
+            'page'      => 'repair'
+        ]);
     }
 
 }

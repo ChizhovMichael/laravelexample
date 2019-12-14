@@ -27,6 +27,9 @@
             <a href="{{ route('admin.sales') }}" class="button__trigger @if(Request::is('admin/sales') || Request::is('admin/sales/*')) active @endif">Продажи</a>
             <a href="{{ route('admin.getoffer') }}" class="button__trigger @if(Request::is('admin/getoffer') || Request::is('admin/getoffer/*')) active @endif">Нашли дешевле</a>
             <a href="{{ route('admin.box') }}" class="button__trigger @if(Request::is('admin/box') || Request::is('admin/box/*')) active @endif">Коробки</a>
+
+            <a href="{{ route('admin.repair') }}" class="button__trigger @if(Request::is('admin/repair') || Request::is('admin/repair/*')) active @endif">Реанимация</a>
+
             <a href="{{ route('admin.buyup') }}" class="button__trigger @if(Request::is('admin/buyup') || Request::is('admin/buyup/*')) active @endif">Скупка</a>
             <a href="{{ route('main') }}" class="button__trigger">На главную</a>
             <a class="button__trigger"  href="{{ route('logout') }}" onclick="event.preventDefault();
