@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\CheckedEmail;
 use App\Mail\DeleteOrderEmail;
 use App\Skypka;
+use App\Company;
 
 /***************
  * Административный раздел
@@ -840,9 +841,17 @@ class AdminController extends Controller
      */
     public function repairEdit()
     {
+
+        $companies = Company::get();
+        $part_without_test = Product::with('company');
+        $part_without_test = $part_without_test->where('part_condition', 1);
+        $part_without_test = $part_without_test->paginate(30);
+
         
         return view('admin', [
-            'page'      => 'repair'
+            'page'      => 'repair',
+            'companies'   => $companies,
+            'part_without_test' => $part_without_test
         ]);
     }
 
