@@ -93,6 +93,12 @@ Route::post('admin/buyup/update', 'AdminController@buyupEditDetailUpdate')->name
 // Repair
 Route::get('admin/repair', 'AdminController@repairEdit')->name('admin.repair');
 
+
+// List
+Route::get('admin/list', 'AdminController@listEdit')->name('admin.list');
+
+
+
 Auth::routes();
 
 

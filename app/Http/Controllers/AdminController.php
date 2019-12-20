@@ -54,6 +54,7 @@ use App\Company;
  * 27. boxEditControlDetailCreate ( Сохраняем детальное описание коробки)
  * 30. buyupEdit (вывод списка скупаемых товаров)
  * 31. repairEdit (Вывод списка реанимирующихся товаров)
+ * 32. listEdit (Вывод списка)
  ***********/
 
 class AdminController extends Controller
@@ -852,6 +853,17 @@ class AdminController extends Controller
             'page'      => 'repair',
             'companies'   => $companies,
             'part_without_test' => $part_without_test
+        ]);
+    }
+
+    /**
+     * listEdit
+     * Вывод списка товаров
+     */
+    public function listEdit()
+    {       
+        return view('admin', [
+            'page'      => 'list'
         ]);
     }
 
