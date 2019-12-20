@@ -95,8 +95,7 @@ Route::get('admin/repair', 'AdminController@repairEdit')->name('admin.repair');
 
 
 // List
-Route::get('admin/list', 'AdminController@listEdit')->name('admin.list');
-
+Route::get('admin/list/{add}', 'AdminController@listEdit')->name('admin.list');
 
 
 Auth::routes();

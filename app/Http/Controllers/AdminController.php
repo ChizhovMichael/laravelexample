@@ -860,7 +860,7 @@ class AdminController extends Controller
      * listEdit
      * Вывод списка товаров
      */
-    public function listEdit()
+    public function listEdit( $add )
     {       
         return view('admin', [
             'page'      => 'list'
