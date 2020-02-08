@@ -55,6 +55,10 @@ use App\Company;
  * 30. buyupEdit (вывод списка скупаемых товаров)
  * 31. repairEdit (Вывод списка реанимирующихся товаров)
  * 32. listEdit (Вывод списка)
+ * 33. listEditTxt (Вывод списка)
+ * 34. listEditAvito (Вывод списка)
+ * 35. listEditAvitoModels (Вывод списка)
+ * 36. listEditMonitor(Вывод списка)
  ***********/
 
 class AdminController extends Controller
@@ -795,7 +799,7 @@ class AdminController extends Controller
      */
     public function buyupEdit()
     {
-        $skypka = Skypka::latest('id')->get();;
+        $skypka = Skypka::latest('id')->get();
 
         return view('admin', [
             'page'      => 'buyup',
@@ -860,8 +864,177 @@ class AdminController extends Controller
      * listEdit
      * Вывод списка товаров
      */
-    public function listEdit( $add )
+    public function listEdit()
+    {   
+        $products = Product::with('tv');
+        $products = $products->with('company');
+        $products = $products->with('matrix');
+        $products = $products->with('part_type');
+        $products = $products->get();
+        $products = $products->groupBy('part_type.parttype_type');
+        
+        return view('admin', [
+            'page'      => 'list',
+            'products'  => $products
+        ]);
+    }
+
+    /**
+     * listEditTxt
+     * Вывод списка товаров
+     */
+    public function listEditTxt()
     {       
+        $products = Product::with('tv');
+        $products = $products->with('company');
+        $products = $products->with('matrix');
+        $products = $products->with('part_type');
+        $products = $products->get();
+
+        return view('admin', [
+            'page'      => 'list',
+            'products'  => $products
+        ]);
+    }
+
+    /**
+     * listEditAvito
+     * Вывод списка товаров
+     */
+    public function listEditAvito(Request $request)
+    {    
+
+        $part_condition[1] = "(БТ)";
+		$part_condition[2] = "(Н)";
+
+        if (!$request->company)
+            $request->company = 1;
+
+        $companies = Company::get();
+
+        if ($request->company == 'other') {
+            $other = [];
+            foreach ($companies as $company) {
+                if ($company->id > 7) {
+                    $other[] = $company->id;
+                }
+            }
+        }
+
+        
+
+        $products = Product::with('part_type')
+            ->where('part_status', 0)->get();
+
+
+
+        if ($request->company != 'other') {
+            $products = $products->where('company_id', $request->company);
+            $companyName = $companies->where('id', $request->company)->first();
+            $companyName = $companyName->company;
+        } else {
+            $products = $products->whereIn('company_id', $other);
+            $companyName = '';
+        }
+            
+        $products = $products->groupBy('part_type.parttype_type');
+
+        $sort = collect([
+            'Main Board',
+			'Power Board',
+			'T-Con',
+			'Inverter',			
+			'LED',
+			'LED Backlight',
+			'LED Driver',
+			'Power Supply',
+			'Logic Board',
+			'YSUS',
+			'XSUS',
+			'Main AV Board',
+			'Y-DRV BUFFER Y-SUS BOARD',
+			'Y-Main',
+			'X-Main',
+            'Logic Main',
+            '',
+			'',
+			'Buffer Board',
+			'Logic Board',
+			'Matrix Board'
+        ]);
+
+        $sortAdd = collect([
+            'Unknown',
+			'Buttons Board',
+			'IR Sensor',
+			'EMI Noise Filter',
+			'Шлейфы к T-Con',
+			'Power Button',
+			'WiFi Module',
+			'Bluetooth Module',
+			'WLAN Module',
+			'WiFi/BT Combo Module',
+			'Cooler',
+			'Connector Board',
+			'Inputs',
+			'Tuner Board',
+			'IR / Button Board',
+			'Индикаторы / Lights / H3E',
+			'Touch Key Controller',
+			'3D Emitter',
+			'Speakers',
+			'Camera',
+			'Cart Reader',
+			'IR Receptor',
+			'Power Button + IR Sensor',
+			'Common Interface',
+			'Dimming',
+			'CD ROM',
+			'IR Receiver',
+			'Side AV Board'
+        ]);
+
+        $sort = $sort->flip();
+        $sortAdd = $sortAdd->flip();
+
+        $sorted_array = $sort->merge($products);
+        $sorted_array = $sorted_array->reverse();
+        $sorted_array_add = $sortAdd->merge($sorted_array);
+        $sorted_array_add = $sorted_array_add->reverse();     
+
+        
+
+        return view('admin', [
+            'page'      => 'list',
+            'companies' => $companies,
+            'companySelected' => $request->company,
+            'products' => $sorted_array_add,
+            'part_condition' => $part_condition,
+            'companyName'   => $companyName
+        ]);
+    }
+
+    /**
+     * listEditAvito
+     * Вывод списка товаров
+     */
+    public function listEditAvitoModels()
+    {       
+        
+
+        return view('admin', [
+            'page'      => 'list'
+        ]);
+    }
+
+    /**
+     * listEditMonitor
+     * Вывод списка товаров
+     */
+    public function listEditMonitor()
+    {       
+        
+
         return view('admin', [
             'page'      => 'list'
         ]);

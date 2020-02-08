@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-    <title>Телезапчасти</title>
-    <meta name="description" content="Телезапчасти">
+    <title>Интернет-магазин Телезапчасти.рф - Запчасти для телевизоров</title>
+    <meta name="description" content="телезапчасти рф, продажа запчастей для телевизоров, запчасти для телевизоров, ">
     <meta name="keywords" content="Телезапчасти">
 
     <!-- Headbase -->
@@ -99,7 +99,8 @@
                 <span>запчасти для телевизоров</span>
                 Телезапчасти
             </h1>
-            <p class="cc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <p class="cc">Наша компания занимаемся продажей запчастей к ЖК, LED, LCD, плазменным телевизорам. Огромная база запчастей для телевизоров. Постоянные обновления. Также занимаемся профессиональным ремонтом телевизоров как на дому так и в стационаре.</p>
+            <p class="cc mt-em-1">Будем рады вам помочь.</p>
         </div>
     </div>
 

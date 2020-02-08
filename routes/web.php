@@ -95,8 +95,13 @@ Route::get('admin/repair', 'AdminController@repairEdit')->name('admin.repair');
 
 
 // List
-Route::get('admin/list/{add}', 'AdminController@listEdit')->name('admin.list');
-
+Route::get('admin/list', 'AdminController@listEdit')->name('admin.list');
+Route::get('admin/list/txt', 'AdminController@listEditTxt')->name('admin.list.txt');
+Route::get('admin/list/avito', 'AdminController@listEditAvito')->name('admin.list.avito');
+Route::post('admin/list/avito', 'AdminController@listEditAvito')->name('admin.list.avito.post');
+Route::get('admin/list/avitotvmodels', 'AdminController@listEditAvitoModels')->name('admin.list.avitotvmodels');
+Route::post('admin/list/avitotvmodels', 'AdminController@listEditAvitoModels')->name('admin.list.avitotvmodels.post');
+Route::get('admin/list/monitor', 'AdminController@listEditMonitor')->name('admin.list.monitor');
 
 Auth::routes();
 
