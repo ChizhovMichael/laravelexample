@@ -3,7 +3,6 @@
 <link rel="canonical" href="{{ URL::current() }}">
 <meta name="theme-color" content="#fbfbfb" />
 <meta name="msapplication-TileColor" content="#fbfbfb">
-<meta name="robots" content="index, follow">
 <meta name="author" content="WebArt Studio" />
 <meta name="copyright" content="Telezapchasti 2019">
 

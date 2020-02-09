@@ -6,9 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-    <title>Артикул</title>
-    <meta name="description" content="Каталог">
-    <meta name="keywords" content="Каталог">
+    <title>{{ $part_types->part_model }} купить в Телезапчасти.рф - Запчасти для телевизоров</title>
+    <meta name="description" content="{{ $part_types->part_model }} для телевизора {{ $part_types->company }} {{ $part_types->tv_model }} в Телезапчасти.рф, {{ $part_types->parttype_type }} {{ $part_types->part_model }}, {{ $part_types->part_model }} матрица {{ $part_types->matrix->matrix_model }}, купить {{ $part_types->part_model }} в Телезапчасти.рф, запчасть {{ $part_types->part_model }} для телевизора спб, запчасть {{ $part_types->part_model }} для телевизора {{ $part_types->tv_model }}, запчасть {{ $part_types->part_model }} для телевизоров спб, запчасти {{ $part_types->part_model }} для телевизоров {{ $part_types->tv_model }}">
+    <meta name="keywords" content="купить {{ $part_types->part_model }}, {{ $part_types->part_model }}, {{ $part_types->parttype_type }} {{ $part_types->part_model }}, {{ $part_types->part_model }} для телевизора {{ $part_types->company }} {{ $part_types->tv_model }}, {{ $part_types->part_model }} матрица {{ $part_types->matrix->matrix_model }}, купить {{ $part_types->part_model }} в Телезапчасти.рф, запчасть {{ $part_types->part_model }} для телевизора спб, запчасть {{ $part_types->part_model }} для телевизора {{ $part_types->tv_model }}, запчасть {{ $part_types->part_model }} для телевизоров спб, запчасти {{ $part_types->part_model }} для телевизоров {{ $part_types->tv_model }}">
+
+    <meta name="robots" content="index, follow">
 
     <!-- Headbase -->
 
@@ -69,7 +71,7 @@
             @if($part_types->part_comment_for_client)
             <p class="bb bt m-1 pt-em-1 pb-em-1 found not">{{ $part_types->part_comment_for_client }}</p>
             @endif
-            <p class="cc wwbw">{{ $part_types->parttype_type }} {{ $part_types->part_model }} снят(-а) с телевизора <a class="cm hover" href="{{ route('category.tv', [ 'tv' => $part_types->company, 'model' => $part_types->tv_model ]) }}">{{ $part_types->company }} {{ $part_types->tv_model }}</a> с разбитой матрицей {{ $part_types->matrix->matrix_model }}.</p>
+            <p class="cc wwbw">Запчасть {{ $part_types->parttype_type }} {{ $part_types->part_model }} снят(-а) с телевизора <a class="cm hover" href="{{ route('category.tv', [ 'tv' => $part_types->company, 'model' => $part_types->tv_model ]) }}">{{ $part_types->company }} {{ $part_types->tv_model }}</a> с разбитой матрицей {{ $part_types->matrix->matrix_model }}.</p>
             <p class="cc">Доставка в любой регион почтой России или транспортной компанией.</p>
 
             @if($part_types->part_status == 0)

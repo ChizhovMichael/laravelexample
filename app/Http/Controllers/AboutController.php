@@ -19,6 +19,7 @@ class AboutController extends Controller
             'contacts'          => collect($this->contacts()),
             'cart'              =>  $this->getCartCount(),
             'user'              =>  Auth::user(),
+            'statictext'        =>  collect($this->statictext())
         ]);
     }
 }

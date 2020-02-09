@@ -15,23 +15,105 @@
 
     @if (Request::route()->named('admin.statictext'))
 
-        <div>
+        <div class="col-12 sd-12">
             <h5>О нас</h5>
-            <p>About</p>
+            
+            <form action="{{ route('admin.statictext', [ 'name' => 'about' ]) }}" class="mt-em-3 sd-12 col-12" method="POST">
+                @csrf
+
+                <div class="col-7 sd-12 b5 bc">
+                    <div class="form-label-group sd-12">
+                        <textarea
+                            name="value"
+                            id="value"
+                            class="form-control area @error('value') is-invalid @enderror"
+                            placeholder="Введите текст"
+                            required
+                        >{{ $statictext->value }}</textarea>
+                        <label for="value">Введите текст</label>
+
+                        @if ($errors->has('value'))
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $errors->first('value') }}</strong>
+                        </span>
+                        @endif
+                    </div>
+                </div>
+                <div class="flex-center-between mt-em-1">
+                    <div class="col-3 sd-12">
+                        <button type="submit" class="button__trigger">Обновить</button>
+                    </div>
+                </div>
+
+            </form>
         </div>  
 
     @elseif (Request::route()->named('admin.statictext.delivery'))
 
-        <div>
+        <div class="col-12 sd-12">
             <h5>Доставка</h5>
-            <p>Delivery</p>
+            <form action="{{ route('admin.statictext', [ 'name' => 'delivery' ]) }}" class="mt-em-3 sd-12 col-12" method="POST">
+                @csrf
+
+                <div class="col-7 sd-12 b5 bc">
+                    <div class="form-label-group sd-12">
+                        <textarea
+                            name="value"
+                            id="value"
+                            class="form-control area @error('value') is-invalid @enderror"
+                            placeholder="Введите текст"
+                            required
+                        >{{ $statictext->value }}</textarea>
+                        <label for="value">Введите текст</label>
+
+                        @if ($errors->has('value'))
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $errors->first('value') }}</strong>
+                        </span>
+                        @endif
+                    </div>
+                </div>
+                <div class="flex-center-between mt-em-1">
+                    <div class="col-3 sd-12">
+                        <button type="submit" class="button__trigger">Обновить</button>
+                    </div>
+                </div>
+
+            </form>
         </div>
         
     @elseif (Request::route()->named('admin.statictext.contacts'))
 
-        <div>
+        <div class="col-12 sd-12">
             <h5>Контакты</h5>
-            <p>Contacts</p>
+            <form action="{{ route('admin.statictext', [ 'name' => 'contacts' ]) }}" class="mt-em-3 sd-12 col-12" method="POST">
+                @csrf
+
+                <div class="col-7 sd-12 b5 bc">
+                    <div class="form-label-group sd-12">
+                        <textarea
+                            name="value"
+                            id="value"
+                            class="form-control area @error('value') is-invalid @enderror"
+                            placeholder="Введите текст"
+                            required
+                        >{{ $statictext->value }}</textarea>
+                        <label for="value">Введите текст</label>
+
+                        @if ($errors->has('value'))
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $errors->first('value') }}</strong>
+                        </span>
+                        @endif
+                    </div>
+                </div>
+                <div class="flex-center-between mt-em-1">
+                    <div class="col-3 sd-12">
+                        <button type="submit" class="button__trigger">Обновить</button>
+                    </div>
+                </div>
+
+            </form>
         </div>
     @endif
 </div>

@@ -4,9 +4,11 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        <title>Телезапчасти</title>
-        <meta name="description" content="Телезапчасти" />
-        <meta name="keywords" content="Телезапчасти" />
+        <title>Интернет-магазин Телезапчасти.рф - Запчасти для телевизоров. Доставка</title>
+        <meta name="description" content="Телезапчасти.рф - продажа запчастей для телевизоров, запчасти для телевизоров. Доставка в регионы и по всей России. Телезапчасти, запчасти для телевизоров спб, телезапчасти.рф отзывы" />
+        <meta name="keywords" content="телезапчасти рф, телезапчасти.рф отзывы, запчасти для телевизоров купить, купить запчасти для телевизоров, телезапчасти купить, телезапчасти интернет магазин, запчасти для телевизора lg, запчасти для телевизора самсунг, запчасти для телевизора samsung, запчасти для телевизора лджи" />
+
+        <meta name="robots" content="index, follow">
 
         <!-- Headbase -->
 
@@ -19,6 +21,9 @@
             <h1 class="mb-0 cm">Условия доставки</h1>
             <h3 class="mt-0">telezapchasti.ru</h3>
 
+            <div>
+                {!! $statictext->get('delivery')->value !!}
+            </div>
 
 
         </div>

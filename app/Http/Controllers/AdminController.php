@@ -22,6 +22,7 @@ use App\Mail\CheckedEmail;
 use App\Mail\DeleteOrderEmail;
 use App\Skypka;
 use App\Company;
+use App\StaticText;
 
 /***************
  * Административный раздел
@@ -1071,9 +1072,29 @@ class AdminController extends Controller
      */
     public function statictextEdit()
     {
+        $statictext = StaticText::where('name', 'about')->first();
+
         return view('admin', [
-            'page'      => 'statictext'
+            'page'          => 'statictext',
+            'statictext'    => $statictext
         ]);
+    }
+
+    /**
+     * statictextEditUpdate
+     * Редактирование статический текст
+     */
+    public function statictextEditUpdate(Request $request)
+    {
+
+        $name = $request->name;
+        $value = $request->value;
+
+        $statictext = StaticText::where('name', $name)->first();
+        $statictext->value = $value;
+        $statictext->save();
+
+        return redirect()->back();
     }
 
     /**
@@ -1082,10 +1103,14 @@ class AdminController extends Controller
      */
     public function statictextEditDelivery()
     {
+        $statictext = StaticText::where('name', 'delivery')->first();
+
         return view('admin', [
-            'page'      => 'statictext'
+            'page'          => 'statictext',
+            'statictext'    => $statictext
         ]);
     }
+
 
     /**
      * statictextEditContacts
@@ -1093,8 +1118,11 @@ class AdminController extends Controller
      */
     public function statictextEditContacts()
     {
+        $statictext = StaticText::where('name', 'contacts')->first();
+
         return view('admin', [
-            'page'      => 'statictext'
+            'page'          => 'statictext',
+            'statictext'    => $statictext
         ]);
     }
 

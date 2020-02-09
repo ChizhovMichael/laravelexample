@@ -8,6 +8,7 @@ use App\Product;
 use App\Contact;
 use Cart;
 use Illuminate\Support\Facades\Auth;
+use App\StaticText;
 
 /***************
  * Навигационный раздел
@@ -115,5 +116,23 @@ trait NavigationController
 
             return $adminDetect;
         }
+    }
+
+    /**
+     * Static Text
+     * Выводим статическую информацию
+     */
+    public function statictext()
+    {
+        $statictext = StaticText::get();
+        $about = $statictext->where('name', 'about')->first();
+        $delivery = $statictext->where('name', 'delivery')->first();
+        $contacts = $statictext->where('name', 'contacts')->first();
+
+        return [
+            'about'     => $about,
+            'delivery'  => $delivery,
+            'contacts'  => $contacts
+        ];
     }
 }

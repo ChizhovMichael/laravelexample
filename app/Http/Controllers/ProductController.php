@@ -67,6 +67,7 @@ class ProductController extends Controller
             'cart'              =>  $this->getCartCount(),
             'user'              =>  Auth::user(),
             'adminDetect'       =>  $this->adminDetect(),
+            'statictext'        =>  collect($this->statictext())
         ]);
     }
 

@@ -38,6 +38,7 @@ class ContactController extends Controller
             'contacts'          => collect($this->contacts()),
             'cart'              =>  $this->getCartCount(),
             'user'              =>  Auth::user(),
+            'statictext'        =>  collect($this->statictext())
         ]);
     }
 
@@ -52,6 +53,7 @@ class ContactController extends Controller
             'contacts'          => collect($this->contacts()),
             'cart'              =>  $this->getCartCount(),
             'user'              =>  Auth::user(),
+            'statictext'        =>  collect($this->statictext())
         ]);
     }
 

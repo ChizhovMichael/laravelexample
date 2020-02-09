@@ -4,9 +4,11 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        <title>Телезапчасти</title>
-        <meta name="description" content="Телезапчасти" />
-        <meta name="keywords" content="Телезапчасти" />
+        <title>Интернет-магазин Телезапчасти.рф - Запчасти для телевизоров. Контакты</title>
+        <meta name="description" content="Телезапчасти.рф - продажа запчастей для телевизоров, запчасти для телевизоров. Тел.: +7 (921) 418-39-59. Почта: telezapchasti@yandex.ru. Телезапчасти, запчасти для телевизоров спб, телезапчасти.рф отзывы" />
+        <meta name="keywords" content="телезапчасти рф, телезапчасти.рф отзывы, запчасти для телевизоров купить, купить запчасти для телевизоров, телезапчасти купить, телезапчасти интернет магазин, запчасти для телевизора lg, запчасти для телевизора самсунг, запчасти для телевизора samsung, запчасти для телевизора лджи" />
+
+        <meta name="robots" content="index, follow">
 
         <!-- Headbase -->
 
@@ -16,9 +18,9 @@
     <body>
         @include('includes.nav') @if ($agent->isDesktop()) @include('includes.features') @endif
         <div class="sd-12 col-12 pr-10 pl-10 pt-5 pb-em-6">
-            <h1 class="mb-0 cm">Контакты</h1>
-            <h3 class="mt-0">Напишите нам</h3>
-            <p class="cc">Напишите нам если у вас возникли вопросы или предложения</p>
+            <div>
+                {!! $statictext->get('contacts')->value !!}
+            </div>
             <form action="{{ route('contacts.mail') }}" class="mt-em-3 sd-12 col-12" method="POST">
                 @csrf
 

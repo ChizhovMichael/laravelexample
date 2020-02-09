@@ -107,6 +107,7 @@ Route::get('admin/list/monitor', 'AdminController@listEditMonitor')->name('admin
 Route::get('admin/statictext', 'AdminController@statictextEdit')->name('admin.statictext');
 Route::get('admin/statictext/delivery', 'AdminController@statictextEditDelivery')->name('admin.statictext.delivery');
 Route::get('admin/statictext/contacts', 'AdminController@statictextEditContacts')->name('admin.statictext.contacts');
+Route::post('admin/statictext', 'AdminController@statictextEditUpdate')->name('admin.statictext');
 
 
 Auth::routes();

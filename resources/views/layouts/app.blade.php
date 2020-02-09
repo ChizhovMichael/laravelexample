@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        <title>Телезапчасти</title>
+        <title>Телезапчасти | Кабинет клиента</title>
         <meta name="description" content="Телезапчасти" />
         <meta name="keywords" content="Телезапчасти" />
 
