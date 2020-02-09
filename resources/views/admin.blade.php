@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Телезапчасти</title>
+    <title>Телезапчасти | Панель администратора</title>
     <meta name="description" content="Телезапчасти" />
     <meta name="keywords" content="Телезапчасти" />
 
@@ -31,6 +31,9 @@
             <a href="{{ route('admin.repair') }}" class="button__trigger @if(Request::is('admin/repair') || Request::is('admin/repair/*')) active @endif">Реанимация</a>
 
             <a href="{{ route('admin.buyup') }}" class="button__trigger @if(Request::is('admin/buyup') || Request::is('admin/buyup/*')) active @endif">Скупка</a>
+
+
+            <a href="{{ route('admin.statictext') }}" class="button__trigger @if(Request::is('admin/statictext') || Request::is('admin/statictext/*')) active @endif">Статический текст</a>
             <a href="{{ route('main') }}" class="button__trigger">На главную</a>
             <a class="button__trigger"  href="{{ route('logout') }}" onclick="event.preventDefault();
 					document.getElementById('logout-form').submit();">Выход</a>

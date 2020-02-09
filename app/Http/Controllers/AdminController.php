@@ -1040,4 +1040,62 @@ class AdminController extends Controller
         ]);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Не закончено выше
+     */
+
+    
+    // Static text
+    /**
+     * statictextEdit
+     * Редактирование статический текст
+     */
+    public function statictextEdit()
+    {
+        return view('admin', [
+            'page'      => 'statictext'
+        ]);
+    }
+
+    /**
+     * statictextEditDelivery
+     * Редактирование статический текст
+     */
+    public function statictextEditDelivery()
+    {
+        return view('admin', [
+            'page'      => 'statictext'
+        ]);
+    }
+
+    /**
+     * statictextEditContacts
+     * Редактирование статический текст
+     */
+    public function statictextEditContacts()
+    {
+        return view('admin', [
+            'page'      => 'statictext'
+        ]);
+    }
+
 }

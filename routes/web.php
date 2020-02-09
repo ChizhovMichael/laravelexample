@@ -103,6 +103,12 @@ Route::get('admin/list/avitotvmodels', 'AdminController@listEditAvitoModels')->n
 Route::post('admin/list/avitotvmodels', 'AdminController@listEditAvitoModels')->name('admin.list.avitotvmodels.post');
 Route::get('admin/list/monitor', 'AdminController@listEditMonitor')->name('admin.list.monitor');
 
+// Static Text
+Route::get('admin/statictext', 'AdminController@statictextEdit')->name('admin.statictext');
+Route::get('admin/statictext/delivery', 'AdminController@statictextEditDelivery')->name('admin.statictext.delivery');
+Route::get('admin/statictext/contacts', 'AdminController@statictextEditContacts')->name('admin.statictext.contacts');
+
+
 Auth::routes();
 
 
