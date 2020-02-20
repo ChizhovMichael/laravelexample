@@ -58,6 +58,8 @@ document.addEventListener("DOMContentLoaded", function () {
     paymethodCollection('paymethod', 'form-check-input-change');
 
     pushform();
+
+    deviceControl('trigger__item');
 });
 
 
@@ -808,3 +810,33 @@ function pushform() {
         }
     }, true);
 }
+
+function deviceControl(el)
+{
+    document.addEventListener('click', function(event) {
+
+        var target = event.target;
+
+ 		while (target != this) {
+ 			if (target.classList.contains(el)) break;
+ 			target = target.parentNode;
+ 		}
+ 		if (target == this) return;
+
+ 		event.preventDefault();
+
+        var option = target.getAttribute('data-device');
+        var box = document.getElementById(option);
+        var deviceContainer = document.querySelectorAll('.device-control-container');
+        
+        for (let i = 0; i < deviceContainer.length; i++) {
+            const element = deviceContainer[i];
+            element.classList.remove('active')            
+        }
+
+        box.classList.add('active');
+
+ 		
+    })
+}
+

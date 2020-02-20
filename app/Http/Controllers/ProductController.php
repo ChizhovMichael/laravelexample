@@ -67,7 +67,9 @@ class ProductController extends Controller
             'cart'              =>  $this->getCartCount(),
             'user'              =>  Auth::user(),
             'adminDetect'       =>  $this->adminDetect(),
-            'statictext'        =>  collect($this->statictext())
+            'statictext'        =>  collect($this->statictext()),
+            'sliderimgheader'   =>  $this->sliderimgheader(),
+            'sliderimgfooter'   =>  $this->sliderimgfooter(),
         ]);
     }
 
@@ -388,6 +390,7 @@ class ProductController extends Controller
             'qty'               => 1,
             'user'              => Auth::user(),
             'adminDetect'       => $this->adminDetect(),
+            'sliderimgfooter'   => $this->sliderimgfooter()
         ]);
     }
 
@@ -655,6 +658,7 @@ class ProductController extends Controller
             'qty'           => 1,
             'user'          => Auth::user(),
             'adminDetect'   => $this->adminDetect(),
+            'sliderimgfooter'   =>  $this->sliderimgfooter(),
         ]);
 
     }

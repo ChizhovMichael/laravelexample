@@ -7106,6 +7106,7 @@ document.addEventListener("DOMContentLoaded", function () {
   quantityOfGoods('product_quantity');
   paymethodCollection('paymethod', 'form-check-input-change');
   pushform();
+  deviceControl('trigger__item');
 });
 
 function toggleMenu(el) {
@@ -7768,6 +7769,30 @@ function pushform() {
       target = target.parentNode;
     }
   }, true);
+}
+
+function deviceControl(el) {
+  document.addEventListener('click', function (event) {
+    var target = event.target;
+
+    while (target != this) {
+      if (target.classList.contains(el)) break;
+      target = target.parentNode;
+    }
+
+    if (target == this) return;
+    event.preventDefault();
+    var option = target.getAttribute('data-device');
+    var box = document.getElementById(option);
+    var deviceContainer = document.querySelectorAll('.device-control-container');
+
+    for (var i = 0; i < deviceContainer.length; i++) {
+      var element = deviceContainer[i];
+      element.classList.remove('active');
+    }
+
+    box.classList.add('active');
+  });
 }
 
 /***/ }),

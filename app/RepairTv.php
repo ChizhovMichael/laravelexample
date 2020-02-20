@@ -4,6 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/*************
+ * | Модель таблицы repair_tvs
+ * | Реанимация в админ панеле
+ *************/
+
 class RepairTv extends Model
 {
     //

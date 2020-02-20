@@ -4,6 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+
+/*************
+ * | Модель таблицы skypkas
+ * | Форма обратной связи для клиентов, которые готовы продать свои телевизоры на разбор skypka.blade.php
+ *************/
+
 class Skypka extends Model
 {
     //

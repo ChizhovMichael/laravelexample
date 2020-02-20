@@ -109,6 +109,16 @@ Route::get('admin/statictext/delivery', 'AdminController@statictextEditDelivery'
 Route::get('admin/statictext/contacts', 'AdminController@statictextEditContacts')->name('admin.statictext.contacts');
 Route::post('admin/statictext', 'AdminController@statictextEditUpdate')->name('admin.statictext');
 
+// Slider
+Route::get('admin/slider', 'AdminController@sliderEdit')->name('admin.slider');
+Route::post('admin/slider/upload', 'AdminController@sliderEditUpload')->name('admin.slider.upload');
+Route::get('admin/slider/delete', 'AdminController@sliderEditDelete')->name('admin.slider.delete');
+
+// Tv
+Route::get('admin/company', 'AdminController@companyEdit')->name('admin.company');
+Route::get('admin/company/{id}', 'AdminController@companyEditTvs')->name('admin.company.tvs');
+Route::post('admin/company/new/tv', 'AdminController@companyEditTvsAdd')->name('admin.company.tvs.add');
+
 
 Auth::routes();
 

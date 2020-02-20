@@ -24,8 +24,10 @@
 <body>
     @include('includes.nav')
 
-    @component('components.sliderheader')
-    @endcomponent
+    @if($sliderimgheader->isNotEmpty())
+        @component('components.sliderheader', ['sliderimg' => $sliderimgheader])
+        @endcomponent
+    @endif
     
     @include('includes.features')
     <div class="tab-card pt-em-6 pb-em-6 pl-5 pr-5">
@@ -69,31 +71,38 @@
         </div>
     </div>
 
-    <div class="back-back-add pt-em-5 pb-em-5 pr-5 pl-5">
-        <div class="pt-em-2 pb-em-2 bb-light mb-em-3">
-            <h4 class="m-0">Горячее предложение</h4>
+    @if ($products_discount->isNotEmpty())      
+        <div class="back-back-add pt-em-5 pb-em-5 pr-5 pl-5">
+            <div class="pt-em-2 pb-em-2 bb-light mb-em-3">
+                <h4 class="m-0">Горячее предложение</h4>
+            </div>
+            <div class="flex-between">
+                @foreach($products_discount as $part)
+                    @component('components.productsadditional', ['part' => $part, 'adminDetect' => $adminDetect])
+                    @endcomponent
+                @endforeach
+            </div>
         </div>
-        <div class="flex-between">
-            @foreach($products_discount as $part)
-                @component('components.productsadditional', ['part' => $part, 'adminDetect' => $adminDetect])
-                @endcomponent
-            @endforeach
-        </div>
-    </div>
-    <div class="back-body new pt-em-5 pb-em-5 pr-5 pl-5">
-        <div class="pt-em-2 pb-em-2 bb-light mb-em-3">
-            <h4 class="m-0">Новые поступления</h4>
-        </div>
-        <div class="flex-between">
-            @foreach($products_new as $part)
-                @component('components.productsadditional', ['part' => $part, 'adminDetect' => $adminDetect])
-                @endcomponent
-            @endforeach
-        </div>
-    </div>
+    @endif
 
-    @component('components.sliderfooter')
-    @endcomponent
+    @if ($products_new->isNotEmpty())     
+        <div class="back-body new pt-em-5 pb-em-5 pr-5 pl-5">
+            <div class="pt-em-2 pb-em-2 bb-light mb-em-3">
+                <h4 class="m-0">Новые поступления</h4>
+            </div>
+            <div class="flex-between">
+                @foreach($products_new as $part)
+                    @component('components.productsadditional', ['part' => $part, 'adminDetect' => $adminDetect])
+                    @endcomponent
+                @endforeach
+            </div>
+        </div>
+    @endif
+
+    @if($sliderimgfooter->isNotEmpty())
+        @component('components.sliderheader', ['sliderimg' => $sliderimgfooter])
+        @endcomponent
+    @endif
 
     <div class="pt-em-5 pb-em-5 pr-5 pl-5">
         <div class="p-em-2 back-body shadow col-7 sd-12 b8">

@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Navigation extends Model
 {
-    //
+    //Столбцы
     protected $fillable = [
         'name',
         'slug',

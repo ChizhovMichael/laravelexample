@@ -9,6 +9,7 @@ use App\Contact;
 use Cart;
 use Illuminate\Support\Facades\Auth;
 use App\StaticText;
+use App\SliderImg;
 
 /***************
  * Навигационный раздел
@@ -16,6 +17,9 @@ use App\StaticText;
  * 2. Вывод всех брендов в зависимости от количества товаров
  * 3. Получаем список контактов
  * 4. adminDetect (Определяем в системе администратора)
+ * 5. Static Text (Выводим статическую информацию)
+ * 6. Slider image header (Получаем изображения для верхнего слайдера)
+ * 7. Slider image footer (Получаем изображения для нижнего слайдера)
  ***********/
 
 trait NavigationController
@@ -134,5 +138,25 @@ trait NavigationController
             'delivery'  => $delivery,
             'contacts'  => $contacts
         ];
+    }
+
+    /**
+     * Slider image header
+     * Получаем изображения для верхнего слайдера
+     */
+    public function sliderimgheader()
+    {
+        $sliderimgheader = SliderImg::where('position', '=', 'header')->get();
+        return $sliderimgheader;
+    }
+
+    /**
+     * Slider image footer
+     * Получаем изображения для нижнего слайдера
+     */
+    public function sliderimgfooter()
+    {
+        $sliderimgfooter = SliderImg::where('position', '=', 'footer')->get();
+        return $sliderimgfooter;
     }
 }

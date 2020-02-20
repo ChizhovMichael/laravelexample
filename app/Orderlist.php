@@ -5,12 +5,12 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /*************
- * | Модель продукта/ таблицы products
+ * | Модель продукта/ таблицы orderlists
  * | fillable для проверки заполняемых полей. Не забывать редактировать если 
  * | название полей в таблице изменяется
  * | hasManyThrough (Конечная таблица, промежуточная таблица, внешн ключ промежуточной таблицы, внешн ключ в конечной таблице, ключ в данной таблице, ключ в промеж табл)
  * | 
- * | Регулировка подключения дополнительных таблиц к products
+ * | Регулировка подключения дополнительных таблиц к orderlists
  * | belongsTo('App\Company', 'company_id'), где 1 - Модель (присоединяемая таблица) id, 2 - столбец из Product
  * | hasMany('App\Company', 'company_id'), где 1 - Модель (присоединяемая таблица), 2 - столбец из этой модели с id Product
  * | 1. Order Parts (Присоединяем таблицу order_parts и получаем значения по ключу id-prder_id)
@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Orderlist extends Model
 {
-    //
+    //Столбцы
     protected $fillable = [
         'order_status',
         'order_return',

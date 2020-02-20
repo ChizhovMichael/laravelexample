@@ -124,8 +124,10 @@
     </div>
 
 
-    @component('components.sliderfooter')
-    @endcomponent
+    @if($sliderimgfooter->isNotEmpty())
+        @component('components.sliderheader', ['sliderimg' => $sliderimgfooter])
+        @endcomponent
+    @endif
 
     @include('includes.footer')
 </body>

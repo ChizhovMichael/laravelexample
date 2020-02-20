@@ -4,6 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/*************
+ * | Модель таблицы sales
+ * | Продажи
+ *************/
+
 class Sale extends Model
 {
     //

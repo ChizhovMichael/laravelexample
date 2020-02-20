@@ -3897,7 +3897,14 @@ input[type=range]::-webkit-slider-thumb:active {
 .slider-full .carousel .carousel-cell {
   width: 100%;
   height: 100%;
-  background: #2684fe;
+}
+
+.slide {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
 }
 
 /**********
@@ -4558,6 +4565,59 @@ input[type=range]::-webkit-slider-thumb:active {
   border-radius: 50%;
   z-index: 98;
   cursor: pointer;
+}
+
+.desktop-screen {
+  width: 64rem;
+  height: 36rem;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.mobile-screen {
+  width: 25rem;
+  height: 40rem;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+@media screen and (min-width: 400px) and (max-width: 800px) {
+  .desktop-screen {
+    width: 32rem;
+    height: 18rem;
+  }
+}
+
+@media screen and (max-width: 399px) {
+  .desktop-screen {
+    width: 25rem;
+    height: 14.0625rem;
+  }
+}
+
+.device-control-container {
+  display: none;
+}
+
+.device-control-container.active {
+  display: block;
+}
+
+.upload-img img {
+  width: 4rem;
+  height: auto;
+}
+
+.upload-img > input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.00001;
+  z-index: 3;
 }
 
 /* Fallback for Edge

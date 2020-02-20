@@ -23,6 +23,12 @@ use App\Mail\DeleteOrderEmail;
 use App\Skypka;
 use App\Company;
 use App\StaticText;
+use App\SliderImg;
+use Illuminate\Support\Facades\Storage;
+use App\Tv;
+use App\Razbor;
+use Illuminate\Support\Facades\DB;
+use App\Matrix;
 
 /***************
  * Административный раздел
@@ -60,6 +66,18 @@ use App\StaticText;
  * 34. listEditAvito (Вывод списка)
  * 35. listEditAvitoModels (Вывод списка)
  * 36. listEditMonitor(Вывод списка)
+ * 
+ * 
+ * statictextEdit(Редактирование статический текст получаем)
+ * statictextEditUpdate (Редактирование статический текст обновляем)
+ * statictextEditDelivery (Редактирование статический текст получаем)
+ * statictextEditContacts (Редактирование статический текст получаем)
+ * sliderEdit (Редактирование слайдера на главной странице)
+ * sliderEditUpload (Редактирование слайдера на главной странице)
+ * sliderEditDelete (Редактирование слайдера на главной странице)
+ * companyEdit (Редактирование раздела TV в админ панеле)
+ * companyEditTvs (Получаем список всех телевизоров)
+ * companyEditTvsAdd (Добавляем новый телевизов)
  ***********/
 
 class AdminController extends Controller
@@ -1124,6 +1142,144 @@ class AdminController extends Controller
             'page'          => 'statictext',
             'statictext'    => $statictext
         ]);
+    }
+
+    /**
+     * sliderEdit
+     * Редактирование слайдера на главной странице
+     */
+    public function sliderEdit()
+    {
+        
+        $sliderimg = SliderImg::get();
+
+        return view('admin', [
+            'page'          => 'slider',
+            'sliderimg'        => $sliderimg
+        ]);
+    }
+
+    /**
+     * sliderEditUpload
+     * Редактирование слайдера на главной странице
+     */
+    public function sliderEditUpload(Request $request)
+    {
+
+        // cache the file
+        $file = $request->file('slide');
+        $type = $request->type;
+        $position = $request->position;
+
+
+        // generate a new filename. getClientOriginalExtension() for the file extension
+        $filename = 'slider-slide-' . time() . '.' . $file->getClientOriginalExtension();
+
+        // save to storage/app/photos as the new $filename
+        $path = $file->storeAs('public/slides', $filename);
+
+        // dd($filename);
+
+        SliderImg::create([
+            'slide' => $filename,
+            'type'  => $type,
+            'position'  => $position
+        ]);
+        
+        return redirect()->back();
+    }
+
+    /**
+     * sliderEditDelete
+     * Редактирование слайдера на главной странице
+     */
+    public function sliderEditDelete(Request $request)
+    {
+        $slide_id = $request->id;
+        $slide = SliderImg::find($slide_id);
+        $slide_name = $slide->slide;
+
+        Storage::delete('public/slides/' . $slide_name);
+
+        $slide->delete();       
+        
+        return redirect()->back();
+
+    }
+
+
+    /**
+     * companyEdit
+     * Редактирование раздела TV в админ панеле
+     */
+    public function companyEdit()
+    {
+        $companies = Company::get();
+
+        return view('admin', [
+            'page'          => 'tv',
+            'companies'           => $companies
+        ]);
+    }
+
+    /**
+     * companyEditTvs
+     * Получаем список всех телевизоров
+     */
+    public function companyEditTvs($id)
+    {
+        $tvs = Tv::where('corp_id', $id)->with('get_matrix')->get();
+        $tvs = $tvs->sortby('tv_model');
+
+        $tv_condition[] = "Разбитая";
+		$tv_condition[] = "Залитая";
+        $tv_condition[] = "Неисправная";
+        
+        //Группы поставщиков
+		$group[1] = '1';
+		$group[2] = '2';
+		$group[3] = '3';
+		$group[4] = '4';
+		$group[5] = '5';
+
+        return view('admin', [
+            'id'            => $id,
+            'page'          => 'tv',
+            'tvs'           => $tvs,
+            'tv_condition'  => $tv_condition,
+            'group_id'      => $group
+        ]);
+
+    }
+
+    /**
+     * companyEditTvsAdd
+     * Добавляем новый телевизов
+     */
+    public function companyEditTvsAdd(Request $request)
+    {
+
+        $tv_datetime = $request->tv_datetime ? strtotime($request->tv_datetime) : '';
+
+        $tv = Tv::create([
+            'tv_model' => $request->tv_model,
+            'tv_condition'  => $request->tv_condition,
+            'group_id'  => $request->group_id,
+            'tv_comment'    => $request->tv_comment,
+            'corp_id'   => $request->corp_id,
+            'tv_datetime'   => $tv_datetime,
+            'tv_timestamp' => Carbon::now()->timestamp
+        ]);
+        // пока хз для чего
+        DB::insert("INSERT INTO razbors (datetime, user_id, tv_count) VALUES (" . strtotime($request->tv_datetime) . ", 1, 1) ON DUPLICATE KEY UPDATE tv_count=(tv_count+1)");
+
+        Matrix::create([
+            'matrix_model'  => $request->matrix_model,
+            'tv_id'         => $tv->id
+        ]);
+
+
+        return redirect()->back();
     }
 
 }

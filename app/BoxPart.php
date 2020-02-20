@@ -6,13 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 
 /*************
+ * Модель таблицы box_parts
  * 1. Get Product (Получаем название запчасти, которая находится в короке)
  * 2. Get Product Unsort (Получаем название запчасти, которая находится в короке 0 (несортированное))
- * Get Product 20 (Получаем содержиоме 20 коробки)
+ * 3. Get Product 20 (Получаем содержиоме 20 коробки)
  *************/
 class BoxPart extends Model
 {
-    //
+    //Столбцы
     protected $fillable = [
         'part_id',
         'box_box',
