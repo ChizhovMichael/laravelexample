@@ -14,7 +14,7 @@ class PartImg extends Model
     //Столбцы
     protected $fillable = [
         'part_img_name', 
-        'part_id',
+        'product_id',
         'part_img_main'
     ];
 }

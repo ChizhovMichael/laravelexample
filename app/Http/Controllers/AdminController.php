@@ -29,6 +29,9 @@ use App\Tv;
 use App\Razbor;
 use Illuminate\Support\Facades\DB;
 use App\Matrix;
+use App\PartImg;
+use App\TvImg;
+use App\UploudProductImage;
 
 /***************
  * Административный раздел
@@ -78,6 +81,11 @@ use App\Matrix;
  * companyEdit (Редактирование раздела TV в админ панеле)
  * companyEditTvs (Получаем список всех телевизоров)
  * companyEditTvsAdd (Добавляем новый телевизов)
+ * companyEditTvsSingle (Получаем детальную информацию по телевизору)
+ * companyEditTvsUpdate (Обновление информации по телевизору)
+ * companyEditProduct (Получаем информацию по отдельному продукту)
+ * companyEditProductAdd (Добавление нового продукта)
+ * companyEditImageUpload (Загружаем иизображение для телевизора)
  ***********/
 
 class AdminController extends Controller
@@ -1243,7 +1251,7 @@ class AdminController extends Controller
 		$group[5] = '5';
 
         return view('admin', [
-            'id'            => $id,
+            'companyId'     => $id,
             'page'          => 'tv',
             'tvs'           => $tvs,
             'tv_condition'  => $tv_condition,
@@ -1281,5 +1289,143 @@ class AdminController extends Controller
 
         return redirect()->back();
     }
+
+    /**
+     * companyEditTvsSingle
+     * Получаем детальную информацию по телевизору
+     */
+    public function companyEditTvsSingle($companyId, $tvId)
+    {
+        $tv = Tv::where('id', $tvId)->with('get_matrix')->first();
+        $products = Product::where('tv_id', $tvId)->with('part_type')->get();
+        $parttype = PartType::get();
+        $tv_images = TvImg::where('tv_id', $tvId)->orderBy('id', 'desc')->get();
+
+        $tv_condition[] = "Разбитая";
+		$tv_condition[] = "Залитая";
+        $tv_condition[] = "Неисправная";
+        
+        //Группы поставщиков
+		$group[1] = '1';
+		$group[2] = '2';
+		$group[3] = '3';
+		$group[4] = '4';
+        $group[5] = '5';
+        
+        // Состояние платы
+        $part_condition[] = 'Рабочий';
+        $part_condition[] = 'Без тестирования';
+        $part_condition[] = 'Неисправный';
+
+        return view('admin', [
+            'page'              => 'tv',
+            'companyId'         => $companyId,
+            'tv'                => $tv,
+            'tv_condition'      => $tv_condition,
+            'group_id'          => $group,
+            'products'          => $products,
+            'part_condition'    => $part_condition,
+            'parttype'          => $parttype,
+            'tv_images'         => $tv_images
+        ]);
+    }
+
+    /**
+     * companyEditTvsUpdate
+     * Обновление информации по телевизору
+     */
+    public function companyEditTvsUpdate(Request $request)
+    {          
+
+        $tv = Tv::find($request->tvId);
+
+        $matrix = Matrix::where('tv_id', $request->tvId)->update([
+            'matrix_model'    => $request->matrix_model
+        ]);
+        
+        $products = Product::where([
+            ['tv_id', '=', $tv->id],
+            ['matrix_id', '=', $matrix->id]
+        ])->update([
+            'group_id'  => $request->group_id
+        ]);
+
+        $tv->update([
+            'tv_model' => $request->tv_model,
+            'tv_condition'  => $request->tv_condition,
+            'group_id'  => $request->group_id,
+            'tv_comment'    => $request->tv_comment
+        ]);
+
+        return redirect()->back();
+
+    }
+
+
+    /**
+     * companyEditProduct
+     * Получаем информацию по отдельному продукту
+     */
+    public function companyEditProduct($companyId, $tvId, $productId)
+    {
+        return view('admin', [
+            'page'              => 'tv'
+        ]);
+    }
+
+    /**
+     * companyEditProductAdd
+     * Добавление нового продукта
+     */
+    public function companyEditProductAdd(Request $request)
+    {
+        $request->validate([
+            'part_link' => 'required|alpha_dash|unique:products',
+            'part_cost' => 'numeric',
+            'part_count' => 'numeric'  
+        ]);
+
+
+        $product = new Product();
+        $product->part_model = $request->part_model;
+        $product->part_cost = $request->part_cost;
+        $product->part_link = $request->part_link;
+        $product->part_count = $request->part_count;
+        $product->part_comment = $request->part_comment;
+        $product->part_comment_for_client = $request->part_comment_for_client;
+        $product->parttype_id = $request->parttype_id;
+        $product->matrix_id = $request->matrix_id;
+        $product->tv_id = $request->tv_id;
+        $product->company_id = $request->company_id;
+        $product->part_condition = $request->part_condition;
+        $product->group_id = $request->group_id;        
+        $product->save();
+
+        return redirect()->back();
+    }
+
+    /**
+     * companyEditImageUpload
+     * Загружаем иизображение для телевизора
+     */
+    public function companyEditImageUpload(Request $request)
+    {
+        $file = $request->file('slide');
+        $tvId = $request->tv_id;
+        $companyId = $request->company_id;
+
+        // generate a new filename. getClientOriginalExtension() for the file extension
+        $filename = 's' . time() . '.' . $file->getClientOriginalExtension();
+
+        $fileupload = new UploudProductImage($filename, 'lorem');
+
+        // save to img/products as the new $filename
+        // $path = $file->storeAs( $companyId . '/' . $tvId, $filename, 'products' );
+
+        // return redirect()->back();
+    }
+
+
+    
 
 }

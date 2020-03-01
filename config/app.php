@@ -187,6 +187,11 @@ return [
          */
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
 
+        /**
+         * Image Resize
+         */
+        Intervention\Image\ImageServiceProvider::class,
+
     ],
 
     /*
@@ -239,6 +244,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
+        'Image' => Intervention\Image\Facades\Image::class,
 
     ],
 

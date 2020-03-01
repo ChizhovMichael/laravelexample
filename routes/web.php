@@ -118,6 +118,11 @@ Route::get('admin/slider/delete', 'AdminController@sliderEditDelete')->name('adm
 Route::get('admin/company', 'AdminController@companyEdit')->name('admin.company');
 Route::get('admin/company/{id}', 'AdminController@companyEditTvs')->name('admin.company.tvs');
 Route::post('admin/company/new/tv', 'AdminController@companyEditTvsAdd')->name('admin.company.tvs.add');
+Route::get('admin/company/{companyId}/tv/{tvId}', 'AdminController@companyEditTvsSingle')->name('admin.company.tvs.single');
+Route::post('admin/company/update/tv', 'AdminController@companyEditTvsUpdate')->name('admin.company.tvs.update');
+Route::get('admin/company/{companyId}/tv/{tvId}/product/{productId}', 'AdminController@companyEditProduct')->name('admin.company.product');
+Route::post('admin/company/new/product', 'AdminController@companyEditProductAdd')->name('admin.company.product.add');
+Route::post('admin/company/tv/image/upload', 'AdminController@companyEditImageUpload')->name('admin.company.image.add');
 
 
 Auth::routes();
