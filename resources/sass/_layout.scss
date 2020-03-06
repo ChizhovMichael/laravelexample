@@ -1089,6 +1089,33 @@ input[type=range]::-webkit-slider-thumb:active {
 	background-repeat: no-repeat;
 }
 
+.main-checked {
+	position: absolute;
+	top: 5%;
+	left: 5%;
+	width: 20px;
+	height: 20px;
+	z-index: 3;
+	display: block;
+	border: 1px solid $color-body;
+	background: rgba(0,0,0,0.5);
+	border-radius: 50%;
+	&.select {
+		background: #09ad7e;
+		border: none;
+		box-shadow: 0 1px 5px rgba(0,0,0,.1);
+		&::after {
+			content: "\2713 ";
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			font-size: 1em;
+			color: $color-body;
+			transform: translate(-50%, -50%);
+		}
+	}
+}
+
 @media screen and (min-width: 400px) and (max-width: 800px) {
 	.desktop-screen {
 		width: 32rem;

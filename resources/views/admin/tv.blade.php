@@ -121,7 +121,7 @@
 
         <div class="flex-start mb-em-2">
             <div class="mr-1">
-                <form action="{{ route('admin.company.image.add', [ 'company_id' => $companyId, 'tv_id' => $tv->id ]) }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('admin.company.image.add', [ 'company_id' => $companyId, 'tv_id' => $tv->id, 'cls' => 'TvImg' ]) }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="flex-start">
                         <div class="rel upload-img sd-12 col-12">
@@ -133,9 +133,9 @@
             </div>
             @foreach ($tv_images as $image)
 
-                <div class="mr-1 b4 shadow-xs rel">
-                    <img src="/img/products/{{ $companyId }}/{{ $tv->id }}/s{{ $image->tv_img_name }}" />
-                    <a href="#" class="edit shadow-xs abs">
+                <div class="mr-1 b4 shadow-xs rel col-2">
+                    <img src="/img/products/{{ $companyId }}/{{ $tv->id }}/m{{ $image->tv_img_name }}" class="b4 col-12 sd-12"/>
+                    <a href="{{ route('admin.company.image.delete', [ 'imgId' => $image->id, 'companyId' => $companyId, 'tvId' => $tv->id, 'cls' => 'TvImg' ]) }}" class="edit shadow-xs abs">
                         <img src="{{ asset('img/icon/delete.png') }}" alt="" class="col-12 sd-12">
                     </a>
                 </div>
@@ -302,7 +302,133 @@
 
         @elseif(Request::route()->named('admin.company.product'))
 
-            <p>Редактируем продукт</p>
+            <a href="{{ route('admin.company.tvs.single', [ 'tvId' => $tvId, 'companyId' => $companyId ]) }}" class="button__trigger col-3 sd-12">Назад</a>
+            <p>Плата - Редактирование</p>
+
+            <!-- Згрузчик изображений -->
+
+            <div class="flex-start mb-em-2">
+                <div class="mr-1">
+                    <form action="{{ route('admin.company.image.add', [ 'company_id' => $companyId, 'tv_id' => $tv->id, 'cls' => 'PartImg', 'productId' => $product->id ]) }}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <div class="flex-start">
+                            <div class="rel upload-img sd-12 col-12">
+                                <img src="{{ asset('img/icon/upload.svg') }}" alt="">
+                                <input type="file" name="slide" required onchange="form.submit()" class="c-p">
+                            </div>
+                        </div> 
+                    </form>
+                </div>
+                @foreach ($part_imgs as $image)
+
+                    <div class="mr-1 b4 shadow-xs rel col-2">
+                        <img src="/img/products/{{ $companyId }}/{{ $tv->id }}/m{{ $image->part_img_name }}" class="b4 col-12 sd-12 h100 @if($image->part_img_main == 1) b-main @endif"/>
+                        <a href="{{ route('admin.company.image.delete', [ 'imgId' => $image->id, 'companyId' => $companyId, 'tvId' => $tv->id, 'cls' => 'PartImg' ]) }}" class="edit shadow-xs abs">
+                            <img src="{{ asset('img/icon/delete.png') }}" alt="" class="col-12 sd-12">
+                        </a>
+
+                        <!-- Main picture -->
+
+                        <a href="{{ route('admin.company.image.main.update', [ 'imgId' => $image->id, 'productId' => $product->id ]) }}" title="Сделать основной" class="main-checked @if($image->part_img_main == 1) select @endif"></a>
+
+                        <!-- / Main picture -->
+                    </div>
+                
+                @endforeach
+            </div>
+
+            
+
+            <!-- / Згрузчик изображений -->
+
+            <div class="flex-between">
+                <div class="sd-12 col-6">
+                    <h5>Редактирование {{ $product->part_model }}</h5>
+
+                    <form action="{{ route('admin.company.product.update', [ 'productId' => $product->id ]) }}" method="post">
+                        @csrf
+    
+                        <select name="part_condition" class="sd-12 col-12 cc pr-em-2 pl-em-2 flex-center-center back-body b4" required>
+                            @for ($i = 0; $i < count($part_condition); $i++)
+                                <option value="{{ $i }}" @if($product->part_condition == $i) selected @endif>{{ $part_condition[$i] }}</option>
+                            @endfor
+                        </select>
+        
+                        <div class="b5 bc sd-12 col-12 mt-1">
+                            <div class="form-label-group sd-12">
+                                <input type="text" id="part_model" name="part_model" class="form-control @error('part_model') is-invalid @enderror" placeholder="Модель" value="{{ $product->part_model }}" required/>
+                                <label for="part_model">Модель</label>
+                            </div>
+                        </div>
+    
+                        <div class="b5 bc sd-12 col-12 mt-1">
+                            <div class="form-label-group sd-12">
+                                <input type="text" id="part_link" name="part_link" class="form-control @error('part_link') is-invalid @enderror" placeholder="Ссылка" value="{{ $product->part_link }}" required/>
+                                <label for="part_link">Ссылка</label>
+                            </div>
+                        </div>
+    
+                        @if ($errors->has('part_link'))
+                            <span class="invalid-feedback mt-em-1 mb-em-1 block" role="alert">
+                                <strong>{{ $errors->first('part_link') }}</strong>
+                            </span>
+                        @endif
+    
+                        <select name="parttype_id" class="sd-12 col-12 cc pr-em-2 pl-em-2 flex-center-center back-body b4 mt-1" required>
+                            @foreach ($parttype as $item)
+                                <option value="{{ $item->id }}" @if($item->id == $product->parttype_id) selected @endif>{{ $item->parttype_type }}</option>
+                            @endforeach
+                        </select>
+    
+                        <div class="b5 bc sd-12 col-12 mt-1">
+                            <div class="form-label-group sd-12">
+                                <input type="number" id="part_cost" name="part_cost" class="form-control @error('part_cost') is-invalid @enderror" placeholder="Цена" value="{{ $product->part_cost }}" required/>
+                                <label for="part_cost">Цена</label>
+                            </div>
+                        </div>
+    
+                        <div class="b5 bc sd-12 col-12 mt-1">
+                            <div class="form-label-group sd-12">
+                            <input type="number" id="part_count" name="part_count" class="form-control @error('part_count') is-invalid @enderror" placeholder="Количество" value="{{ $product->part_count }}" required/>
+                                <label for="part_count">Количество</label>
+                            </div>
+                        </div>
+    
+                        <div class="col-12 sd-12 b5 bc mt-1">
+                            <div class="form-label-group sd-12">
+                                <textarea name="part_comment" id="part_comment" class="form-control" placeholder="Коммент">{{ $product->part_comment }}</textarea>
+                                <label for="part_comment">Коммент</label>
+                            </div>
+                        </div>
+    
+                        <div class="col-12 sd-12 b5 bc mt-1">
+                            <div class="form-label-group sd-12">
+                                <textarea name="part_comment_for_client" id="part_comment_for_client" class="form-control" placeholder="Коммент для клиентов">{{ $product->part_comment_for_client }}</textarea>
+                                <label for="part_comment_for_client">Коммент для клиентов</label>
+                            </div>
+                        </div>   
+                        
+    
+                        <div class="flex-center-between">
+                            <div class="col-6 sd-12">
+                                <button type="submit" class="button__trigger mt-em-1">Сохранить</button>
+                            </div>
+                        </div>
+    
+    
+                    </form>
+
+
+                </div>
+                <div class="sd-12 col-5">
+                    <h5>Платы</h5>
+                    @foreach ($products as $item)
+                        <a href="{{ route('admin.company.product', [ 'companyId' => $item->company_id, 'tvId' => $item->tv_id, 'productId' => $item->id ]) }}" class="block standart-a @if($item->id == $productId) cm @else ct hover-main @endif">{{ $item->part_type->parttype_type }} {{ $item->part_model }}</a>
+                    @endforeach
+                </div>
+
+
+
 
         @endif
         

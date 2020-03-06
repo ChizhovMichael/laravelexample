@@ -64,7 +64,7 @@ return [
             'url' => env('AWS_URL'),
         ],
 
-        'upload' => [
+        'products' => [
             'driver' => 'local',
             'root' => public_path() . '/img/products',
             'visibility' => 'public',

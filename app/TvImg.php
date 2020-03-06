@@ -17,4 +17,9 @@ class TvImg extends Model
         'tv_img_name',
         'tv_id'
     ];
+
+    /**
+     * Отключаем добавление даты в таблицу
+     */
+    public $timestamps = false;
 }

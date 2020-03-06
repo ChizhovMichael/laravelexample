@@ -31,7 +31,6 @@ use Illuminate\Support\Facades\DB;
 use App\Matrix;
 use App\PartImg;
 use App\TvImg;
-use App\UploudProductImage;
 
 /***************
  * Административный раздел
@@ -86,6 +85,9 @@ use App\UploudProductImage;
  * companyEditProduct (Получаем информацию по отдельному продукту)
  * companyEditProductAdd (Добавление нового продукта)
  * companyEditImageUpload (Загружаем иизображение для телевизора)
+ * companyEditImageDelete (Удаляем иизображение для телевизора)
+ * companyEditProductUpdate (Обновляем информацию о продукте)
+ * companyEditImageMainUpdate (Обновляем главное изображение продукта)
  ***********/
 
 class AdminController extends Controller
@@ -1368,8 +1370,28 @@ class AdminController extends Controller
      */
     public function companyEditProduct($companyId, $tvId, $productId)
     {
+        $product = Product::find($productId);
+        $products = Product::where('tv_id', $tvId)->with('part_type')->get();
+        $part_imgs = PartImg::where('product_id', $productId)->orderBy('id', 'desc')->get();
+        $tv = Tv::where('id', $tvId)->with('get_matrix')->first();
+        $parttype = PartType::get();
+
+        // Состояние платы
+        $part_condition[] = 'Рабочий';
+        $part_condition[] = 'Без тестирования';
+        $part_condition[] = 'Неисправный';
+
         return view('admin', [
-            'page'              => 'tv'
+            'page'              => 'tv',
+            'tvId'              => $tvId,
+            'companyId'         => $companyId,
+            'productId'         => $productId,
+            'product'           => $product,
+            'products'          => $products,
+            'part_imgs'         => $part_imgs,
+            'tv'                => $tv,
+            'part_condition'    => $part_condition,
+            'parttype'          => $parttype,
         ]);
     }
 
@@ -1410,20 +1432,105 @@ class AdminController extends Controller
      */
     public function companyEditImageUpload(Request $request)
     {
+        $request->validate([
+            'slide' => 'mimes:jpeg,jpg,png,gif'
+        ]);
         $file = $request->file('slide');
         $tvId = $request->tv_id;
         $companyId = $request->company_id;
+        $cls = $request->cls;
+        $productId = $request->productId;
 
-        // generate a new filename. getClientOriginalExtension() for the file extension
-        $filename = 's' . time() . '.' . $file->getClientOriginalExtension();
+        $fileupload = new UploadImage($file, $companyId, $tvId, $cls, $productId);
 
-        $fileupload = new UploudProductImage($filename, 'lorem');
+        $fileupload->upload();
 
-        // save to img/products as the new $filename
-        // $path = $file->storeAs( $companyId . '/' . $tvId, $filename, 'products' );
-
-        // return redirect()->back();
+        return redirect()->back();
     }
+
+    /**
+     * companyEditImageDelete
+     * Удаляем иизображение для телевизора
+     */
+    public function companyEditImageDelete(Request $request)
+    {
+        $imgId = $request->imgId;
+        $companyId = $request->companyId;
+        $tvId = $request->tvId;
+
+        if ($request->cls == 'TvImg')
+        {
+            $cls_img = TvImg::find($imgId);
+            $image_name = $cls_img->tv_img_name;
+        }
+
+        if ($request->cls == 'PartImg')
+        {
+            $cls_img = PartImg::find($imgId);
+            $image_name = $cls_img->part_img_name;
+        }
+
+        
+
+        Storage::disk('products')->delete( $companyId . '/' . $tvId . '/' . $image_name);
+        Storage::disk('products')->delete( $companyId . '/' . $tvId . '/m' . $image_name);
+
+        $cls_img->delete();       
+        
+        return redirect()->back();
+    }
+
+    
+    /**
+     * companyEditProductUpdate
+     * Обновляем информацию о продукте
+     */
+    public function companyEditProductUpdate(Request $request)
+    {
+
+        $request->validate([
+            'part_link' => 'required|alpha_dash|unique:products,part_link,' . $request->productId,
+            'part_cost' => 'numeric',
+            'part_count' => 'numeric'  
+        ]);
+
+
+        Product::where('id', $request->productId)
+            ->update([
+                'part_condition' => $request->part_condition,
+                'part_model' => $request->part_model,
+                'parttype_id' => $request->parttype_id,                
+                'part_comment' => $request->part_comment,
+                'part_comment_for_client' => $request->part_comment_for_client,
+                'part_link' => $request->part_link,
+                'part_cost' => $request->part_cost,
+                'part_count' => $request->part_count
+            ]);
+
+        return redirect()->back();
+
+    }
+
+
+    /**
+     * companyEditImageMainUpdate
+     * Обновляем главное изображение продукта
+     */
+    public function companyEditImageMainUpdate(Request $request)
+    {
+        PartImg::where('product_id', $request->productId)
+            ->update([
+                'part_img_main' => 0
+            ]);
+
+        PartImg::where('id', $request->imgId)
+        ->update([
+            'part_img_main' => 1
+        ]);
+
+        return redirect()->back();
+    }
+    
 
 
     

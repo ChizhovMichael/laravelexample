@@ -17,4 +17,9 @@ class PartImg extends Model
         'product_id',
         'part_img_main'
     ];
+
+    /**
+     * Отключаем добавление даты в таблицу
+     */
+    public $timestamps = false;
 }

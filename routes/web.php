@@ -123,7 +123,9 @@ Route::post('admin/company/update/tv', 'AdminController@companyEditTvsUpdate')->
 Route::get('admin/company/{companyId}/tv/{tvId}/product/{productId}', 'AdminController@companyEditProduct')->name('admin.company.product');
 Route::post('admin/company/new/product', 'AdminController@companyEditProductAdd')->name('admin.company.product.add');
 Route::post('admin/company/tv/image/upload', 'AdminController@companyEditImageUpload')->name('admin.company.image.add');
-
+Route::get('admin/company/tv/image/delete', 'AdminController@companyEditImageDelete')->name('admin.company.image.delete');
+Route::post('admin/company/update/product', 'AdminController@companyEditProductUpdate')->name('admin.company.product.update');
+Route::get('admin/company/tv/image/main/update', 'AdminController@companyEditImageMainUpdate')->name('admin.company.image.main.update');
 
 Auth::routes();
 
