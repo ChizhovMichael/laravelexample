@@ -50,7 +50,12 @@ use App\TvImg;
  * 14. contactEditDelete (Удаление контактов в административной панеле)
  * 15. orderEdit (Редактирование заказов в административной панеле)
  * 16. orderEditAll (Редактирование всех заказов в административной панеле)
- * 17. orderEditDeatil (Редактирование отдельного заказов в административной панеле)
+ * 17. orderEditDetail (Редактирование отдельного заказов в административной панеле)
+ * orderEditDetailDeletePart (Удаление товара из таблицы заказа)
+ * orderEditChecked (Подтверждение оплаты товара)
+ * Tracking Order (Перевод заявки в статус отправлено и присвоение трекинг номера)
+ * Delete Payment Order (Удаление заявки)
+ * 
  * 18. salesEdit (Получаем сумму продаж)
  * 19. getofferEdit (Получаем список запрашиваемых цен для предложения Нашли дешевле?)
  * 20. getofferEditChecked (Отмечаем о обработке поля Нашли дешевле)
@@ -464,6 +469,8 @@ class AdminController extends Controller
             'sum'            => $sum
         ]);
     }
+
+
     /**
      * Delete Part from Order
      * Удаление товара из таблицы заказа
@@ -471,12 +478,93 @@ class AdminController extends Controller
     public function orderEditDetailDeletePart(Request $request)
     {
 
-        $id = $request->id;
+        $order_status = $request->order_status;
+        $part_id = $request->part_id;
+        $order_id = $request->order_id;
+        $order_timestamp = $request->order_timestamp;
 
-        $orderpart = OrderPart::find($id);
-        $orderpart->update([
-            'part_cancel'      => 1,
-        ]);
+        
+
+        if ( $order_status == 1 or $order_status == 2 or $order_status == 3 )
+        {
+
+            $orderlist = Orderlist::find($order_id);            
+            $orderpart = OrderPart::where([
+                ['part_id', '=', $part_id],
+                ['order_id', '=', $order_id]                
+            ])->first();
+            $product = Product::find($part_id);
+            $sales = Sale::where([
+                ['sales_year', date("Y", $order_timestamp)],
+                ['sales_month', date("m", $order_timestamp)]
+            ])->first();
+            $box_part = BoxPart::where('part_id', $part_id)->first();
+
+            // Информация по состоянию 
+            $partcount = OrderPart::where('order_id', '=', $order_id)->count();
+            $partcountreturn = OrderPart::where([
+                ['order_id', '=', $order_id],
+                ['part_cancel', '=', 1]
+            ])->orWhere([
+                ['order_id', '=', $order_id],
+                ['part_return', '=', 1]
+            ])->count();
+            
+            // return $orderpart;
+            // Фиксируем количество шт и стоимость
+            $qty = $orderpart->order_count;
+            $cost = $product->part_cost;
+            
+            if ($order_status == 1 or $order_status == 2)
+            {
+                // Переносим из заказа в продукты
+                $orderpart->part_cancel = 1;
+                $orderpart->order_count = $orderpart->order_count - $qty;
+                $orderpart->save();
+                
+                $product->part_status = 0;
+                $product->part_count = $product->part_count + $qty;
+                $product->save();
+
+            }
+
+            if ($order_status == 2 or $order_status == 3)
+            {                
+                $sales->sales_turnover = $sales->sales_turnover - ($qty * $cost);
+                $sales->save();
+            }
+
+        }
+
+        if($order_status == 3 )
+        {
+            $orderpart->part_return = 1;
+            $orderpart->order_status = 4;
+            $orderpart->save();
+
+            $box_part->box_hide = $box_part->box_box;
+            $box_part->box_box = 33;
+            $box_part->save();
+        }
+
+        if ( $order_status == 2 or $order_status == 3 or $order_status == 1 )
+        {
+            if ($partcount == $partcountreturn)
+            {
+                $orderlist->update([
+                    'order_status' => $request->order_status != 3 ? 0 : 4
+                ]);
+            }
+
+            if ($order_status == 2 or $order_status == 3)
+            {
+                if ($partcount == $partcountreturn)
+                {
+                    $sales->sales_orders = $sales->sales_orders - 1;
+                    $sales->save();
+                }
+            }
+        }
 
         return redirect()->back();
     }
@@ -591,8 +679,28 @@ class AdminController extends Controller
      */
     public function orderEditDelete(Request $request)
     {
-        // $id = $request->id;
-        // $orderlist = Orderlist::find($id);
+        $id = $request->id;
+
+        $orderlist = Orderlist::find($id);
+
+        $orderparts = OrderPart::where([
+            ['order_id', '=', $id],
+            ['order_status', '>', 0],
+            ['part_cancel', '=', 0]
+        ]);
+        $orderparts = $orderparts->selectPartInfo();
+        $orderparts = $orderparts->getProductInfo();
+        $orderparts = $orderparts->getBox();
+        $orderparts = $orderparts->getImgMain();
+        $orderparts = $orderparts->get();
+
+        // foreach ( $orderparts as  $orderpart ) {
+        //     if ($orderpart->part_count == 0 && $orderpart->part_status == 0) {
+        //         $part_id[] = $orderpart->part_id;
+        //     }
+        // }
+
+        return $orderparts->sum('part_cost');
 
         // $orderpart = OrderPart::where('order_id', $orderlist->id);
         // $orderpart->update([

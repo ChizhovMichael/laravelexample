@@ -34,7 +34,7 @@
                 </div>                
                 <div class="col-2 sd-2 rel">
                     @if ($item->part_cancel == 0)
-                    <a href="{{ route('admin.order.detail.delete.part', ['id' => $item->id ]) }}" class="edit abs shadow">
+                    <a href="{{ route('admin.order.detail.delete.part', ['part_id' => $item->part_id, 'order_part_count' => $products->count(), 'order_status' => $order->order_status, 'order_id' => $order->id, 'order_timestamp' => $order->order_timestamp  ]) }}" class="edit abs shadow">
                         <img src="{{ asset('img/icon/delete.png') }}" alt="delete" class="sd-12 col-12">
                     </a>
                     @endif
@@ -114,6 +114,7 @@
 
                     <h5>Отмена заказа</h5>
                     <form action="{{ route('admin.order.delete', [ 'id' => $order->id ]) }}" method="POST">
+                        @csrf
                         <div class="form-check mt-em-1 mb-em-1">
                             <input class="form-check-input" data-form="brands-check" type="checkbox" name="mailstatus" id="cancelmailstatus" />
                             <span class="form-check-span"></span>

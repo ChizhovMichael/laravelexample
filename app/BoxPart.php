@@ -59,4 +59,9 @@ class BoxPart extends Model
             'company_id'
         ]);
     }
+
+    /**
+     * Отключаем добавление даты в таблицу created_at, update_at (системные laravel)
+     */
+    public $timestamps = false;
 }

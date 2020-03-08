@@ -57,6 +57,7 @@ class OrderPart extends Model
             'products.part_link',
             'products.part_cost',
             'products.part_count',
+            'products.part_status',
             'products.company_id',
             'products.tv_id', 
             'box_parts.box_box',  
