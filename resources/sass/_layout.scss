@@ -695,6 +695,10 @@ input[type=range]::-webkit-slider-thumb:active {
 		&.discount {
 			.product_content {
 				.product_price {
+					a {
+						text-decoration: none;
+						font-size: 1em;
+					}
 					h6 {
 						color: $color-add;
 					}
@@ -746,7 +750,11 @@ input[type=range]::-webkit-slider-thumb:active {
 			@include flex-direction(column);
 		}
 		.product_content {
-			.product_price {				
+			.product_price {
+				a {
+					font-size: 1em;
+					text-decoration: none;
+				}				
 				h6 {				
 					span {
 						font-size: 0.8em;
@@ -810,6 +818,10 @@ input[type=range]::-webkit-slider-thumb:active {
 .card__item__np {
 	&.discount {
 		.np__content {
+			a {
+				text-decoration: none;
+				font-size: 1em;
+			}
 			h6 {
 				color: $color-add;
 			}
@@ -822,6 +834,10 @@ input[type=range]::-webkit-slider-thumb:active {
 	}
 	&.new {
 		.np__content {
+			a {
+				text-decoration: none;
+				font-size: 1em;
+			}
 			h6 {
 				span {
 					@extend %not-visible;
@@ -843,6 +859,10 @@ input[type=range]::-webkit-slider-thumb:active {
 			span {
 				font-size: 0.8em;
 			}					
+		}
+		a {
+			font-size: 1em;
+			text-decoration: none;
 		}
 	}
 	.product_marks {

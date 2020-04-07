@@ -112,21 +112,23 @@
 
 		<div class="col-3 sd-5">
 			<div class="@if ($agent->isDesktop()) flex-center-end @else flex-center-start @endif sd-12">
-				<div class="rel">
-					<img class="col-12" src="{{ asset('img/icon/cart.png')}}" alt="Запчасти для телевизоров, продать телевизор +на запчасти, телевизор скупка, телезапчасти" />
-					<div class="cart_count">
-						<span id="countProducts">{!! $cart['cart_count'] !!}</span>
+				<a href="{{ route('cart') }}">
+					<div class="rel">
+						<img class="col-12" src="{{ asset('img/icon/cart.png')}}" alt="Запчасти для телевизоров, продать телевизор +на запчасти, телевизор скупка, телезапчасти" />
+						<div class="cart_count">
+							<span id="countProducts">{!! $cart['cart_count'] !!}</span>
+						</div>
 					</div>
-				</div>
-				<div class="ml-em-2 col-5 sd-7">
-					<div class="cart_text">
-						<a href="{{ route('cart') }}">Корзина</a>
+					<div class="ml-em-2 col-5 sd-7">
+						<div class="cart_text">
+							<a href="{{ route('cart') }}">Корзина</a>
+						</div>
+						<div class="cart_price flex-center">
+							<p class="m-1 cc" id="totalPrice">{!! $cart['cart_total'] !!}</p>
+							<p class="m-1 cc">&nbsp;&#x20bd;</p>
+						</div>
 					</div>
-					<div class="cart_price flex-center">
-						<p class="m-1 cc" id="totalPrice">{!! $cart['cart_total'] !!}</p>
-						<p class="m-1 cc">&nbsp;&#x20bd;</p>
-					</div>
-				</div>
+				</a>
 			</div>
 		</div>
 	</div>

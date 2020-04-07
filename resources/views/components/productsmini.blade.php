@@ -12,15 +12,17 @@
         @endif
         <div class="product_content col-12">
             <div class="product_price mt-em-1">
-                <h6 class="ct mt-em-1 mb-em-1">
-                    @if($part->price == NULL)
-                    {{ $part->part_cost }}&nbsp;&#x20bd;
-                    <span class="cc ml-em-1">{{ $part->price }}</span>
-                    @else
-                    {{ $part->price }}&nbsp;&#x20bd;
-                    <span class="cc ml-em-1 line-through">{{ $part->part_cost }}&nbsp;&#x20bd;</span>
-                    @endif
-                </h6>
+                <a href="{{ route('product.show', ['slug' => $part->part_link ]) }}">
+                    <h6 class="ct mt-em-1 mb-em-1">
+                        @if($part->price == NULL)
+                        {{ $part->part_cost }}&nbsp;&#x20bd;
+                        <span class="cc ml-em-1">{{ $part->price }}</span>
+                        @else
+                        {{ $part->price }}&nbsp;&#x20bd;
+                        <span class="cc ml-em-1 line-through">{{ $part->part_cost }}&nbsp;&#x20bd;</span>
+                        @endif
+                    </h6>
+                </a>
             </div>
             <div class="product_name">
                 <p class="block pr-em-1 pl-em-1">{{ $part->company }} {{ $part->tv_model }}</p>

@@ -515,11 +515,18 @@ function addCart() {
                                     }, 1300
                                 );
 
-                                console.log(btnLink)
+                                // console.log(btnLink)
+                                var newbtnLink = document.createElement('a');
+                                newbtnLink.className = 'cart-link flex-center-center rel top-left col-12 back-main mt-em-1 bbl5 bbr5';
+                                newbtnLink.href = '/cart';
 
-                                var img = btnLink.querySelector('img');
-                                img.src = '/img/icon/cart_yes_white.png';
-                                btnLink.classList.add('disable-link');
+                                var myImage = new Image();
+                                myImage.src = '/img/icon/cart_yes_white.png';
+
+                                newbtnLink.appendChild(myImage);
+                                btnLink.before(newbtnLink);
+                                btnLink.remove();
+
                             }
                         }
                     }
