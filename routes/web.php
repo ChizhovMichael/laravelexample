@@ -1,5 +1,6 @@
 <?php
 
+use Spatie\Honeypot\ProtectAgainstSpam;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -10,6 +11,11 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+// Auth
+Route::middleware(ProtectAgainstSpam::class)->group(function() {
+    Auth::routes();
+});
 
 
 
@@ -154,7 +160,7 @@ Route::post('/checkout', 'CartController@checkoutPost')->name('checkout.post');
  */
 Route::get('/about', 'AboutController@index')->name('about');
 Route::get('/contacts', 'ContactController@getPageContact')->name('contacts');
-Route::post('/contacts', 'ContactController@mailpost')->name('contacts.mail');
+Route::post('/contacts', 'ContactController@mailpost')->middleware(ProtectAgainstSpam::class)->name('contacts.mail');
 
 Route::get('/delivery', 'ContactController@getPageDelivery')->name('delivery');
 Route::get('/private', 'ContactController@getPagePrivate')->name('private');

@@ -78,7 +78,7 @@ class SearchController extends Controller
 
             }
 
-            $part_types = $part_types->paginate(8);
+            $part_types = $part_types->paginate(15);
 
             if ($request->search == '')
                 return $output;

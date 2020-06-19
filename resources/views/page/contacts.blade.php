@@ -23,6 +23,7 @@
             </div>
             <form action="{{ route('contacts.mail') }}" class="mt-em-3 sd-12 col-12" method="POST">
                 @csrf
+                @honeypot
 
                 <div class="flex-between sd-12 col-12 mb-em-3">
                     <div class="b5 bc sd-12 col-4 mt-em-1">

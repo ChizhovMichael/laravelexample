@@ -1528,7 +1528,8 @@ class AdminController extends Controller
         $product->tv_id = $request->tv_id;
         $product->company_id = $request->company_id;
         $product->part_condition = $request->part_condition;
-        $product->group_id = $request->group_id;        
+        $product->group_id = $request->group_id;
+        $product->part_weight = $request->part_weight;        
         $product->save();
 
         return redirect()->back();
@@ -1612,7 +1613,8 @@ class AdminController extends Controller
                 'part_comment_for_client' => $request->part_comment_for_client,
                 'part_link' => $request->part_link,
                 'part_cost' => $request->part_cost,
-                'part_count' => $request->part_count
+                'part_count' => $request->part_count,
+                'part_weight' => $request->part_weight
             ]);
 
         return redirect()->back();

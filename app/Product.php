@@ -61,7 +61,8 @@ class Product extends Model
         'startPrice',
         'listingDuration',
         'itemID',
-        'siteID'
+        'siteID',
+        'part_weight'
     ];
 
     /**********

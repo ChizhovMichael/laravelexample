@@ -118,6 +118,28 @@
                         </div>
                     </div>
 
+                    <div class="pr-em-2 pl-em-2 pt-em-2 pb-em-2 bc-light shadow-xs b3 mt-em-1 @error('regulations') b-error @enderror">
+                        <div class="form-check">
+
+                            <input class="form-check-input" type="checkbox" name="regulations" id="regulations" {{
+                                old('regulations') ? 'checked' : '' }} required>
+
+                            <span class="form-check-span"></span>
+                            <label class="form-check-label ct col-9 sd-9" for="regulations">
+                                Я прочитал(а) и соглашаюсь с правилами сайта <a href="{{ route('regulations') }}" class="cm hover">правила и условия</a> *
+                                
+                                @error('regulations')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+
+                            </label>
+
+                        </div>
+                    </div>
+                    
+
                     <div class="flex-center-center">
                         <div class="col-6 sd-6">
                             <button type="submit"  class="button__trigger">

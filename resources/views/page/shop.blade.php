@@ -174,13 +174,9 @@
         @endif
         <div class="col-9 sd-12 @if($agent->isDesktop()) pl-5 @endif">
             <div class="@if($search != NULL) flex-center-between @endif">
-                @if($search != NULL)
-                <div class="col-5">
-                    <p class="m-0 col-12 ct pr-em-2 pl-em-2 pt-em-1 pb-em-1 back-back shadow-xs b4">Поиск: <span class="cm">{{ $search }}</span></p>
-                </div>
-                @endif
+                
             
-                <div class="container__sorting @if($search != NULL) col-6 @else col-12 @endif pt-em-1 pb-em-1 pl-5 bb-light">
+                <div class="container__sorting col-12 pt-em-1 pb-em-1 pl-5 bb-light">
 
                     @if ($agent->isMobile())
                     <a href="#" class="trigger b5 flex-center-center hover pt-4 pb-4" onclick="
@@ -205,6 +201,12 @@
                         </div>
                     </div>
                 </div>
+
+                @if($search != NULL)
+                <div class="col-12">
+                    <p class="m-0 col-12 ct pr-em-2 pl-em-2 pt-em-1 pb-em-1 back-back shadow-xs b4">Поиск: <span class="cm">{{ $search }}</span></p>
+                </div>
+                @endif
             </div>
             <div class="flex-start" id="card">
                 @foreach($part_types as $part)

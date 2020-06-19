@@ -234,6 +234,13 @@
                         </span>
                     @endif
 
+                    <div class="b5 bc sd-12 col-12 mt-1">
+                        <div class="form-label-group sd-12">
+                            <input type="number" id="part_weight" name="part_weight" class="form-control @error('part_weight') is-invalid @enderror" placeholder="Вес, гр." value="{{ old('part_weight') }}"/>
+                            <label for="part_weight">Вес, гр.</label>
+                        </div>
+                    </div>
+
                     <select name="parttype_id" class="sd-12 col-12 cc pr-em-2 pl-em-2 flex-center-center back-body b4 mt-1" required>
                         @foreach ($parttype as $item)
                             <option value="{{ $item->id }}">{{ $item->parttype_type }}</option>
@@ -373,6 +380,13 @@
                                 <strong>{{ $errors->first('part_link') }}</strong>
                             </span>
                         @endif
+
+                        <div class="b5 bc sd-12 col-12 mt-1">
+                            <div class="form-label-group sd-12">
+                                <input type="number" id="part_weight" name="part_weight" class="form-control @error('part_weight') is-invalid @enderror" placeholder="Вес, гр." value="{{ $product->part_weight }}"/>
+                                <label for="part_weight">Вес, гр.</label>
+                            </div>
+                        </div>
     
                         <select name="parttype_id" class="sd-12 col-12 cc pr-em-2 pl-em-2 flex-center-center back-body b4 mt-1" required>
                             @foreach ($parttype as $item)

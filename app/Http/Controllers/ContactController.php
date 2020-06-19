@@ -95,6 +95,11 @@ class ContactController extends Controller
      */
     public function mailpost( Request $request )
     {
+        $request->validate([
+            'email' => 'required|email|max:255|string',
+            'name'  => 'required|max:255|string',
+            'message'  => 'required|string',
+        ]);
 
         $contact['name'] = $request->name;
         $contact['email'] = $request->email;
