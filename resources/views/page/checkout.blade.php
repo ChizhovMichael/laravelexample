@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-    <title>Интернет-магазин Телезапчасти.рф - Запчасти для телевизоров. Детали оплаты</title>
-    <meta name="description" content="Телезапчасти.рф - продажа запчастей для телевизоров, запчасти для телевизоров. Детали оплаты. Телезапчасти, запчасти для телевизоров спб, телезапчасти.рф отзывы">
-    <meta name="keywords" content="телезапчасти рф, телезапчасти.рф отзывы, запчасти для телевизоров купить, купить запчасти для телевизоров, телезапчасти купить, телезапчасти интернет магазин, запчасти для телевизора lg, запчасти для телевизора самсунг, запчасти для телевизора samsung, запчасти для телевизора лджи">
+    <title>Интернет-магазин Telezapchasti.ru - Запчасти для телевизоров. Детали оплаты</title>
+    <meta name="description" content="Telezapchasti.ru - продажа запчастей для телевизоров, запчасти для телевизоров. Детали оплаты. Телезапчасти, запчасти для телевизоров спб, Telezapchasti.ru отзывы">
+    <meta name="keywords" content="телезапчасти рф, Telezapchasti.ru отзывы, запчасти для телевизоров купить, купить запчасти для телевизоров, телезапчасти купить, телезапчасти интернет магазин, запчасти для телевизора lg, запчасти для телевизора самсунг, запчасти для телевизора samsung, запчасти для телевизора лджи">
 
     <meta name="robots" content="index, follow">
 
@@ -26,7 +26,7 @@
         @csrf
 
 
-        <div class="flex-between pt-em-5 pb-em-5 pr-5 pl-5 col-12">
+        <div class="flex justify-content-center pt-em-5 pb-em-5 pr-5 pl-5 col-12">
             <div class="col-6 sd-12 pr-5">
 
 
@@ -67,7 +67,10 @@
                             </div>
                         </div>
                         <div>
-                            @foreach ($cartContent as $item)
+                            @php
+                                $weight = 0;
+                            @endphp
+                            @foreach ($cartContent as $item)                            
                             <div class="flex-between bb-light">
                                 <div class="col-8 br-light flex-center sd-7 pb-2">
                                     <p class="cc mb-0">{{ $item->options->type }} {{ $item->name }} x {{ $item->qty }}</p>
@@ -76,15 +79,19 @@
                                     <p class="cc mb-0">{{ $item->subtotal }}&nbsp;&#x20bd</p>
                                 </div>
                             </div>
+                            @php
+                                $weight += intval($item->options->part_weight);
+                            @endphp
                             @endforeach
+                            <input type="hidden" name="weight" id="weight" value="{{ $weight }}" />
                         </div>
 
                         <div class="flex-between">
                             <div class="col-8 sd-7">
-                                <h6 class="ct">Доставка</h6>
+                                <h6 class="ct mt-em-1 mb-em-1">Доставка</h6>
                             </div>
-                            <div class="col-3 sd-4">
-                                <p class="ct">Стоимость доставки уточняйте у сотрудника</p>
+                            <div class="col-3 sd-4 flex-center">
+                                <p class="ct wwbw col-12" id="resultDelivery">Стоимость доставки уточняйте у сотрудника</p>
                             </div>
                         </div>
 

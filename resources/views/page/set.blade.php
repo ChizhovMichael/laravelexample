@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-    <title>{{ $set->set_name }} купить в Телезапчасти.рф - Запчасти для телевизоров</title>
-    <meta name="description" content="{{ $set->set_name }}, купить комплект {{ $set->set_name }} запчастей в Телезапчасти.рф, {{ $set->set_name }}, комплект запчастей {{ $set->set_name }}, @foreach($setInfo as $item) {{ $item->parttype_type }} {{ $item->part_model }}, @endif @foreach($setInfo as $item) запчасть {{ $item->parttype_type }} {{ $item->part_model }} для телевизора, @endif">
-    <meta name="keywords" content="{{ $set->set_name }}, купить комплект {{ $set->set_name }} запчастей в Телезапчасти.рф, {{ $set->set_name }}, комплект запчастей {{ $set->set_name }}, @foreach($setInfo as $item) {{ $item->parttype_type }} {{ $item->part_model }}, @endif @foreach($setInfo as $item) запчасть {{ $item->parttype_type }} {{ $item->part_model }} для телевизора, @endif">
+    <title>{{ $set->set_name }} купить в Telezapchasti.ru - Запчасти для телевизоров</title>
+    <meta name="description" content="{{ $set->set_name }}, купить комплект {{ $set->set_name }} запчастей в Telezapchasti.ru, {{ $set->set_name }}, комплект запчастей {{ $set->set_name }}, @foreach($setInfo as $item) {{ $item->parttype_type }} {{ $item->part_model }}, @endif @foreach($setInfo as $item) запчасть {{ $item->parttype_type }} {{ $item->part_model }} для телевизора, @endif">
+    <meta name="keywords" content="{{ $set->set_name }}, купить комплект {{ $set->set_name }} запчастей в Telezapchasti.ru, {{ $set->set_name }}, комплект запчастей {{ $set->set_name }}, @foreach($setInfo as $item) {{ $item->parttype_type }} {{ $item->part_model }}, @endif @foreach($setInfo as $item) запчасть {{ $item->parttype_type }} {{ $item->part_model }} для телевизора, @endif">
 
     <meta name="robots" content="index, follow">
 
