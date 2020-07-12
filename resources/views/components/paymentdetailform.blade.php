@@ -48,14 +48,14 @@
         <div class="dropdown bc pt-em-1 pb-em-1 b5 rel col-10 sd-12">
             <div class="dropdown__list rel flex-center-center">
                 <img class="ml-em-1" src="{{ asset('img/icon/chevron-arrow-down.svg') }}" alt="Запчасти для телевизоров, продать телевизор +на запчасти, телевизор скупка, телезапчасти" />
-                <input type="hidden" name="delivery" value="0" />
+                <input type="hidden" name="delivery" value="0" id="delivery"/>
                 <span class="dropdown_placeholder col-10 cc c-p">
                     Cпособы доставки
                 </span>
                 <ul class="dropdown__list__ul abs top-max-left shadow col-12 b5 back-back" id="sortingProduct">
-                    <li class="flex-center-between rel bt-light pt-2 pb-2 pr-5 pl-5"><span class="sort-link hover pt-2 pb-2 pr-5 pl-5 block c-p form-link" data-link="1">Почта России</span></li>
-                    <li class="flex-center-between rel bt-light pt-2 pb-2 pr-5 pl-5"><span class="sort-link hover pt-2 pb-2 pr-5 pl-5 block c-p form-link" data-link="3">Доставка курьером (только Санкт-Петербург)</span></li>
-                    <li class="flex-center-between rel bt-light pt-2 pb-2 pr-5 pl-5"><span class="sort-link hover pt-2 pb-2 pr-5 pl-5 block c-p form-link" data-link="2">Курьерская служба доставки СДЭК</span></li>
+                    <li class="flex-center-between rel bt-light pt-2 pb-2 pr-5 pl-5"><span class="sort-link hover pt-2 pb-2 pr-5 pl-5 block c-p form-link delivery-link" data-link="1">Почта России</span></li>
+                    <li class="flex-center-between rel bt-light pt-2 pb-2 pr-5 pl-5"><span class="sort-link hover pt-2 pb-2 pr-5 pl-5 block c-p form-link delivery-link" data-link="3">Доставка курьером (только Санкт-Петербург)</span></li>
+                    <li class="flex-center-between rel bt-light pt-2 pb-2 pr-5 pl-5"><span class="sort-link hover pt-2 pb-2 pr-5 pl-5 block c-p form-link delivery-link" data-link="2">Курьерская служба доставки СДЭК</span></li>
                 </ul>
             </div>
         </div>
