@@ -3041,6 +3041,10 @@ https://flickity.metafizzy.co
   flex-direction: column;
 }
 
+.justify-content-center {
+  justify-content: center;
+}
+
 .fix {
   position: fixed;
 }
