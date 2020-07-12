@@ -408,6 +408,26 @@ class ProductController extends Controller
         $products = $products->getImgMain();
         $products = $products->first();
 
+        return $products;
+        // Определяем вес запчасти
+        if ($products->part_weight) {
+            $part_weight = $products->part_weight;
+        } else {
+            switch ($products->parttype_type) {
+                case 'Main Board':
+                    $part_weight = 400;
+                    break;
+                case 'Inverter':
+                    $part_weight = 400;
+                    break;
+                case 'Power Board':
+                    $part_weight = 600;
+                    break;                
+                default:
+                    $part_weight = 50;
+                    break;
+            }
+        }
         
 
         $productsSale = Stock::where('product_id', $id)->first();
@@ -442,6 +462,7 @@ class ProductController extends Controller
                     'tv'        => $products->tv_id,
                     'img'       => $products->part_img_name,
                     'part_link' => $products->part_link,
+                    'part_weight' => $part_weight,
                 ],
             ]);
 
