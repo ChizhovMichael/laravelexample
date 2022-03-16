@@ -1,12 +1,4 @@
-## About Project
-## Запуск config.php снять комментарии c mysql and 'strict' => false,
-## добавить m - main image, s - additional image. s приставка для small 
-## телики в той же папке
-## Продукт для теста BN41-00879B BN94-01354Q
-## 4 изображения на запчасть, 5 на телик 
-## тестовые позиции eax64910001_1.0_ebr75084309 EAX64910001(1.0) EBR75084309
-## V28A000628G1
-## Не забыть удалить пустые запчасти со страницы /admin/box/unsort
-f5ptsxF76CD2rWc
+## minishop_laravel
+This project is an example of a simple online store written in Laravel. The frontend uses its own micro scss framework. This store was developed for one friend as an experiment without technical specifications. Therefore, in many places the business logic may not be clear. Unfortunately, this store has not yet been released. The work is not finished.
 
-
+_There may be many errors at startup, so I don’t recommend wasting time on launching this project._
